@@ -5,33 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synthetix Labs | Studio & Ticket System</title>
     
-    <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- Hoja de estilos externa -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Navegación -->
     <nav>
         <div class="logo">
             <span>⚡ SYNTHETIX</span> LABS
         </div>
         <div class="nav-actions">
-            <button type="button" class="nav-btn-secondary" onclick="openLoginModal()"><span>👤</span> Iniciar Sesión / Ticket</button>
+            <button type="button" class="nav-btn-secondary" onclick="window.location.href='dashboard.html'"><span>👤</span> Iniciar Sesión / Panel</button>
             <button type="button" class="nav-btn" onclick="openTicketModal('General')">Cotizar Ahora</button>
         </div>
     </nav>
 
-    <!-- Hero Header -->
     <header class="hero">
         <div class="status-badge">
             <span class="status-dot"></span> Sistema de Tickets Web Activo
         </div>
-        <div class="badge">
+        <div class="badge" style="margin-top: 10px; display:inline-block;">
             <span>🛠️</span> Studio de Desarrollo & Configuración
         </div>
         <h1>
@@ -41,25 +36,12 @@
         <p>
             Cotiza directamente desde la tienda sin salir del navegador. Bots de Discord, servidores Minecraft (Velocity/Paper), Skripts y modpacks optimizados.
         </p>
-        <div class="hero-actions">
+        <div class="hero-actions" style="margin-top: 25px;">
             <button type="button" class="btn-main" onclick="openTicketModal('General')">Iniciar Cotización Web</button>
             <button type="button" class="btn-outline" onclick="scrollToSection('servicios')">Explorar Servicios</button>
         </div>
     </header>
 
-    <!-- Estado de Usuario Logueado -->
-    <section id="user-session-bar" class="user-session-bar hidden">
-        <div class="session-info">
-            <span class="user-avatar">👤</span>
-            <div>
-                <p>Sesión activa: <strong id="logged-username">@usuario</strong></p>
-                <small>Ticket ID: <span id="logged-ticket-id">#0000</span></small>
-            </div>
-        </div>
-        <button type="button" class="btn-small-danger" onclick="logoutUser()">Cerrar Sesión</button>
-    </section>
-
-    <!-- Estadísticas -->
     <section class="stats-strip">
         <div class="stat-card">
             <h3>Directo</h3>
@@ -75,7 +57,6 @@
         </div>
     </section>
 
-    <!-- Catálogo de Servicios -->
     <section class="services-section" id="servicios">
         <div class="section-header">
             <h2>Nuestros Servicios</h2>
@@ -83,174 +64,78 @@
         </div>
 
         <div class="grid">
-            
-            <!-- Servicio 1: Bots de Discord -->
             <div class="card">
                 <div class="card-content">
                     <div class="card-icon">🤖</div>
                     <h3>Bots de Discord Custom</h3>
                     <p>Desarrollo de bots a medida con Node.js / Python. Integración con bases de datos, verificación nLogin/Premium, tickets y economía.</p>
-                    <div class="tag-list">
-                        <span>Discord.js</span>
-                        <span>Sincronización MC</span>
-                    </div>
                 </div>
                 <button type="button" class="card-btn" onclick="openTicketModal('Bot de Discord Custom')">Cotizar Bot →</button>
             </div>
 
-            <!-- Servicio 2: Configuración de Servidores MC -->
             <div class="card">
                 <div class="card-content">
                     <div class="card-icon">🎮</div>
                     <h3>Setup de Servidores MC</h3>
                     <p>Configuración completa de modalidades (BoxPVP, Survival, Lobby). Ruteo de Proxies Velocity, LuckPerms y Tebex.</p>
-                    <div class="tag-list">
-                        <span>Velocity</span>
-                        <span>Paper</span>
-                        <span>Tebex</span>
-                    </div>
                 </div>
                 <button type="button" class="card-btn" onclick="openTicketModal('Setup Servidor Minecraft')">Cotizar Servidor →</button>
             </div>
 
-            <!-- Servicio 3: Skripts & Plugins -->
             <div class="card">
                 <div class="card-content">
                     <div class="card-icon">⚡</div>
                     <h3>Skripts & Eventos Custom</h3>
                     <p>Programación de mecánicas exclusivas con Skript y ConditionalEvents. Soluciones livianas y de bajo consumo.</p>
-                    <div class="tag-list">
-                        <span>Skript</span>
-                        <span>YAML</span>
-                    </div>
                 </div>
                 <button type="button" class="card-btn" onclick="openTicketModal('Skript / Evento Custom')">Solicitar Skript →</button>
             </div>
 
-            <!-- Servicio 4: Modpacks & Optimización -->
             <div class="card">
                 <div class="card-content">
                     <div class="card-icon">🚀</div>
-                    <h3>Modpacks & Rendimiento</h3>
+                    <h3>Modpacks & Optimización</h3>
                     <p>Creación de modpacks optimizados para clientes y servidores en Fabric/Forge. Reducción de lag y mejora de FPS.</p>
-                    <div class="tag-list">
-                        <span>Fabric</span>
-                        <span>FPS Boost</span>
-                    </div>
                 </div>
                 <button type="button" class="card-btn" onclick="openTicketModal('Modpack & Optimización')">Pedir Optimización →</button>
             </div>
-
         </div>
     </section>
 
-    <!-- Stack Tecnológico -->
-    <section class="tech-section">
-        <div class="section-header">
-            <h2>Tecnologías & Herramientas</h2>
-            <p>Infraestructura probada para máximo rendimiento.</p>
-        </div>
-        <div class="tech-grid">
-            <div class="tech-card"><span>☕</span> Java / Gradle</div>
-            <div class="tech-card"><span>🚀</span> Velocity Proxy</div>
-            <div class="tech-card"><span>📄</span> Paper / Spigot</div>
-            <div class="tech-card"><span>🤖</span> Discord.js</div>
-            <div class="tech-card"><span>🧩</span> Fabric / Forge</div>
-            <div class="tech-card"><span>⚡</span> Skript & YAML</div>
-            <div class="tech-card"><span>🛒</span> Tebex Headless</div>
-            <div class="tech-card"><span>🗄️</span> MySQL / SQLite</div>
-        </div>
-    </section>
-
-    <!-- Estimador de Presupuesto -->
     <section class="estimator-section">
-        <div class="estimator-box">
+        <div class="estimator-box" style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 24px; padding: 35px; max-width: 600px; margin: 40px auto; text-align: center;">
             <h2>Calculadora de Presupuesto Aprox.</h2>
-            <p>Selecciona los servicios para obtener una estimación inicial:</p>
+            <p style="color: var(--text-muted); margin-top: 10px;">Selecciona los servicios para obtener una estimación inicial:</p>
             
-            <div class="estimator-options">
-                <label class="est-option">
-                    <input type="checkbox" value="15" class="est-check"> Bot de Discord Custom (~$15)
-                </label>
-                <label class="est-option">
-                    <input type="checkbox" value="25" class="est-check"> Setup Servidor / Modalidad (~$25)
-                </label>
-                <label class="est-option">
-                    <input type="checkbox" value="10" class="est-check"> Skript Custom / Eventos (~$10)
-                </label>
-                <label class="est-option">
-                    <input type="checkbox" value="12" class="est-check"> Modpack Optimizado (~$12)
-                </label>
+            <div class="estimator-options" style="text-align: left; margin: 20px 0; display: flex; flex-direction: column; gap: 10px;">
+                <label><input type="checkbox" value="15" class="est-check" onchange="calculateTotal()"> Bot de Discord Custom (~$15)</label>
+                <label><input type="checkbox" value="25" class="est-check" onchange="calculateTotal()"> Setup Servidor / Modalidad (~$25)</label>
+                <label><input type="checkbox" value="10" class="est-check" onchange="calculateTotal()"> Skript Custom / Eventos (~$10)</label>
+                <label><input type="checkbox" value="12" class="est-check" onchange="calculateTotal()"> Modpack Optimizado (~$12)</label>
             </div>
 
-            <div class="estimator-result">
-                <span>Total Estimado:</span>
-                <span id="total-price">$0.00</span>
-            </div>
-            <button type="button" class="btn-main" style="margin-top: 20px;" onclick="openTicketModal('Paquete Personalizado Calculado')">Cotizar este paquete aquí</button>
-        </div>
-    </section>
-
-    <!-- Preguntas Frecuentes -->
-    <section class="faq-section">
-        <div class="section-header">
-            <h2>Preguntas Frecuentes</h2>
-            <p>Todo lo que necesitas saber antes de enviar tu ticket.</p>
-        </div>
-        <div class="faq-container">
-            <div class="faq-item">
-                <button type="button" class="faq-question">
-                    <span>¿Cómo recibo respuesta a mi cotización?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Al enviar tu cotización en la tienda, nuestro equipo recibirá los detalles en nuestro sistema. Nos pondremos en contacto contigo por Discord o podrás ver las actualizaciones al iniciar sesión con tu Ticket ID en la web.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button type="button" class="faq-question">
-                    <span>¿Qué métodos de pago aceptan?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Aceptamos Pago Móvil, Zinli, Airtm, Binance (USDT), PayPal y transferencias locales.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button type="button" class="faq-question">
-                    <span>¿Incluye garantía el trabajo?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Sí, incluimos de 7 a 14 días de soporte post-entrega para correcciones y ajustes sin costo adicional.</p>
-                </div>
+            <div class="estimator-result" style="font-size: 1.2rem; font-weight: 700; margin-top: 15px;">
+                Total Estimado: <span id="total-price" style="color: var(--accent-lilac);">$0.00</span>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 Synthetix Labs. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- ==================== MODALES INTERACTIVOS ==================== -->
-
-    <!-- MODAL 1: Formulario de Cotización In-Page -->
+    <!-- MODAL DE COTIZACIÓN -->
     <div id="modal-ticket" class="modal-overlay hidden">
         <div class="modal-card">
             <button type="button" class="modal-close" onclick="closeModal('modal-ticket')">&times;</button>
             <div class="modal-header">
                 <h2>⚡ Abrir Cotización In-Page</h2>
-                <p>Completa el formulario para enviar tu solicitud directamente al equipo.</p>
             </div>
             <form id="ticket-form" onsubmit="submitTicket(event)">
                 <div class="form-group">
                     <label>Tu Usuario de Discord *</label>
                     <input type="text" id="discord-user" placeholder="Ej: @aledevv" required>
                 </div>
-
                 <div class="form-group">
                     <label>Tipo de Servicio *</label>
                     <select id="service-type" required>
@@ -258,74 +143,17 @@
                         <option value="Setup Servidor Minecraft">Setup Servidor Minecraft</option>
                         <option value="Skript / Evento Custom">Skript / Evento Custom</option>
                         <option value="Modpack & Optimización">Modpack & Optimización</option>
-                        <option value="Proyecto Completo / Otro">Proyecto Completo / Otro</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label>Método de Pago Preferido</label>
-                    <select id="payment-method">
-                        <option value="Pago Móvil">Pago Móvil</option>
-                        <option value="Zinli">Zinli</option>
-                        <option value="Airtm">Airtm</option>
-                        <option value="Binance (USDT)">Binance (USDT)</option>
-                        <option value="PayPal">PayPal</option>
-                    </select>
+                    <label>Detalles del Proyecto *</label>
+                    <textarea id="project-details" rows="4" placeholder="Describe brevemente qué necesitas..." required></textarea>
                 </div>
-
-                <div class="form-group">
-                    <label>Presupuesto Aproximado ($ USD)</label>
-                    <input type="number" id="budget-input" placeholder="Ej: 25" min="5">
-                </div>
-
-                <div class="form-group">
-                    <label>Detalles del Proyecto / Especificaciones *</label>
-                    <textarea id="project-details" rows="4" placeholder="Describe brevemente qué necesitas que haga el bot, plugin o servidor..." required></textarea>
-                </div>
-
-                <button type="submit" class="btn-main full-width" id="btn-submit-ticket">Enviar Cotización Ahora</button>
+                <button type="submit" class="btn-main full-width">Enviar Cotización Ahora</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 2: Iniciar Sesión / Consultar Ticket -->
-    <div id="modal-login" class="modal-overlay hidden">
-        <div class="modal-card">
-            <button type="button" class="modal-close" onclick="closeModal('modal-login')">&times;</button>
-            <div class="modal-header">
-                <h2>👤 Iniciar Sesión de Ticket</h2>
-                <p>Ingresa con tu usuario de Discord o ID de Ticket para gestionar tus solicitudes.</p>
-            </div>
-            <form id="login-form" onsubmit="loginUser(event)">
-                <div class="form-group">
-                    <label>Usuario de Discord o Ticket ID</label>
-                    <input type="text" id="login-input" placeholder="Ej: @aledevv o #TK-8492" required>
-                </div>
-                <button type="submit" class="btn-main full-width">Ingresar a la Tienda</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL 3: Confirmación / Éxito -->
-    <div id="modal-success" class="modal-overlay hidden">
-        <div class="modal-card text-center">
-            <div class="success-icon">🎉</div>
-            <h2>¡Cotización Enviada!</h2>
-            <p>Tu solicitud ha sido registrada correctamente. Guardamos tu ID de Ticket:</p>
-            <div class="ticket-badge-result" id="generated-ticket-id">#TK-0000</div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 15px;">
-                Nuestro equipo revisará los detalles y te contactará. ¡Puedes usar este Ticket ID para iniciar sesión en la web cuando quieras!
-            </p>
-            <button type="button" class="btn-main full-width" style="margin-top: 20px;" onclick="closeModal('modal-success')">Entendido</button>
-        </div>
-    </div>
-
-    <!-- Botón Flotante In-Page -->
-    <button type="button" class="floating-ticket-btn" onclick="openTicketModal('General')">
-        <span>⚡</span> Cotizar In-Page
-    </button>
-
-    <!-- Archivo JS externo -->
     <script src="script.js"></script>
 </body>
 </html>
