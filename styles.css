@@ -26,7 +26,6 @@ body {
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
-    /* Fondo con iluminación azul y lila */
     background-image: 
         radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 45%),
         radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.18) 0%, transparent 45%);
@@ -37,7 +36,6 @@ body {
     display: none !important;
 }
 
-/* Navbar Glassmorphism */
 nav {
     position: fixed;
     top: 20px;
@@ -113,7 +111,6 @@ nav {
     border-color: rgba(192, 132, 252, 0.4);
 }
 
-/* Barra de Sesión de Usuario */
 .user-session-bar {
     max-width: 1100px;
     margin: 110px auto -80px;
@@ -146,7 +143,6 @@ nav {
     cursor: pointer;
 }
 
-/* Hero Section */
 .hero {
     padding: 170px 20px 70px;
     text-align: center;
@@ -260,7 +256,6 @@ nav {
     border-color: rgba(192, 132, 252, 0.4);
 }
 
-/* Stats Grid */
 .stats-strip {
     max-width: 1100px;
     margin: 0 auto 100px;
@@ -291,7 +286,6 @@ nav {
     font-size: 0.9rem;
 }
 
-/* Services Grid */
 .services-section {
     max-width: 1100px;
     margin: 0 auto;
@@ -396,7 +390,6 @@ nav {
     border-color: transparent;
 }
 
-/* Tech & Estimator */
 .tech-section, .estimator-section {
     max-width: 1100px;
     margin: 0 auto 100px;
@@ -484,7 +477,6 @@ nav {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* FAQ */
 .faq-section {
     max-width: 800px;
     margin: 0 auto 120px;
@@ -538,7 +530,6 @@ nav {
     padding: 0 22px 18px;
 }
 
-/* ESTILOS DE MODALES */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -643,7 +634,6 @@ nav {
     margin: 15px 0;
 }
 
-/* Botón Flotante */
 .floating-ticket-btn {
     position: fixed;
     bottom: 25px;
