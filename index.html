@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synthetix Labs | Studio & Ticket System</title>
-    
+    <title>Synthetix Labs | Studio & Hosting</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -12,148 +11,133 @@
 </head>
 <body>
 
-    <nav>
+    <!-- Barra Superior -->
+    <nav class="ap-navbar">
         <div class="logo">
-            <span>⚡ SYNTHETIX</span> LABS
+            <span class="logo-icon">⚡</span> <span>SYNTHETIX</span>
         </div>
-        <div class="nav-actions">
-            <button type="button" class="nav-btn-secondary" onclick="window.location.href='dashboard.html'"><span>👤</span> Iniciar Sesión / Panel</button>
-            <button type="button" class="nav-btn" onclick="openTicketModal('General')">Cotizar Ahora</button>
+        <div class="nav-right-actions">
+            <button class="lang-btn">EN</button>
+            <button class="menu-toggle-btn" onclick="toggleMenu()">☰</button>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="status-badge">
-            <span class="status-dot"></span> Sistema de Tickets Web Activo
+    <!-- Menú Desplegable Lateral (Estilo Aplaxy) -->
+    <div id="side-menu" class="side-menu hidden">
+        <div class="side-menu-header">
+            <span class="logo-icon">⚡</span> <span>SYNTHETIX</span>
+            <button class="close-menu-btn" onclick="toggleMenu()">✕</button>
         </div>
-        <div class="badge" style="margin-top: 10px; display:inline-block;">
-            <span>🛠️</span> Studio de Desarrollo & Configuración
+        
+        <div class="side-menu-section-title">SERVICES</div>
+        <ul class="side-menu-links">
+            <li><a href="#servicios" onclick="toggleMenu()">Networks Plans</a></li>
+            <li><a href="#servicios" onclick="toggleMenu()">Game Servers</a></li>
+            <li><a href="#servicios" onclick="toggleMenu()">Bot Development</a></li>
+            <li><a href="#servicios" onclick="toggleMenu()">Modpacks & Setup</a></li>
+            <li><a href="#" onclick="toggleMenu()">Guides & FAQ</a></li>
+            <li><a href="#" onclick="toggleMenu()">ToS</a></li>
+        </ul>
+
+        <div class="side-menu-section-title">CLIENT ACCESS</div>
+        <div class="side-menu-access">
+            <a href="dashboard.html" class="access-box">Client Area ↗</a>
+            <a href="dashboard.html" class="access-box">Game Panel ↗</a>
+            <a href="dashboard.html" class="access-box">Staff Portal ↗</a>
+        </div>
+    </div>
+
+    <!-- Sección Hero Principal -->
+    <header class="hero-ap">
+        <div class="version-badge">
+            <span class="dot-pulse"></span> Synthetix Version 2.0 Launched
         </div>
         <h1>
-            Infraestructura y Desarrollo<br>
-            <span class="gradient-text">a la medida de tu Network.</span>
+            Your Adventure<br>
+            <span class="gradient-text">Starts Here!</span>
         </h1>
         <p>
-            Cotiza directamente desde la tienda sin salir del navegador. Bots de Discord, servidores Minecraft (Velocity/Paper), Skripts y modpacks optimizados.
+            Experience gaming and infrastructure at its finest with our high-performance systems. Engineered for speed & stability.
         </p>
-        <div class="hero-actions" style="margin-top: 25px;">
-            <button type="button" class="btn-main" onclick="openTicketModal('General')">Iniciar Cotización Web</button>
-            <button type="button" class="btn-outline" onclick="scrollToSection('servicios')">Explorar Servicios</button>
+
+        <div class="hero-buttons">
+            <button class="btn-primary-ap" onclick="openModal()">Get Started</button>
+            <button class="btn-secondary-ap" onclick="scrollToSection('servicios')">View Pricing ›</button>
         </div>
     </header>
 
-    <section class="stats-strip">
-        <div class="stat-card">
-            <h3>Directo</h3>
-            <p>Cotización In-Page Web</p>
-        </div>
-        <div class="stat-card">
-            <h3>24/7</h3>
-            <p>Atención por Tickets</p>
-        </div>
-        <div class="stat-card">
-            <h3>Custom</h3>
-            <p>Proyectos a la Medida</p>
-        </div>
-    </section>
-
-    <section class="services-section" id="servicios">
-        <div class="section-header">
+    <!-- Sección de Servicios / Vista Previa -->
+    <section class="services-ap" id="servicios">
+        <div class="section-title">
             <h2>Nuestros Servicios</h2>
-            <p>Selecciona un servicio para abrir una cotización instantánea en la tienda.</p>
+            <p>Infraestructura optimizada para tu network y proyectos.</p>
         </div>
 
-        <div class="grid">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-icon">🤖</div>
-                    <h3>Bots de Discord Custom</h3>
-                    <p>Desarrollo de bots a medida con Node.js / Python. Integración con bases de datos, verificación nLogin/Premium, tickets y economía.</p>
-                </div>
-                <button type="button" class="card-btn" onclick="openTicketModal('Bot de Discord Custom')">Cotizar Bot →</button>
+        <div class="services-grid-ap">
+            <div class="card-ap" onclick="openTicketModal('Bot de Discord Custom')">
+                <div class="card-icon-ap">🤖</div>
+                <h3>Discord Bots</h3>
+                <p>Automatización avanzada, registros, economía y pasarelas de pago sincronizadas.</p>
             </div>
-
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-icon">🎮</div>
-                    <h3>Setup de Servidores MC</h3>
-                    <p>Configuración completa de modalidades (BoxPVP, Survival, Lobby). Ruteo de Proxies Velocity, LuckPerms y Tebex.</p>
-                </div>
-                <button type="button" class="card-btn" onclick="openTicketModal('Setup Servidor Minecraft')">Cotizar Servidor →</button>
+            <div class="card-ap" onclick="openTicketModal('Setup Servidor Minecraft')">
+                <div class="card-icon-ap">🎮</div>
+                <h3>Minecraft Setups</h3>
+                <p>Velocity proxies, backends optimizados con Paper y tiendas Tebex configuradas.</p>
             </div>
-
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-icon">⚡</div>
-                    <h3>Skripts & Eventos Custom</h3>
-                    <p>Programación de mecánicas exclusivas con Skript y ConditionalEvents. Soluciones livianas y de bajo consumo.</p>
-                </div>
-                <button type="button" class="card-btn" onclick="openTicketModal('Skript / Evento Custom')">Solicitar Skript →</button>
-            </div>
-
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-icon">🚀</div>
-                    <h3>Modpacks & Optimización</h3>
-                    <p>Creación de modpacks optimizados para clientes y servidores en Fabric/Forge. Reducción de lag y mejora de FPS.</p>
-                </div>
-                <button type="button" class="card-btn" onclick="openTicketModal('Modpack & Optimización')">Pedir Optimización →</button>
+            <div class="card-ap" onclick="openTicketModal('Modpack & Optimización')">
+                <div class="card-icon-ap">⚡</div>
+                <h3>Modpacks Fabric</h3>
+                <p>Paquetes a medida hiper-optimizados para clientes móviles y PC sin lag.</p>
             </div>
         </div>
     </section>
 
-    <section class="estimator-section">
-        <div class="estimator-box" style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 24px; padding: 35px; max-width: 600px; margin: 40px auto; text-align: center;">
-            <h2>Calculadora de Presupuesto Aprox.</h2>
-            <p style="color: var(--text-muted); margin-top: 10px;">Selecciona los servicios para obtener una estimación inicial:</p>
-            
-            <div class="estimator-options" style="text-align: left; margin: 20px 0; display: flex; flex-direction: column; gap: 10px;">
-                <label><input type="checkbox" value="15" class="est-check" onchange="calculateTotal()"> Bot de Discord Custom (~$15)</label>
-                <label><input type="checkbox" value="25" class="est-check" onchange="calculateTotal()"> Setup Servidor / Modalidad (~$25)</label>
-                <label><input type="checkbox" value="10" class="est-check" onchange="calculateTotal()"> Skript Custom / Eventos (~$10)</label>
-                <label><input type="checkbox" value="12" class="est-check" onchange="calculateTotal()"> Modpack Optimizado (~$12)</label>
-            </div>
-
-            <div class="estimator-result" style="font-size: 1.2rem; font-weight: 700; margin-top: 15px;">
-                Total Estimado: <span id="total-price" style="color: var(--accent-lilac);">$0.00</span>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 Synthetix Labs. Todos los derechos reservados.</p>
-    </footer>
-
-    <!-- MODAL DE COTIZACIÓN -->
+    <!-- MODAL DE COTIZACIÓN RÁPIDA -->
     <div id="modal-ticket" class="modal-overlay hidden">
         <div class="modal-card">
-            <button type="button" class="modal-close" onclick="closeModal('modal-ticket')">&times;</button>
-            <div class="modal-header">
-                <h2>⚡ Abrir Cotización In-Page</h2>
-            </div>
-            <form id="ticket-form" onsubmit="submitTicket(event)">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2>⚡ Cotización In-Page</h2>
+            <form onsubmit="sendTicket(event)">
                 <div class="form-group">
-                    <label>Tu Usuario de Discord *</label>
-                    <input type="text" id="discord-user" placeholder="Ej: @aledevv" required>
+                    <label>Usuario de Discord</label>
+                    <input type="text" id="disc-user" placeholder="Ej: @aledevv" required>
                 </div>
                 <div class="form-group">
-                    <label>Tipo de Servicio *</label>
-                    <select id="service-type" required>
-                        <option value="Bot de Discord Custom">Bot de Discord Custom</option>
-                        <option value="Setup Servidor Minecraft">Setup Servidor Minecraft</option>
-                        <option value="Skript / Evento Custom">Skript / Evento Custom</option>
-                        <option value="Modpack & Optimización">Modpack & Optimización</option>
+                    <label>Servicio Interesado</label>
+                    <select id="serv-select">
+                        <option>Bot de Discord Custom</option>
+                        <option>Setup Servidor Minecraft</option>
+                        <option>Modpack & Optimización</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Detalles del Proyecto *</label>
-                    <textarea id="project-details" rows="4" placeholder="Describe brevemente qué necesitas..." required></textarea>
-                </div>
-                <button type="submit" class="btn-main full-width">Enviar Cotización Ahora</button>
+                <button type="submit" class="btn-primary-ap full">Enviar Solicitud</button>
             </form>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            menu.classList.toggle('hidden');
+        }
+        function openModal() {
+            document.getElementById('modal-ticket').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('modal-ticket').classList.add('hidden');
+        }
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+        function openTicketModal(service) {
+            openModal();
+            document.getElementById('serv-select').value = service;
+        }
+        function sendTicket(e) {
+            e.preventDefault();
+            alert('¡Solicitud registrada correctamente!');
+            closeModal();
+        }
+    </script>
 </body>
 </html>
