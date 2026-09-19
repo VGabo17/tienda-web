@@ -3,119 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aledevv Store - Nitro & MC Premium</title>
+    <title>Aledevv Store - Productos Digitales</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #121212; 
-            color: #ffffff; 
-            margin: 0; 
-            padding: 0; 
+        :root {
+            --bg-dark: #0a0d14;
+            --bg-card: #151923;
+            --bg-nav: #0d1119;
+            --cyan-accent: #33d6ff;
+            --cyan-hover: #2bb8de;
+            --text-main: #ffffff;
+            --text-muted: #8b949e;
         }
-        header { 
-            background-color: #5865F2; /* Color de Discord */
-            padding: 30px 20px; 
-            text-align: center; 
-            border-bottom: 4px solid #4752c4;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            /* Patrón de red sutil de fondo */
+            background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, transparent 50%);
         }
-        header h1 { 
-            margin: 0; 
-            font-size: 2.8em; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
+
+        /* Navegación */
+        nav {
+            background-color: rgba(13, 17, 25, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2937;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        header p {
-            font-size: 1.2em;
-            color: #e0e0e0;
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .container { 
-            max-width: 1000px; 
-            margin: 50px auto; 
-            padding: 0 20px; 
+
+        .logo span {
+            color: var(--cyan-accent);
         }
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .card { 
-            background-color: #1e1e24; 
-            border-radius: 12px; 
-            padding: 25px; 
-            text-align: center; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+
+        .status-pill {
+            display: inline-block;
+            background: rgba(51, 214, 255, 0.1);
+            border: 1px solid rgba(51, 214, 255, 0.3);
+            color: var(--cyan-accent);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 25px;
         }
-        .card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            letter-spacing: -1px;
         }
-        .card h2 { 
-            color: #ffffff; 
-            margin-top: 0; 
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8a2be2, var(--cyan-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .desc {
-            color: #a0a0a0;
-            font-size: 0.9em;
-            margin-bottom: 15px;
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 650px;
+            margin: 0 auto 35px auto;
         }
-        .price { 
-            font-size: 1.8em; 
-            font-weight: bold; 
-            margin: 15px 0; 
-            color: #43b581; /* Verde Discord */
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
         }
-        .btn { 
-            display: inline-block; 
-            background-color: #5865F2; 
-            color: white; 
-            text-decoration: none; 
-            padding: 12px 25px; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            transition: background 0.2s; 
-            width: 80%;
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn:hover { 
-            background-color: #4752c4; 
+
+        .btn-primary {
+            background-color: var(--cyan-accent);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--cyan-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #1f2937;
+            color: white;
+            border: 1px solid #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #374151;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .trust-badges span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Productos Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #232a3b;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(51, 214, 255, 0.5);
+        }
+
+        .card-img {
+            height: 140px;
+            background: linear-gradient(45deg, #1f2937, #111827);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+
+        .card-price {
+            color: var(--cyan-accent);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .card-old-price {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-right: 5px;
+        }
+
+        /* Sección de Seguridad Inferior */
+        .security-section {
+            background-color: var(--bg-card);
+            margin-top: 60px;
+            padding: 40px 20px;
+            border-top: 1px solid #232a3b;
+        }
+
+        .security-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .security-icon {
+            background-color: rgba(51, 214, 255, 0.1);
+            color: var(--cyan-accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .security-text h4 {
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+        }
+
+        .security-text p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Aledevv Store</h1>
-        <p>Tu tienda de confianza para Discord Nitro y Minecraft Premium</p>
-    </header>
 
-    <div class="container">
+    <nav>
+        <div class="logo"><span>⚡</span> ALEDEVV STORE</div>
+    </nav>
+
+    <div class="hero">
+        <div class="status-pill">⚡ Cuentas y Nitro disponibles ahora</div>
+        <h1>
+            Cuentas de Minecraft y productos digitales.<br>
+            <span class="gradient-text">Lo pides hoy, lo tienes hoy.</span>
+        </h1>
+        <p>Compra directo en la web o abriendo un ticket. Pagas en tu moneda local usando Pago Móvil, Zinli, Airtm o criptomonedas, de forma rápida y segura.</p>
+        
+        <div class="hero-buttons">
+            <a href="#productos" class="btn btn-primary">Ver productos →</a>
+            <a href="TU_LINK_DE_DISCORD_AQUI" target="_blank" class="btn btn-secondary">👾 Unirse al Discord</a>
+        </div>
+
+        <div class="trust-badges">
+            <span>⭐ +500 referencias reales</span>
+            <span>⚡ Entrega el mismo día</span>
+            <span>🛡️ Pago verificado</span>
+        </div>
+    </div>
+
+    <div class="container" id="productos">
         <div class="grid">
             <!-- Producto 1 -->
             <div class="card">
-                <h2>Discord Nitro (Boost)</h2>
-                <p class="desc">1 Mes - Incluye 2 mejoras de servidor y ventajas globales.</p>
-                <div class="price">$9.99</div>
-                <!-- Cambia el # por tu enlace de Discord o WhatsApp -->
-                <a href="#" class="btn" target="_blank">Comprar</a>
+                <div class="card-img">[ Imagen MC Premium ]</div>
+                <div class="card-content">
+                    <h3 class="card-title">Minecraft Premium (Java + Bedrock)</h3>
+                    <div class="card-price"><span class="card-old-price">$30.00</span> $25.00</div>
+                </div>
             </div>
 
             <!-- Producto 2 -->
             <div class="card">
-                <h2>Discord Nitro Basic</h2>
-                <p class="desc">1 Mes - Emojis personalizados en cualquier lugar.</p>
-                <div class="price">$2.99</div>
-                <!-- Cambia el # por tu enlace de Discord o WhatsApp -->
-                <a href="#" class="btn" target="_blank">Comprar</a>
+                <div class="card-img">[ Imagen Discord Nitro ]</div>
+                <div class="card-content">
+                    <h3 class="card-title">Discord Nitro (Boost 1 Mes)</h3>
+                    <div class="card-price"><span class="card-old-price">$12.00</span> $9.99</div>
+                </div>
             </div>
 
             <!-- Producto 3 -->
             <div class="card">
-                <h2>Minecraft Premium</h2>
-                <p class="desc">Java & Bedrock Edition - Acceso total, cuenta original.</p>
-                <div class="price">$25.00</div>
-                <!-- Cambia el # por tu enlace de Discord o WhatsApp -->
-                <a href="#" class="btn" target="_blank">Comprar</a>
+                <div class="card-img">[ Imagen Nitro Basic ]</div>
+                <div class="card-content">
+                    <h3 class="card-title">Discord Nitro Basic (1 Mes)</h3>
+                    <div class="card-price"><span class="card-old-price">$4.00</span> $2.99</div>
+                </div>
+            </div>
+            
+            <!-- Producto 4 -->
+            <div class="card">
+                <div class="card-img">[ Rango NixerMC ]</div>
+                <div class="card-content">
+                    <h3 class="card-title">Rango VIP - NixerMC</h3>
+                    <div class="card-price">$5.00</div>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="security-section">
+        <div class="security-grid">
+            <div class="security-item">
+                <div class="security-icon">🔒</div>
+                <div class="security-text">
+                    <h4>Conexión segura</h4>
+                    <p>Tus datos viajan cifrados en todo momento.</p>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon">👤</div>
+                <div class="security-text">
+                    <h4>Nunca pedimos tu contraseña</h4>
+                    <p>Entregas gestionadas por métodos oficiales y seguros.</p>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon">📄</div>
+                <div class="security-text">
+                    <h4>Pago verificado</h4>
+                    <p>Revisamos cada comprobante manualmente para evitar fraudes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
