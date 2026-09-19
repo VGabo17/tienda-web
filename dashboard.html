@@ -1,28 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthetix Labs | Panel Seguro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos de respaldo por si acaso el CSS externo tarda en cargar */
+        body { background-color: #0b0f19; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .hidden { display: none !important; }
+        .auth-card, .dashboard-container { background: #131b2e; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .dashboard-container { max-width: 700px; text-align: left; }
+        .btn-discord { background: #5865F2; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
+        .btn-discord:hover { background: #4752C4; }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); }
+        .btn-danger-small { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
+        .user-profile-info { display: flex; align-items: center; gap: 12px; }
+        .avatar-placeholder { width: 45px; height: 45px; background: linear-gradient(135deg, #8b5cf6, #3b82f6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; }
+        .badge-role { background: rgba(139, 92, 246, 0.15); color: #a78bfa; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(139, 92, 246, 0.3); }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Login -->
+    <div id="login-view" class="auth-card">
+        <div style="font-size: 2.5rem; margin-bottom: 15px;">⚡</div>
+        <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 10px;">Synthetix Labs</h1>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Inicia sesión con tu cuenta oficial de Discord para acceder al panel.</p>
+        
+        <a href="https://discord.com/api/oauth2/authorize?client_id=1551008457937920012&response_type=token&redirect_uri=https%3A%2F%2Fstudio.nixermc.lol%2Fdashboard.html&scope=identify+email" class="btn-discord">
+            <span>🎮</span> Continuar con Discord
+        </a>
+        <br><br>
+        <button type="button" class="btn-outline" onclick="window.location.href='index.html'">← Volver a la Tienda</button>
+    </div>
+
+    <!-- Panel Interno -->
+    <div id="dashboard-view" class="dashboard-container hidden">
+        <div class="dashboard-header">
+            <div class="user-profile-info">
+                <div class="avatar-placeholder" id="user-initial">A</div>
+                <div>
+                    <h2 id="dashboard-username" style="font-family: 'Space Grotesk', sans-serif; margin: 0; font-size: 1.1rem;">@Usuario</h2>
+                    <span id="dashboard-role-badge" class="badge-role">Cliente</span>
+                </div>
+            </div>
+            <button type="button" class="btn-danger-small" onclick="logout()">Cerrar Sesión</button>
+        </div>
+
+        <div id="client-panel">
+            <h3 style="margin-bottom: 10px; font-family: 'Space Grotesk', sans-serif;">Tus Solicitudes Activas</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Aquí verás el estado de tus cotizaciones enviadas desde la tienda web.</p>
+        </div>
+
+        <div id="admin-panel" class="hidden">
+            <h3 style="margin-bottom: 15px; color: #a78bfa; font-family: 'Space Grotesk', sans-serif;">👑 Panel de Administración (Staff Control)</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Control general de tickets y solicitudes entrantes de la network.</p>
+            <table class="ticket-table" style="width:100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr style="color: #94a3b8; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem;">
+                        <th style="padding: 10px;">Ticket ID</th>
+                        <th style="padding: 10px;">Cliente</th>
+                        <th style="padding: 10px;">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem;">
+                        <td style="padding: 12px;"><strong>#TK-8492</strong></td>
+                        <td style="padding: 12px;">@ClienteDiscord</td>
+                        <td style="padding: 12px;"><span style="color: #10b981;">● Activo</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 25px; text-align: right;">
+            <button type="button" class="btn-outline" onclick="window.location.href='index.html'" style="width: auto;">Ir a la Tienda Principal</button>
+        </div>
+    </div>
+
     <script>
         // =====================================================================
         // LISTA DE IDs DE ADMINISTRADORES DE DISCORD
         // =====================================================================
         const ADMIN_DISCORD_IDS = [
-            "TU_ID_NUMERICO_AQUI",
-            "ID_DEL_SEGUNDO_ADMIN",
-            "ID_DEL_TERCER_ADMIN"
+            "TU_ID_NUMERICO_AQUI" // Reemplaza por tu ID real
         ]; 
 
-        window.onload = function() {
+        window.onload = async function() {
             const fragment = new URLSearchParams(window.location.hash.slice(1));
             const accessToken = fragment.get('access_token');
 
+            // Si Discord nos devolvió un token en la URL, lo consultamos de inmediato
             if (accessToken) {
-                fetch('https://discord.com/api/users/@me', {
-                    headers: { authorization: `Bearer ${accessToken}` }
-                })
-                .then(res => res.json())
-                .then(user => {
-                    localStorage.setItem('synth_logged', 'true');
-                    localStorage.setItem('synth_username', user.username);
-                    localStorage.setItem('synth_userid', user.id);
-                    window.location.href = window.location.pathname; 
-                });
+                try {
+                    const response = await fetch('https://discord.com/api/users/@me', {
+                        headers: { authorization: `Bearer ${accessToken}` }
+                    });
+                    const user = await response.json();
+                    
+                    if (user.id) {
+                        localStorage.setItem('synth_logged', 'true');
+                        localStorage.setItem('synth_username', user.username);
+                        localStorage.setItem('synth_userid', user.id);
+                        
+                        // Limpiamos el token de la barra de direcciones de forma segura sin recargar en blanco
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                } catch (e) {
+                    console.error("Error al autenticar con Discord:", e);
+                }
             }
 
             checkSession();
@@ -33,14 +125,13 @@
             const username = localStorage.getItem('synth_username');
             const userId = localStorage.getItem('synth_userid');
 
-            if (isLogged === 'true') {
+            if (isLogged === 'true' && username) {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('dashboard-view').classList.remove('hidden');
 
                 document.getElementById('dashboard-username').innerText = '@' + username;
                 document.getElementById('user-initial').innerText = username.charAt(0).toUpperCase();
 
-                // Validar si el ID del usuario actual está dentro del arreglo de administradores
                 if (ADMIN_DISCORD_IDS.includes(userId)) {
                     document.getElementById('dashboard-role-badge').innerText = 'Administrador / Staff';
                     document.getElementById('client-panel').classList.add('hidden');
@@ -50,6 +141,10 @@
                     document.getElementById('admin-panel').classList.add('hidden');
                     document.getElementById('client-panel').classList.remove('hidden');
                 }
+            } else {
+                // Si no hay sesión, aseguramos que se vea la tarjeta de login
+                document.getElementById('login-view').classList.remove('hidden');
+                document.getElementById('dashboard-view').classList.add('hidden');
             }
         }
 
@@ -58,3 +153,5 @@
             window.location.href = 'dashboard.html';
         }
     </script>
+</body>
+</html>
