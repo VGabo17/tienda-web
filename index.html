@@ -3,157 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synthetix Labs | Studio & Network Core</title>
+    <title>Synthetix Labs | Network & Development</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="synthetix-body">
+<body>
 
-    <!-- Barra de Navegación Única -->
-    <nav class="synth-nav">
-        <div class="synth-logo">
-            <span class="synth-glow-icon">⚡</span>
-            <span>SYNTHETIX <small>LABS</small></span>
+    <!-- Navbar Superior -->
+    <header class="ap-navbar">
+        <div class="logo">
+            <span>⚡</span> SYNTHETIX
         </div>
-        <div class="synth-nav-actions">
-            <button class="synth-badge-btn" onclick="window.location.href='dashboard.html'"><span>🔒</span> Portal Staff</button>
-            <button class="synth-menu-btn" onclick="toggleSynthMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Menú Desplegable Estilo Panel de Control -->
-    <div id="synth-side-drawer" class="synth-drawer hidden">
-        <div class="synth-drawer-header">
-            <div class="synth-logo"><span>⚡</span> SYNTHETIX MENU</div>
-            <button class="synth-close-btn" onclick="toggleSynthMenu()">✕</button>
-        </div>
-        
-        <div class="synth-drawer-category">NAVEGACIÓN PRINCIPAL</div>
-        <ul class="synth-drawer-links">
-            <li><a href="#servicios" onclick="toggleSynthMenu()">✦ Catálogo de Servicios</a></li>
-            <li><a href="#calculadora" onclick="toggleSynthMenu()">✦ Cotizador Dinámico</a></li>
-            <li><a href="dashboard.html">✦ Panel de Autenticación Discord</a></li>
-        </ul>
-
-        <div class="synth-drawer-category">ESTADO DE LA RED</div>
-        <div class="synth-status-box">
-            <div class="status-row"><span>NixerMC Proxy</span> <span class="dot-online"></span></div>
-            <div class="status-row"><span>Sistemas Web</span> <span class="dot-online"></span></div>
-            <div class="status-row"><span>Desarrollo Bots</span> <span class="dot-online"></span></div>
-        </div>
-    </div>
-
-    <!-- Hero Section Exclusivo -->
-    <header class="synth-hero">
-        <div class="synth-tagline">
-            <span class="pulse-ring"></span> Next-Gen Network Development & Infrastructure
-        </div>
-        <h1>
-            Construimos el futuro de tu <br>
-            <span class="synth-gradient">Servidor & Comunidad.</span>
-        </h1>
-        <p>
-            Soluciones de alto rendimiento en Java, infraestructura Paper/Velocity, bots de Discord personalizados y optimización extrema sin lag.
-        </p>
-
-        <div class="synth-hero-btns">
-            <button class="btn-synth-primary" onclick="openTicketModal('General')">Iniciar Proyecto 🚀</button>
-            <button class="btn-synth-secondary" onclick="scrollToSection('servicios')">Ver Servicios ⚡</button>
+        <div class="nav-right-actions">
+            <button class="lang-btn" onclick="window.location.href='dashboard.html'">🔒 Staff</button>
+            <button class="menu-toggle-btn" onclick="toggleSideMenu()">☰</button>
         </div>
     </header>
 
-    <!-- Grid de Servicios con Estilo Propio -->
-    <section class="synth-services" id="servicios">
-        <div class="synth-section-title">
-            <h2>Nuestros Pilares de Desarrollo</h2>
-            <p>Tecnologías escalables diseñadas a medida para exigencias reales.</p>
+    <!-- Menú Lateral Desplegable Profesional -->
+    <div id="sideMenu" class="side-menu hidden">
+        <div class="side-menu-header">
+            <span>⚡ SYNTHETIX LABS</span>
+            <button class="close-menu-btn" onclick="toggleSideMenu()">✕</button>
+        </div>
+        
+        <div class="side-menu-section-title">NAVEGACIÓN</div>
+        <ul class="side-menu-links">
+            <li><a href="#" onclick="toggleSideMenu()">Inicio</a></li>
+            <li><a href="#servicios" onclick="toggleSideMenu()">Servicios</a></li>
+            <li><a href="dashboard.html">Portal de Autenticación</a></li>
+        </ul>
+
+        <div class="side-menu-section-title">ACCESOS RÁPIDOS</div>
+        <div class="side-menu-access">
+            <a href="dashboard.html" class="access-box">
+                <span>🎮 Panel Discord OAuth2</span>
+                <span>→</span>
+            </a>
+            <a href="#servicios" class="access-box" onclick="toggleSideMenu()">
+                <span>🚀 Ver Catálogo</span>
+                <span>→</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-ap">
+        <div class="version-badge">
+            <div class="dot-pulse"></div> Synthetix Version 2.0 Launched
+        </div>
+        <h1>Starts Here!</h1>
+        <p>Experience gaming and infrastructure at its finest with our high-performance systems. Engineered for speed & stability.</p>
+        
+        <div class="hero-buttons">
+            <button class="btn-primary-ap" onclick="window.location.href='dashboard.html'">Get Started</button>
+            <button class="btn-secondary-ap" onclick="scrollToServices()">View Pricing ›</button>
+        </div>
+    </section>
+
+    <!-- Nuestros Servicios -->
+    <section class="services-ap" id="servicios">
+        <div class="section-title">
+            <h2>Nuestros Servicios</h2>
+            <p>Infraestructura optimizada para tu network y proyectos.</p>
         </div>
 
-        <div class="synth-grid">
-            <div class="synth-card" onclick="openTicketModal('Bot de Discord Custom')">
-                <div class="card-glow-bg"></div>
-                <div class="synth-icon">🤖</div>
-                <h3>Bots de Discord Custom</h3>
-                <p>Sistemas de verificación nLogin, registros automáticos, tickets y pasarelas de pago integradas con la web.</p>
-                <span class="synth-card-link">Cotizar módulo →</span>
+        <div class="services-grid-ap">
+            <div class="card-ap">
+                <div class="card-icon-ap">🤖</div>
+                <h3>Discord Bots</h3>
+                <p>Automatización avanzada, registros, economía y pasarelas de pago sincronizadas.</p>
             </div>
 
-            <div class="synth-card" onclick="openTicketModal('Setup Servidor Minecraft')">
-                <div class="card-glow-bg"></div>
-                <div class="synth-icon">🌐</div>
-                <h3>Setups de Networks MC</h3>
-                <p>Configuración avanzada de Velocity, backends Paper optimizados, árboles de permisos LuckPerms y tiendas Tebex.</p>
-                <span class="synth-card-link">Cotizar setup →</span>
+            <div class="card-ap">
+                <div class="card-icon-ap">🎮</div>
+                <h3>Minecraft Setups</h3>
+                <p>Velocity proxies, backends optimizados con Paper y tiendas Tebex configuradas.</p>
             </div>
 
-            <div class="synth-card" onclick="openTicketModal('Modpack & Optimización')">
-                <div class="card-glow-bg"></div>
-                <div class="synth-icon">⚙️</div>
-                <h3>Modpacks & Optimización</h3>
-                <p>Desarrollo y optimización de paquetes Fabric/Forge para alto tráfico de usuarios móviles y de PC sin caída de TPS.</p>
-                <span class="synth-card-link">Cotizar optimización →</span>
+            <div class="card-ap" style="grid-column: 1 / -1;">
+                <div class="card-icon-ap">⚡</div>
+                <h3>Modpacks Fabric</h3>
+                <p>Paquetes a medida hiper-optimizados para clientes móviles y PC sin lag.</p>
             </div>
         </div>
     </section>
 
-    <!-- Modal de Tickets Integrado -->
-    <div id="synth-modal" class="synth-modal-overlay hidden">
-        <div class="synth-modal-box">
-            <button class="synth-modal-close" onclick="closeModal()">✕</button>
-            <div class="synth-modal-header">
-                <h2>⚡ Synthetix Ticket System</h2>
-                <p>Envía los detalles iniciales y nos pondremos en contacto contigo.</p>
-            </div>
-            <form onsubmit="submitForm(event)">
-                <div class="synth-form-group">
-                    <label>Tu Usuario de Discord</label>
-                    <input type="text" placeholder="Ej: @aledevv" required>
-                </div>
-                <div class="synth-form-group">
-                    <label>Servicio Requerido</label>
-                    <select id="modal-service-select">
-                        <option>Bot de Discord Custom</option>
-                        <option>Setup Servidor Minecraft</option>
-                        <option>Modpack & Optimización</option>
-                    </select>
-                </div>
-                <div class="synth-form-group">
-                    <label>Breve Descripción</label>
-                    <textarea rows="3" placeholder="¿Qué necesitas exactamente?" required></textarea>
-                </div>
-                <button type="submit" class="btn-synth-primary full-width">Enviar Solicitud al Staff</button>
-            </form>
-        </div>
-    </div>
-
-    <footer class="synth-footer">
-        <p>&copy; 2026 Synthetix Labs. Diseñado por y para desarrolladores.</p>
+    <footer style="text-align: center; padding: 30px; color: #64748b; font-size: 0.8rem;">
+        &copy; 2026 Synthetix Labs. Todos los derechos reservados.
     </footer>
 
     <script>
-        function toggleSynthMenu() {
-            document.getElementById('synth-side-drawer').classList.toggle('hidden');
+        function toggleSideMenu() {
+            const menu = document.getElementById('sideMenu');
+            menu.classList.toggle('hidden');
         }
-        function openTicketModal(service) {
-            document.getElementById('synth-modal').classList.remove('hidden');
-            document.getElementById('modal-service-select').value = service;
-        }
-        function closeModal() {
-            document.getElementById('synth-modal').classList.add('hidden');
-        }
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-        function submitForm(e) {
-            e.preventDefault();
-            alert('¡Solicitud enviada con éxito! El staff la procesará en breve.');
-            closeModal();
+        function scrollToServices() {
+            document.getElementById('servicios').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
