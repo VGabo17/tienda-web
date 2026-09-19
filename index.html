@@ -3,321 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aledevv Store | Premium Digital Goods</title>
-    <!-- Importando una fuente moderna (Space Grotesk) para un toque único -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-main: #050505;
-            --glass-bg: rgba(25, 25, 30, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            /* Fondo con manchas de luz sutiles */
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
-            background-attachment: fixed;
-            min-height: 100vh;
-        }
-
-        /* Barra flotante estilo Apple/Premium */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1000px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 100px;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .brand {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 20px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            background: var(--text-primary);
-            color: var(--bg-main);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 160px 20px 80px;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            line-height: 1.1;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 300;
-        }
-
-        /* Tira de información */
-        .info-strip {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-bottom: 80px;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .info-item span {
-            color: #ec4899;
-        }
-
-        /* Grid de Productos - Estilo Galería */
-        .catalog {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 100px;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 40px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 4px;
-            background: var(--accent-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .tag {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .card-img-placeholder {
-            width: 100%;
-            height: 180px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            border: 1px dashed rgba(255,255,255,0.1);
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-        }
-
-        .card-price {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 15px 0;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .btn-buy {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            text-align: center;
-            background: var(--text-primary);
-            color: var(--bg-main);
-            text-decoration: none;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-buy:hover {
-            background: var(--accent-gradient);
-            color: white;
-            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-    </style>
+    <title>Synthetix Labs | Minecraft & Software Development Studio</title>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Hoja de estilos externa -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+    <!-- Navegación -->
     <nav>
-        <div class="brand">ALEDEVV</div>
-        <a href="ENLACE_A_TU_DISCORD" target="_blank" class="nav-link">Soporte Discord</a>
+        <div class="logo">
+            <span>⚡ SYNTHETIX</span> LABS
+        </div>
+        <a href="TU_ENLACE_DISCORD" target="_blank" class="nav-btn">Abrir Ticket</a>
     </nav>
 
-    <div class="hero">
-        <h1>El nexo para tus<br>productos digitales.</h1>
-        <p>Experiencia premium, entrega inmediata. Adquiere Nitro, Minecraft y más con Pago Móvil, Zinli, Binance o Airtm.</p>
-    </div>
+    <!-- Hero Header -->
+    <header class="hero">
+        <div class="badge">
+            <span>🛠️</span> Studio de Desarrollo & Configuración
+        </div>
+        <h1>
+            Infraestructura y Desarrollo<br>
+            <span class="gradient-text">a la medida de tu Network.</span>
+        </h1>
+        <p>
+            Creación de Bots de Discord, configuración avanzada de servidores Minecraft (Velocity/Paper), Skripts optimizados y soluciones backend de alto rendimiento.
+        </p>
+        <div class="hero-actions">
+            <a href="#servicios" class="btn-main">Explorar Servicios</a>
+            <a href="TU_ENLACE_DISCORD" target="_blank" class="btn-outline">Unirse al Discord</a>
+        </div>
+    </header>
 
-    <div class="info-strip">
-        <div class="info-item"><span>✦</span> Entrega Segura</div>
-        <div class="info-item"><span>✦</span> Sin pedir contraseñas</div>
-        <div class="info-item"><span>✦</span> +500 Clientes Satisfechos</div>
-    </div>
+    <!-- Estadísticas -->
+    <section class="stats-strip">
+        <div class="stat-card">
+            <h3>+100%</h3>
+            <p>Optimización y Rendimiento</p>
+        </div>
+        <div class="stat-card">
+            <h3>24/7</h3>
+            <p>Soporte Técnico Directo</p>
+        </div>
+        <div class="stat-card">
+            <h3>Custom</h3>
+            <p>Código y Scripts Únicos</p>
+        </div>
+    </section>
 
-    <div class="catalog">
-        <h2 class="section-title">Catálogo Exclusivo</h2>
+    <!-- Catálogo de Servicios -->
+    <section class="services-section" id="servicios">
+        <div class="section-header">
+            <h2>Nuestros Servicios</h2>
+            <p>Soluciones integrales para comunidades, creadores y administradores de servidores.</p>
+        </div>
+
         <div class="grid">
             
-            <!-- Tarjeta 1 -->
+            <!-- Servicio 1: Bots de Discord -->
             <div class="card">
-                <div class="tag">Más vendido</div>
-                <!-- Puedes cambiar el div de abajo por un <img src="ruta.png" class="card-img-placeholder"> -->
-                <div class="card-img-placeholder">Imagen Minecraft Premium</div>
-                <h3 class="card-title">Minecraft Premium</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Acceso total Java & Bedrock.</p>
-                <div class="card-price">$25.00</div>
-                <a href="ENLACE_A_TU_TICKET_O_WHATSAPP" class="btn-buy">Adquirir ahora</a>
+                <div class="card-content">
+                    <div class="card-icon">🤖</div>
+                    <h3>Bots de Discord Custom</h3>
+                    <p>Desarrollo de bots a medida con Node.js / Python. Integración con bases de datos, verificación nLogin/Premium, sistema de tickets y economía.</p>
+                    <div class="tag-list">
+                        <span>Discord.js</span>
+                        <span>Tickets</span>
+                        <span>Sincronización MC</span>
+                    </div>
+                </div>
+                <a href="TU_ENLACE_DISCORD" target="_blank" class="card-btn">Cotizar Bot →</a>
             </div>
 
-            <!-- Tarjeta 2 -->
+            <!-- Servicio 2: Configuración de Servidores MC -->
             <div class="card">
-                <div class="tag">Popular</div>
-                <div class="card-img-placeholder">Imagen Discord Nitro</div>
-                <h3 class="card-title">Discord Nitro</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">1 Mes + 2 Boosts de Servidor.</p>
-                <div class="card-price">$9.99</div>
-                <a href="ENLACE_A_TU_TICKET_O_WHATSAPP" class="btn-buy">Adquirir ahora</a>
+                <div class="card-content">
+                    <div class="card-icon">🎮</div>
+                    <h3>Setup de Servidores MC</h3>
+                    <p>Configuración completa de modalidades (BoxPVP, Survival, Lobby). Ruteo de Proxies Velocity, LuckPerms, DeluxeMenus y tiendas Tebex.</p>
+                    <div class="tag-list">
+                        <span>Velocity</span>
+                        <span>Paper</span>
+                        <span>LuckPerms</span>
+                        <span>Tebex</span>
+                    </div>
+                </div>
+                <a href="TU_ENLACE_DISCORD" target="_blank" class="card-btn">Cotizar Servidor →</a>
             </div>
 
-            <!-- Tarjeta 3 -->
+            <!-- Servicio 3: Skripts & Plugins -->
             <div class="card">
-                <div class="tag">Básico</div>
-                <div class="card-img-placeholder">Imagen Nitro Basic</div>
-                <h3 class="card-title">Nitro Basic</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Emojis globales por 1 Mes.</p>
-                <div class="card-price">$2.99</div>
-                <a href="ENLACE_A_TU_TICKET_O_WHATSAPP" class="btn-buy">Adquirir ahora</a>
+                <div class="card-content">
+                    <div class="card-icon">⚡</div>
+                    <h3>Skripts & Eventos Custom</h3>
+                    <p>Programación de mecánicas exclusivas con Skript y ConditionalEvents. Soluciones livianas que reducen el consumo de memoria en tu servidor.</p>
+                    <div class="tag-list">
+                        <span>Skript</span>
+                        <span>YAML</span>
+                        <span>Eventos</span>
+                    </div>
+                </div>
+                <a href="TU_ENLACE_DISCORD" target="_blank" class="card-btn">Solicitar Skript →</a>
             </div>
 
-            <!-- Tarjeta 4 -->
+            <!-- Servicio 4: Modpacks & Optimización -->
             <div class="card">
-                <div class="tag">Servidor</div>
-                <div class="card-img-placeholder">Logo NixerMC</div>
-                <h3 class="card-title">Rango VIP NixerMC</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Beneficios exclusivos en la network.</p>
-                <div class="card-price">$5.00</div>
-                <a href="ENLACE_A_TU_TICKET_O_WHATSAPP" class="btn-buy">Adquirir ahora</a>
+                <div class="card-content">
+                    <div class="card-icon">🚀</div>
+                    <h3>Modpacks & Rendimiento</h3>
+                    <p>Creación de modpacks optimizados para clientes y servidores en Fabric/Forge. Reducción de lag y mejora masiva de FPS para tus jugadores.</p>
+                    <div class="tag-list">
+                        <span>Fabric</span>
+                        <span>Forge</span>
+                        <span>FPS Boost</span>
+                    </div>
+                </div>
+                <a href="TU_ENLACE_DISCORD" target="_blank" class="card-btn">Pedir Optimización →</a>
             </div>
 
         </div>
-    </div>
+    </section>
 
+    <!-- Llamado a la acción -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2>¿Tienes una idea en mente?</h2>
+            <p>Abre un ticket en nuestro Discord oficial para discutir tu proyecto, recibir un presupuesto personalizado y comenzar el desarrollo.</p>
+            <a href="TU_ENLACE_DISCORD" target="_blank" class="btn-main">Iniciar Cotización en Discord</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Aledevv Store. Desarrollado por Synthetix Labs.</p>
+        <p>&copy; 2026 Synthetix Labs. Todos los derechos reservados.</p>
     </footer>
 
 </body>
