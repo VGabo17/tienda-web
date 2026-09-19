@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aledevv Store - Nitro & MC Premium</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #121212; 
+            color: #ffffff; 
+            margin: 0; 
+            padding: 0; 
+        }
+        header { 
+            background-color: #5865F2; /* Color de Discord */
+            padding: 30px 20px; 
+            text-align: center; 
+            border-bottom: 4px solid #4752c4;
+        }
+        header h1 { 
+            margin: 0; 
+            font-size: 2.8em; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        header p {
+            font-size: 1.2em;
+            color: #e0e0e0;
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 50px auto; 
+            padding: 0 20px; 
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+        }
+        .card { 
+            background-color: #1e1e24; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+        }
+        .card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+        }
+        .card h2 { 
+            color: #ffffff; 
+            margin-top: 0; 
+        }
+        .desc {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .price { 
+            font-size: 1.8em; 
+            font-weight: bold; 
+            margin: 15px 0; 
+            color: #43b581; /* Verde Discord */
+        }
+        .btn { 
+            display: inline-block; 
+            background-color: #5865F2; 
+            color: white; 
+            text-decoration: none; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            transition: background 0.2s; 
+            width: 80%;
+        }
+        .btn:hover { 
+            background-color: #4752c4; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Aledevv Store</h1>
+        <p>Tu tienda de confianza para Discord Nitro y Minecraft Premium</p>
+    </header>
 
+    <div class="container">
+        <div class="grid">
+            <!-- Producto 1 -->
+            <div class="card">
+                <h2>Discord Nitro (Boost)</h2>
+                <p class="desc">1 Mes - Incluye 2 mejoras de servidor y ventajas globales.</p>
+                <div class="price">$9.99</div>
+                <!-- Cambia el # por tu enlace de Discord o WhatsApp -->
+                <a href="#" class="btn" target="_blank">Comprar</a>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="card">
+                <h2>Discord Nitro Basic</h2>
+                <p class="desc">1 Mes - Emojis personalizados en cualquier lugar.</p>
+                <div class="price">$2.99</div>
+                <!-- Cambia el # por tu enlace de Discord o WhatsApp -->
+                <a href="#" class="btn" target="_blank">Comprar</a>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="card">
+                <h2>Minecraft Premium</h2>
+                <p class="desc">Java & Bedrock Edition - Acceso total, cuenta original.</p>
+                <div class="price">$25.00</div>
+                <!-- Cambia el # por tu enlace de Discord o WhatsApp -->
+                <a href="#" class="btn" target="_blank">Comprar</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
