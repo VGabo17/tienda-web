@@ -3,432 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synthetix Labs | Panel & Dashboard</title>
+    <title>Synthetix Labs | Studio & Ticket System</title>
     
-    <!-- Fuentes -->
+    <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Estilos CSS integrados con Azul y Lila -->
-    <style>
-        :root {
-            --bg-dark: #060913;
-            --bg-card: rgba(14, 20, 38, 0.85);
-            --border-card: rgba(168, 85, 247, 0.2);
-            --accent-blue: #3b82f6;
-            --accent-lilac: #c084fc;
-            --gradient-primary: linear-gradient(135deg, #2563eb 0%, #c084fc 100%);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.18) 0%, transparent 45%);
-            background-attachment: fixed;
-            padding: 20px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Contenedor Principal / Tarjeta de Login estilo Bot-Hosting */
-        .auth-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 440px;
-            padding: 40px 30px;
-            text-align: center;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-        }
-
-        .auth-logo {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        .auth-card h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .auth-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        /* Botones de OAuth (Discord / GitHub) */
-        .btn-discord {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            background-color: #5865F2;
-            color: #ffffff;
-            border: none;
-            padding: 14px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-            margin-bottom: 12px;
-        }
-
-        .btn-discord:hover {
-            background-color: #4752c4;
-            transform: translateY(-2px);
-        }
-
-        .btn-github {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            background-color: #24292e;
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            margin-bottom: 25px;
-        }
-
-        .btn-github:hover {
-            background-color: #1b1f23;
-            transform: translateY(-2px);
-        }
-
-        .divider {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        /* Estilos del Dashboard (Usuario / Admin) */
-        .dashboard-container {
-            width: 100%;
-            max-width: 900px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            border-radius: 24px;
-            padding: 35px;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-        }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-card);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .user-profile-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .avatar-placeholder {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .badge-role {
-            background: rgba(192, 132, 252, 0.15);
-            color: var(--accent-lilac);
-            border: 1px solid rgba(192, 132, 252, 0.3);
-            padding: 3px 10px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .ticket-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .ticket-table th, .ticket-table td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.9rem;
-        }
-
-        .ticket-table th {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .status-pill {
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            padding: 4px 10px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .btn-danger-small {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-
-        .btn-danger-small:hover {
-            background: rgba(239, 68, 68, 0.3);
-        }
-
-        .footer-links {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent-lilac);
-        }
-    </style>
+    <!-- Hoja de estilos externa -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- ================= VISTA 1: PANTALLA DE LOGIN OAUTH ================= -->
-    <div id="login-view" class="auth-card">
-        <div class="auth-logo">⚡</div>
-        <h1>Welcome back</h1>
-        <p>Inicia sesión con Discord para gestionar tus servicios, bots y tickets en Synthetix Labs.</p>
-
-        <!-- Botón simulando autenticación de Discord (como en tu imagen) -->
-        <button type="button" class="btn-discord" onclick="simulateOAuth('user')">
-            <span>🎮</span> Continuar con Discord
-        </button>
-
-        <div class="divider">O</div>
-
-        <!-- Botón Administrador (Acceso rápido para ti) -->
-        <button type="button" class="btn-github" onclick="simulateOAuth('admin')">
-            <span>👑</span> Iniciar como Administrador (Staff)
-        </button>
-
-        <div class="footer-links">
-            <a href="#">Docs</a>
-            <a href="https://discord.gg/5R7ZpadaDA" target="_blank">Support</a>
-            <a href="#">Pricing</a>
+    <!-- Navegación -->
+    <nav>
+        <div class="logo">
+            <span>⚡ SYNTHETIX</span> LABS
         </div>
-    </div>
+        <div class="nav-actions">
+            <button type="button" class="nav-btn-secondary" onclick="openLoginModal()"><span>👤</span> Iniciar Sesión / Ticket</button>
+            <button type="button" class="nav-btn" onclick="openTicketModal('General')">Cotizar Ahora</button>
+        </div>
+    </nav>
 
-    <!-- ================= VISTA 2: DASHBOARD (USUARIO / ADMIN) ================= -->
-    <div id="dashboard-view" class="dashboard-container hidden">
-        <div class="dashboard-header">
-            <div class="user-profile-info">
-                <div class="avatar-placeholder" id="user-initial">A</div>
-                <div>
-                    <h2 id="dashboard-username">@Aledevv</h2>
-                    <span id="dashboard-role-badge" class="badge-role">Cliente</span>
+    <!-- Hero Header -->
+    <header class="hero">
+        <div class="status-badge">
+            <span class="status-dot"></span> Sistema de Tickets Web Activo
+        </div>
+        <div class="badge">
+            <span>🛠️</span> Studio de Desarrollo & Configuración
+        </div>
+        <h1>
+            Infraestructura y Desarrollo<br>
+            <span class="gradient-text">a la medida de tu Network.</span>
+        </h1>
+        <p>
+            Cotiza directamente desde la tienda sin salir del navegador. Bots de Discord, servidores Minecraft (Velocity/Paper), Skripts y modpacks optimizados.
+        </p>
+        <div class="hero-actions">
+            <button type="button" class="btn-main" onclick="openTicketModal('General')">Iniciar Cotización Web</button>
+            <button type="button" class="btn-outline" onclick="scrollToSection('servicios')">Explorar Servicios</button>
+        </div>
+    </header>
+
+    <!-- Estado de Usuario Logueado -->
+    <section id="user-session-bar" class="user-session-bar hidden">
+        <div class="session-info">
+            <span class="user-avatar">👤</span>
+            <div>
+                <p>Sesión activa: <strong id="logged-username">@usuario</strong></p>
+                <small>Ticket ID: <span id="logged-ticket-id">#0000</span></small>
+            </div>
+        </div>
+        <button type="button" class="btn-small-danger" onclick="logoutUser()">Cerrar Sesión</button>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="stats-strip">
+        <div class="stat-card">
+            <h3>Directo</h3>
+            <p>Cotización In-Page Web</p>
+        </div>
+        <div class="stat-card">
+            <h3>24/7</h3>
+            <p>Atención por Tickets</p>
+        </div>
+        <div class="stat-card">
+            <h3>Custom</h3>
+            <p>Proyectos a la Medida</p>
+        </div>
+    </section>
+
+    <!-- Catálogo de Servicios -->
+    <section class="services-section" id="servicios">
+        <div class="section-header">
+            <h2>Nuestros Servicios</h2>
+            <p>Selecciona un servicio para abrir una cotización instantánea en la tienda.</p>
+        </div>
+
+        <div class="grid">
+            
+            <!-- Servicio 1: Bots de Discord -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-icon">🤖</div>
+                    <h3>Bots de Discord Custom</h3>
+                    <p>Desarrollo de bots a medida con Node.js / Python. Integración con bases de datos, verificación nLogin/Premium, tickets y economía.</p>
+                    <div class="tag-list">
+                        <span>Discord.js</span>
+                        <span>Sincronización MC</span>
+                    </div>
+                </div>
+                <button type="button" class="card-btn" onclick="openTicketModal('Bot de Discord Custom')">Cotizar Bot →</button>
+            </div>
+
+            <!-- Servicio 2: Configuración de Servidores MC -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-icon">🎮</div>
+                    <h3>Setup de Servidores MC</h3>
+                    <p>Configuración completa de modalidades (BoxPVP, Survival, Lobby). Ruteo de Proxies Velocity, LuckPerms y Tebex.</p>
+                    <div class="tag-list">
+                        <span>Velocity</span>
+                        <span>Paper</span>
+                        <span>Tebex</span>
+                    </div>
+                </div>
+                <button type="button" class="card-btn" onclick="openTicketModal('Setup Servidor Minecraft')">Cotizar Servidor →</button>
+            </div>
+
+            <!-- Servicio 3: Skripts & Plugins -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-icon">⚡</div>
+                    <h3>Skripts & Eventos Custom</h3>
+                    <p>Programación de mecánicas exclusivas con Skript y ConditionalEvents. Soluciones livianas y de bajo consumo.</p>
+                    <div class="tag-list">
+                        <span>Skript</span>
+                        <span>YAML</span>
+                    </div>
+                </div>
+                <button type="button" class="card-btn" onclick="openTicketModal('Skript / Evento Custom')">Solicitar Skript →</button>
+            </div>
+
+            <!-- Servicio 4: Modpacks & Optimización -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-icon">🚀</div>
+                    <h3>Modpacks & Rendimiento</h3>
+                    <p>Creación de modpacks optimizados para clientes y servidores en Fabric/Forge. Reducción de lag y mejora de FPS.</p>
+                    <div class="tag-list">
+                        <span>Fabric</span>
+                        <span>FPS Boost</span>
+                    </div>
+                </div>
+                <button type="button" class="card-btn" onclick="openTicketModal('Modpack & Optimización')">Pedir Optimización →</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Stack Tecnológico -->
+    <section class="tech-section">
+        <div class="section-header">
+            <h2>Tecnologías & Herramientas</h2>
+            <p>Infraestructura probada para máximo rendimiento.</p>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-card"><span>☕</span> Java / Gradle</div>
+            <div class="tech-card"><span>🚀</span> Velocity Proxy</div>
+            <div class="tech-card"><span>📄</span> Paper / Spigot</div>
+            <div class="tech-card"><span>🤖</span> Discord.js</div>
+            <div class="tech-card"><span>🧩</span> Fabric / Forge</div>
+            <div class="tech-card"><span>⚡</span> Skript & YAML</div>
+            <div class="tech-card"><span>🛒</span> Tebex Headless</div>
+            <div class="tech-card"><span>🗄️</span> MySQL / SQLite</div>
+        </div>
+    </section>
+
+    <!-- Estimador de Presupuesto -->
+    <section class="estimator-section">
+        <div class="estimator-box">
+            <h2>Calculadora de Presupuesto Aprox.</h2>
+            <p>Selecciona los servicios para obtener una estimación inicial:</p>
+            
+            <div class="estimator-options">
+                <label class="est-option">
+                    <input type="checkbox" value="15" class="est-check"> Bot de Discord Custom (~$15)
+                </label>
+                <label class="est-option">
+                    <input type="checkbox" value="25" class="est-check"> Setup Servidor / Modalidad (~$25)
+                </label>
+                <label class="est-option">
+                    <input type="checkbox" value="10" class="est-check"> Skript Custom / Eventos (~$10)
+                </label>
+                <label class="est-option">
+                    <input type="checkbox" value="12" class="est-check"> Modpack Optimizado (~$12)
+                </label>
+            </div>
+
+            <div class="estimator-result">
+                <span>Total Estimado:</span>
+                <span id="total-price">$0.00</span>
+            </div>
+            <button type="button" class="btn-main" style="margin-top: 20px;" onclick="openTicketModal('Paquete Personalizado Calculado')">Cotizar este paquete aquí</button>
+        </div>
+    </section>
+
+    <!-- Preguntas Frecuentes -->
+    <section class="faq-section">
+        <div class="section-header">
+            <h2>Preguntas Frecuentes</h2>
+            <p>Todo lo que necesitas saber antes de enviar tu ticket.</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>¿Cómo recibo respuesta a mi cotización?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Al enviar tu cotización en la tienda, nuestro equipo recibirá los detalles en nuestro sistema. Nos pondremos en contacto contigo por Discord o podrás ver las actualizaciones al iniciar sesión con tu Ticket ID en la web.</p>
                 </div>
             </div>
-            <button type="button" class="btn-danger-small" onclick="logout()">Cerrar Sesión</button>
-        </div>
 
-        <!-- Contenido para Clientes / Usuarios -->
-        <div id="client-panel">
-            <h3 style="margin-bottom: 15px; font-family: 'Space Grotesk';">Tus Solicitudes Activas</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Aquí puedes ver el estado actual de tus cotizaciones y proyectos en curso.</p>
-            
-            <table class="ticket-table">
-                <thead>
-                    <tr>
-                        <th>Ticket ID</th>
-                        <th>Servicio</th>
-                        <th>Método de Pago</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="client-tickets-list">
-                    <!-- Se llena con JS -->
-                </tbody>
-            </table>
-        </div>
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>¿Qué métodos de pago aceptan?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Aceptamos Pago Móvil, Zinli, Airtm, Binance (USDT), PayPal y transferencias locales.</p>
+                </div>
+            </div>
 
-        <!-- Contenido exclusivo para Administradores -->
-        <div id="admin-panel" class="hidden">
-            <h3 style="margin-bottom: 15px; font-family: 'Space Grotesk'; color: var(--accent-lilac);">👑 Panel de Administración (Staff Control)</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Listado de todas las cotizaciones enviadas por los clientes en la tienda web.</p>
-            
-            <table class="ticket-table">
-                <thead>
-                    <tr>
-                        <th>ID Ticket</th>
-                        <th>Cliente (Discord)</th>
-                        <th>Servicio</th>
-                        <th>Presupuesto</th>
-                        <th>Detalles</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-tickets-list">
-                    <!-- Se llena con JS -->
-                </tbody>
-            </table>
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>¿Incluye garantía el trabajo?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Sí, incluimos de 7 a 14 días de soporte post-entrega para correcciones y ajustes sin costo adicional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Synthetix Labs. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- ==================== MODALES INTERACTIVOS ==================== -->
+
+    <!-- MODAL 1: Formulario de Cotización In-Page -->
+    <div id="modal-ticket" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button type="button" class="modal-close" onclick="closeModal('modal-ticket')">&times;</button>
+            <div class="modal-header">
+                <h2>⚡ Abrir Cotización In-Page</h2>
+                <p>Completa el formulario para enviar tu solicitud directamente al equipo.</p>
+            </div>
+            <form id="ticket-form" onsubmit="submitTicket(event)">
+                <div class="form-group">
+                    <label>Tu Usuario de Discord *</label>
+                    <input type="text" id="discord-user" placeholder="Ej: @aledevv" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de Servicio *</label>
+                    <select id="service-type" required>
+                        <option value="Bot de Discord Custom">Bot de Discord Custom</option>
+                        <option value="Setup Servidor Minecraft">Setup Servidor Minecraft</option>
+                        <option value="Skript / Evento Custom">Skript / Evento Custom</option>
+                        <option value="Modpack & Optimización">Modpack & Optimización</option>
+                        <option value="Proyecto Completo / Otro">Proyecto Completo / Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Método de Pago Preferido</label>
+                    <select id="payment-method">
+                        <option value="Pago Móvil">Pago Móvil</option>
+                        <option value="Zinli">Zinli</option>
+                        <option value="Airtm">Airtm</option>
+                        <option value="Binance (USDT)">Binance (USDT)</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Presupuesto Aproximado ($ USD)</label>
+                    <input type="number" id="budget-input" placeholder="Ej: 25" min="5">
+                </div>
+
+                <div class="form-group">
+                    <label>Detalles del Proyecto / Especificaciones *</label>
+                    <textarea id="project-details" rows="4" placeholder="Describe brevemente qué necesitas que haga el bot, plugin o servidor..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-main full-width" id="btn-submit-ticket">Enviar Cotización Ahora</button>
+            </form>
         </div>
     </div>
 
-    <!-- ================= SCRIPT DE CONTROL DE SESIÓN ================= -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            checkSession();
-        });
+    <!-- MODAL 2: Iniciar Sesión / Consultar Ticket -->
+    <div id="modal-login" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button type="button" class="modal-close" onclick="closeModal('modal-login')">&times;</button>
+            <div class="modal-header">
+                <h2>👤 Iniciar Sesión de Ticket</h2>
+                <p>Ingresa con tu usuario de Discord o ID de Ticket para gestionar tus solicitudes.</p>
+            </div>
+            <form id="login-form" onsubmit="loginUser(event)">
+                <div class="form-group">
+                    <label>Usuario de Discord o Ticket ID</label>
+                    <input type="text" id="login-input" placeholder="Ej: @aledevv o #TK-8492" required>
+                </div>
+                <button type="submit" class="btn-main full-width">Ingresar a la Tienda</button>
+            </form>
+        </div>
+    </div>
 
-        // Simular inicio de sesión OAuth (Discord o Admin)
-        function simulateOAuth(role) {
-            const username = role === 'admin' ? 'Aledevv [Admin]' : '@ClienteDiscord';
-            
-            localStorage.setItem('synth_logged', 'true');
-            localStorage.setItem('synth_role', role);
-            localStorage.setItem('synth_username', username);
+    <!-- MODAL 3: Confirmación / Éxito -->
+    <div id="modal-success" class="modal-overlay hidden">
+        <div class="modal-card text-center">
+            <div class="success-icon">🎉</div>
+            <h2>¡Cotización Enviada!</h2>
+            <p>Tu solicitud ha sido registrada correctamente. Guardamos tu ID de Ticket:</p>
+            <div class="ticket-badge-result" id="generated-ticket-id">#TK-0000</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 15px;">
+                Nuestro equipo revisará los detalles y te contactará. ¡Puedes usar este Ticket ID para iniciar sesión en la web cuando quieras!
+            </p>
+            <button type="button" class="btn-main full-width" style="margin-top: 20px;" onclick="closeModal('modal-success')">Entendido</button>
+        </div>
+    </div>
 
-            checkSession();
-        }
+    <!-- Botón Flotante In-Page -->
+    <button type="button" class="floating-ticket-btn" onclick="openTicketModal('General')">
+        <span>⚡</span> Cotizar In-Page
+    </button>
 
-        // Verificar si hay sesión activa
-        function checkSession() {
-            const isLogged = localStorage.getItem('synth_logged');
-            const role = localStorage.getItem('synth_role');
-            const username = localStorage.getItem('synth_username') || '@Usuario';
-
-            const loginView = document.getElementById('login-view');
-            const dashboardView = document.getElementById('dashboard-view');
-            const clientPanel = document.getElementById('client-panel');
-            const adminPanel = document.getElementById('admin-panel');
-
-            if (isLogged === 'true') {
-                loginView.classList.add('hidden');
-                dashboardView.classList.remove('hidden');
-
-                document.getElementById('dashboard-username').innerText = username;
-                document.getElementById('user-initial').innerText = username.charAt(1).toUpperCase();
-
-                if (role === 'admin') {
-                    document.getElementById('dashboard-role-badge').innerText = 'Administrador / Staff';
-                    document.getElementById('dashboard-role-badge').style.borderColor = '#c084fc';
-                    clientPanel.classList.add('hidden');
-                    adminPanel.classList.remove('hidden');
-                    loadAdminTickets();
-                } else {
-                    document.getElementById('dashboard-role-badge').innerText = 'Cliente Verificado';
-                    adminPanel.classList.add('hidden');
-                    clientPanel.classList.remove('hidden');
-                    loadClientTickets(username);
-                }
-            } else {
-                dashboardView.classList.add('hidden');
-                loginView.classList.remove('hidden');
-            }
-        }
-
-        // Cargar tickets del cliente
-        function loadClientTickets(username) {
-            const tbody = document.getElementById('client-tickets-list');
-            // Simulamos un ticket guardado o el último creado
-            tbody.innerHTML = `
-                <tr>
-                    <td>#TK-8492</td>
-                    <td>Bot de Discord Custom</td>
-                    <td>Zinli / Binance</td>
-                    <td><span class="status-pill">En Revisión</span></td>
-                </tr>
-            `;
-        }
-
-        // Cargar todos los tickets para el Admin
-        function loadAdminTickets() {
-            const tbody = document.getElementById('admin-tickets-list');
-            tbody.innerHTML = `
-                <tr>
-                    <td><strong>#TK-8492</strong></td>
-                    <td>@ClienteDiscord</td>
-                    <td>Bot de Discord Custom</td>
-                    <td>$15.00</td>
-                    <td style="color: var(--accent-lilac);">Requiere integración con nLogin</td>
-                </tr>
-                <tr>
-                    <td><strong>#TK-9102</strong></td>
-                    <td>@GaboMC</td>
-                    <td>Setup Servidor Minecraft</td>
-                    <td>$25.00</td>
-                    <td style="color: var(--accent-lilac);">Velocity + Survival BoxPVP</td>
-                </tr>
-            `;
-        }
-
-        // Cerrar sesión
-        function logout() {
-            localStorage.removeItem('synth_logged');
-            localStorage.removeItem('synth_role');
-            localStorage.removeItem('synth_username');
-            checkSession();
-        }
-    </script>
+    <!-- Archivo JS externo -->
+    <script src="script.js"></script>
 </body>
 </html>
