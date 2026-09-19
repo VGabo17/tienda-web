@@ -2,7 +2,7 @@
 // CONFIGURACIÓN DE WEBHOOK DE DISCORD (Opcional)
 // Pega aquí la URL del Webhook de tu canal en Discord si quieres recibir los pedidos
 // =========================================================================
-const DISCORD_WEBHOOK_URL = ""; 
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1550990751759081482/4OAfpBFZpfHz716J6FDvosSyXCO6lsk33f8-KeyljiuGKa-EWh2GGdnELWDERLVgsCm3"; 
 
 document.addEventListener("DOMContentLoaded", function() {
     checkActiveSession();
