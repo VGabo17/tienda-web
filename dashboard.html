@@ -1,0 +1,60 @@
+    <script>
+        // =====================================================================
+        // LISTA DE IDs DE ADMINISTRADORES DE DISCORD
+        // =====================================================================
+        const ADMIN_DISCORD_IDS = [
+            "TU_ID_NUMERICO_AQUI",
+            "ID_DEL_SEGUNDO_ADMIN",
+            "ID_DEL_TERCER_ADMIN"
+        ]; 
+
+        window.onload = function() {
+            const fragment = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = fragment.get('access_token');
+
+            if (accessToken) {
+                fetch('https://discord.com/api/users/@me', {
+                    headers: { authorization: `Bearer ${accessToken}` }
+                })
+                .then(res => res.json())
+                .then(user => {
+                    localStorage.setItem('synth_logged', 'true');
+                    localStorage.setItem('synth_username', user.username);
+                    localStorage.setItem('synth_userid', user.id);
+                    window.location.href = window.location.pathname; 
+                });
+            }
+
+            checkSession();
+        };
+
+        function checkSession() {
+            const isLogged = localStorage.getItem('synth_logged');
+            const username = localStorage.getItem('synth_username');
+            const userId = localStorage.getItem('synth_userid');
+
+            if (isLogged === 'true') {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('dashboard-view').classList.remove('hidden');
+
+                document.getElementById('dashboard-username').innerText = '@' + username;
+                document.getElementById('user-initial').innerText = username.charAt(0).toUpperCase();
+
+                // Validar si el ID del usuario actual está dentro del arreglo de administradores
+                if (ADMIN_DISCORD_IDS.includes(userId)) {
+                    document.getElementById('dashboard-role-badge').innerText = 'Administrador / Staff';
+                    document.getElementById('client-panel').classList.add('hidden');
+                    document.getElementById('admin-panel').classList.remove('hidden');
+                } else {
+                    document.getElementById('dashboard-role-badge').innerText = 'Cliente Verificado';
+                    document.getElementById('admin-panel').classList.add('hidden');
+                    document.getElementById('client-panel').classList.remove('hidden');
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'dashboard.html';
+        }
+    </script>
