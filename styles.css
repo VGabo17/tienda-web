@@ -1,20 +1,20 @@
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #030712;
+  font-family: 'Outfit', sans-serif;
+  background-color: #05070b;
   color: #f3f4f6;
 }
 
-.glass-panel {
-  background: rgba(11, 15, 25, 0.75);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(31, 41, 61, 0.6);
+/* Scrollbar personalizado y limpio */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-.neon-border {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+::-webkit-scrollbar-track {
+  background: #05070b;
 }
-
-.neon-border:hover {
-  border-color: #8b5cf6;
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+::-webkit-scrollbar-thumb {
+  background: #1f293d;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
 }
