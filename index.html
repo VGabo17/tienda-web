@@ -1,46 +1,30 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRSTORE | Digital & Gaming Vault</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            mrDark: '#030712',
-            mrCard: '#0b0f19',
-            mrBorder: '#1f293d',
-            mrPrimary: '#8b5cf6', // Violeta neón exclusivo
-            mrSecondary: '#06b6d4', // Cian eléctrico
-          }
-        }
-      }
-    }
-  </script>
   <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <!-- Estilos personalizados separados -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Estilos CSS Separados -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-mrPrimary selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
 
   <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-mrBorder">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+  <header class="sticky top-0 z-50 bg-[#090d16]/90 backdrop-blur-md border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
       
       <!-- Logo MRSTORE -->
       <a href="#" onclick="cambiarMenu('tienda')" class="flex items-center gap-3 group text-decoration-none">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-mrPrimary to-mrSecondary flex items-center justify-center text-white shadow-lg shadow-mrPrimary/30 group-hover:scale-105 transition">
-          <i class="fa-solid fa-gem text-lg"></i>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-bolt-lightning text-lg"></i>
         </div>
         <div class="flex flex-col">
-          <span class="text-xl font-black tracking-wider text-white">MR<span class="text-mrPrimary">STORE</span></span>
+          <span class="text-xl font-black tracking-wider text-white">MR<span class="text-purple-400">STORE</span></span>
           <span class="text-[9px] font-bold text-cyan-400 tracking-widest uppercase">Digital Vault</span>
         </div>
       </a>
@@ -49,21 +33,21 @@
       <div class="flex items-center gap-3">
         <!-- Selector de Moneda -->
         <div class="relative">
-          <button onclick="toggleMonedaMenu(event)" class="px-3.5 py-2 rounded-xl glass-panel text-xs font-bold text-gray-200 flex items-center gap-2 hover:border-mrPrimary transition cursor-pointer">
+          <button onclick="toggleMonedaMenu(event)" class="px-3.5 py-2 rounded-xl bg-[#111726] border border-gray-800 text-xs font-bold text-gray-200 flex items-center gap-2 hover:border-purple-500 transition cursor-pointer">
             <span id="flagLbl">🇻🇪</span> <span id="currLbl">USD</span> <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
           </button>
-          <div id="dropdownMoneda" class="hidden absolute right-0 mt-2 w-44 glass-panel rounded-2xl shadow-2xl py-2 z-50">
-            <button onclick="setMoneda('🇻🇪', 'USD', 1, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🇻🇪 Venezuela (USD)</button>
-            <button onclick="setMoneda('🇵🇪', 'PEN', 3.8, 'S/')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🇵🇪 Perú (PEN)</button>
-            <button onclick="setMoneda('🇨🇱', 'CLP', 950, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🇨🇱 Chile (CLP)</button>
-            <button onclick="setMoneda('🟢', 'USDT', 1, 'USDT')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🟢 USDT Cripto</button>
+          <div id="dropdownMoneda" class="hidden absolute right-0 mt-2 w-44 bg-[#0d121f] border border-gray-800 rounded-xl shadow-2xl py-2 z-50">
+            <button onclick="setMoneda('🇻🇪', 'USD', 1, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-[#161f33] flex items-center gap-2">🇻🇪 Venezuela (USD)</button>
+            <button onclick="setMoneda('🇵🇪', 'PEN', 3.8, 'S/')" class="w-full text-left px-4 py-2 text-xs hover:bg-[#161f33] flex items-center gap-2">🇵🇪 Perú (PEN)</button>
+            <button onclick="setMoneda('🇨🇱', 'CLP', 950, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-[#161f33] flex items-center gap-2">🇨🇱 Chile (CLP)</button>
+            <button onclick="setMoneda('🟢', 'USDT', 1, 'USDT')" class="w-full text-left px-4 py-2 text-xs hover:bg-[#161f33] flex items-center gap-2">🟢 USDT Cripto</button>
           </div>
         </div>
 
         <!-- Carrito -->
-        <button onclick="cambiarMenu('carrito')" class="relative w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-gray-300 hover:text-white hover:border-mrPrimary transition cursor-pointer">
+        <button onclick="cambiarMenu('carrito')" class="relative w-10 h-10 rounded-xl bg-[#111726] border border-gray-800 flex items-center justify-center text-gray-300 hover:text-white hover:border-purple-500 transition cursor-pointer">
           <i class="fa-solid fa-cart-shopping text-sm"></i>
-          <span id="cartCount" class="absolute -top-1 -right-1 w-5 h-5 bg-mrPrimary text-white rounded-full text-[10px] font-black flex items-center justify-center shadow">0</span>
+          <span id="cartCount" class="absolute -top-1 -right-1 w-5 h-5 bg-purple-600 text-white rounded-full text-[10px] font-black flex items-center justify-center shadow-md">0</span>
         </button>
       </div>
     </div>
@@ -76,169 +60,169 @@
     <div id="view-tienda" class="space-y-8">
       
       <!-- Hero Banner -->
-      <div class="relative overflow-hidden rounded-3xl glass-panel p-8 sm:p-12 border border-mrBorder flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="absolute -right-20 -top-20 w-80 h-80 bg-mrPrimary/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-mrSecondary/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d1221] to-[#090d16] p-6 sm:p-10 border border-gray-800 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div class="relative z-10 max-w-xl text-center md:text-left">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold mb-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold mb-4">
             <i class="fa-brands fa-discord"></i> Soporte Exclusivo vía Discord
-          </span>
-          <h1 class="text-4xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
-            SERVICIOS DIGITALES & <span class="text-transparent bg-clip-text bg-gradient-to-r from-mrPrimary to-mrSecondary">GAMING VAULT</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight text-white">
+            SERVICIOS DIGITALES & <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">GAMING VAULT</span>
           </h1>
-          <p class="text-gray-400 text-sm mb-6">
+          <p class="text-gray-400 text-sm mb-6 leading-relaxed">
             Adquiere tus productos digitales con garantía total. Atención profesional y apertura de tickets únicamente en nuestra comunidad.
           </p>
           <div class="flex flex-wrap gap-3 justify-center md:justify-start">
-            <a href="#productos" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-mrPrimary to-purple-600 text-white font-extrabold text-xs shadow-lg shadow-mrPrimary/30 hover:opacity-90 transition cursor-pointer">
+            <a href="#productos" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-extrabold text-xs shadow-lg shadow-purple-600/30 hover:opacity-90 transition cursor-pointer">
               Ver Catálogo <i class="fa-solid fa-arrow-down ml-1"></i>
             </a>
-            <a href="https://discord.gg/QN2Yew346d" target="_blank" class="px-6 py-3.5 rounded-2xl glass-panel text-white font-extrabold text-xs hover:border-mrPrimary transition cursor-pointer flex items-center gap-2">
+            <a href="https://discord.gg/QN2Yew346d" target="_blank" class="px-6 py-3.5 rounded-xl bg-[#131b2e] border border-gray-700 text-white font-extrabold text-xs hover:border-purple-500 transition cursor-pointer flex items-center gap-2">
               <i class="fa-brands fa-discord text-indigo-400"></i> Unirse al Discord
             </a>
           </div>
         </div>
 
-        <div class="relative z-10 w-full md:w-72 glass-panel p-6 rounded-2xl text-center border border-mrBorder">
-          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+        <div class="relative z-10 w-full md:w-80 bg-[#111726] p-6 rounded-2xl text-center border border-gray-800 shadow-xl">
+          <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
             <i class="fa-solid fa-headset"></i>
           </div>
-          <h3 class="font-extrabold text-sm mb-1">¿Dudas o Compras?</h3>
+          <h3 class="font-extrabold text-sm mb-1 text-white">¿Dudas o Compras?</h3>
           <p class="text-[11px] text-gray-400 mb-4">Únete al servidor para ser atendido por el staff de MRSTORE.</p>
-          <a href="https://discord.gg/QN2Yew346d" target="_blank" class="block w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition">
+          <a href="https://discord.gg/QN2Yew346d" target="_blank" class="block w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-indigo-600/30">
             Abrir Ticket <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
           </a>
         </div>
       </div>
 
       <!-- Menú de Filtros -->
-      <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-mrBorder" id="productos">
-        <button onclick="filtrarProductos('todos')" id="btn-cat-todos" class="px-4 py-2.5 rounded-xl bg-mrPrimary text-white font-bold text-xs shrink-0 transition cursor-pointer">🔥 Todos</button>
-        <button onclick="filtrarProductos('discord')" id="btn-cat-discord" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">💬 Discord Nitro & Boosts</button>
-        <button onclick="filtrarProductos('streaming')" id="btn-cat-streaming" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">🎵 Streaming</button>
-        <button onclick="filtrarProductos('minecraft')" id="btn-cat-minecraft" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">⛏️ Minecraft MFA</button>
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-gray-800" id="productos">
+        <button onclick="filtrarProductos('todos')" id="btn-cat-todos" class="px-4 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs shrink-0 transition cursor-pointer shadow-lg shadow-purple-600/20">🔥 Todos</button>
+        <button onclick="filtrarProductos('discord')" id="btn-cat-discord" class="px-4 py-2.5 rounded-xl bg-[#0d121f] border border-gray-800 text-gray-300 font-bold text-xs shrink-0 hover:border-purple-500 transition cursor-pointer">💬 Discord Nitro & Boosts</button>
+        <button onclick="filtrarProductos('streaming')" id="btn-cat-streaming" class="px-4 py-2.5 rounded-xl bg-[#0d121f] border border-gray-800 text-gray-300 font-bold text-xs shrink-0 hover:border-purple-500 transition cursor-pointer">🎵 Streaming</button>
+        <button onclick="filtrarProductos('minecraft')" id="btn-cat-minecraft" class="px-4 py-2.5 rounded-xl bg-[#0d121f] border border-gray-800 text-gray-300 font-bold text-xs shrink-0 hover:border-purple-500 transition cursor-pointer">⛏️ Minecraft MFA</button>
       </div>
 
-      <!-- GRID DE PRODUCTOS (Actualizado con Nitro Boost a $5) -->
+      <!-- GRID DE PRODUCTOS (Precios actualizados) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gridProductos">
         
         <!-- 1. Nitro Boost (1 Mes) - $5.00 -->
-        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
+        <div class="prod-card bg-[#0d121f] border border-gray-800 rounded-3xl p-6 flex flex-col justify-between hover:border-purple-500 transition-all duration-300 shadow-xl group" data-cat="discord">
           <div>
             <div class="flex justify-between items-center mb-4">
               <span class="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase border border-indigo-500/20">Discord</span>
-              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform">
               <i class="fa-brands fa-discord"></i>
             </div>
-            <h3 class="text-lg font-black mb-1">Nitro Boost (1 Mes)</h3>
-            <p class="text-xs text-gray-400 mb-6">Suscripción de 1 mes con 2 Bosteos para servidor incluidos y ventajas completas.</p>
+            <h3 class="text-lg font-black mb-1 text-white">Nitro Boost (1 Mes)</h3>
+            <p class="text-xs text-gray-400 mb-6 leading-relaxed">Suscripción de 1 mes con 2 Bosteos para servidor incluidos y ventajas completas.</p>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-800">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
               <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="5.00">5.00</span></span>
             </div>
-            <button onclick="agregarAlCarrito('Nitro Boost (1 Mes)', 5.00)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
-              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            <button onclick="agregarAlCarrito('Nitro Boost (1 Mes)', 5.00)" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
-        <!-- 2. Nitro Basic -->
-        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
+        <!-- 2. Nitro Basic - $1.80 -->
+        <div class="prod-card bg-[#0d121f] border border-gray-800 rounded-3xl p-6 flex flex-col justify-between hover:border-purple-500 transition-all duration-300 shadow-xl group" data-cat="discord">
           <div>
             <div class="flex justify-between items-center mb-4">
               <span class="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase border border-indigo-500/20">Discord</span>
-              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-rocket"></i>
             </div>
-            <h3 class="text-lg font-black mb-1">Nitro Basic (1 Mes)</h3>
-            <p class="text-xs text-gray-400 mb-6">Insignia exclusiva en tu perfil, emojis globales y mayor límite de subida de archivos.</p>
+            <h3 class="text-lg font-black mb-1 text-white">Nitro Basic (1 Mes)</h3>
+            <p class="text-xs text-gray-400 mb-6 leading-relaxed">Insignia exclusiva en tu perfil, emojis globales y mayor límite de subida de archivos.</p>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-800">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
               <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="1.80">1.80</span></span>
             </div>
-            <button onclick="agregarAlCarrito('Nitro Basic (1 Mes)', 1.80)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
-              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            <button onclick="agregarAlCarrito('Nitro Basic (1 Mes)', 1.80)" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
-        <!-- 3. Bosteo de Servidor -->
-        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
+        <!-- 3. Bosteos de Servidor - $6.50 -->
+        <div class="prod-card bg-[#0d121f] border border-gray-800 rounded-3xl p-6 flex flex-col justify-between hover:border-purple-500 transition-all duration-300 shadow-xl group" data-cat="discord">
           <div>
             <div class="flex justify-between items-center mb-4">
               <span class="px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase border border-purple-500/20">Servidores</span>
-              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 text-xl">
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-bolt-lightning"></i>
             </div>
-            <h3 class="text-lg font-black mb-1">Bosteos de Servidor (Pack Nivel 3)</h3>
-            <p class="text-xs text-gray-400 mb-6">14 Bosteos estables por 3 meses para llevar tu servidor de Discord al máximo nivel.</p>
+            <h3 class="text-lg font-black mb-1 text-white">Bosteos de Servidor (Pack Nivel 3)</h3>
+            <p class="text-xs text-gray-400 mb-6 leading-relaxed">14 Bosteos estables por 3 meses para llevar tu servidor de Discord al máximo nivel.</p>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-800">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
               <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="6.50">6.50</span></span>
             </div>
-            <button onclick="agregarAlCarrito('Bosteos de Servidor (Pack Nivel 3)', 6.50)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
-              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            <button onclick="agregarAlCarrito('Bosteos de Servidor (Pack Nivel 3)', 6.50)" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
-        <!-- 4. Spotify -->
-        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="streaming">
+        <!-- 4. Spotify - $2.50 -->
+        <div class="prod-card bg-[#0d121f] border border-gray-800 rounded-3xl p-6 flex flex-col justify-between hover:border-purple-500 transition-all duration-300 shadow-xl group" data-cat="streaming">
           <div>
             <div class="flex justify-between items-center mb-4">
               <span class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase border border-emerald-500/20">Streaming</span>
-              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 text-xl">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform">
               <i class="fa-brands fa-spotify"></i>
             </div>
-            <h3 class="text-lg font-black mb-1">Spotify Premium (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-6">Música sin anuncios, saltos ilimitados y alta calidad en tu propia cuenta personal.</p>
+            <h3 class="text-lg font-black mb-1 text-white">Spotify Premium (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-6 leading-relaxed">Música sin anuncios, saltos ilimitados y alta calidad en tu propia cuenta personal.</p>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-800">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
               <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="2.50">2.50</span></span>
             </div>
-            <button onclick="agregarAlCarrito('Spotify Premium (3 Meses)', 2.50)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
-              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            <button onclick="agregarAlCarrito('Spotify Premium (3 Meses)', 2.50)" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
-        <!-- 5. MFA Premium -->
-        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="minecraft">
+        <!-- 5. MFA Premium - $4.00 -->
+        <div class="prod-card bg-[#0d121f] border border-gray-800 rounded-3xl p-6 flex flex-col justify-between hover:border-purple-500 transition-all duration-300 shadow-xl group" data-cat="minecraft">
           <div>
             <div class="flex justify-between items-center mb-4">
               <span class="px-3 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 text-[10px] font-black uppercase border border-cyan-500/20">Minecraft</span>
-              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4 text-xl">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4 text-xl group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-cube"></i>
             </div>
-            <h3 class="text-lg font-black mb-1">Minecraft MFA Premium</h3>
-            <p class="text-xs text-gray-400 mb-6">Full Access con cambio de correo, contraseña y skin propia. Listo para servidores premium.</p>
+            <h3 class="text-lg font-black mb-1 text-white">Minecraft MFA Premium</h3>
+            <p class="text-xs text-gray-400 mb-6 leading-relaxed">Full Access con cambio de correo, contraseña y skin propia. Listo para servidores premium.</p>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-800">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
               <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="4.00">4.00</span></span>
             </div>
-            <button onclick="agregarAlCarrito('Minecraft MFA Premium', 4.00)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
-              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            <button onclick="agregarAlCarrito('Minecraft MFA Premium', 4.00)" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
         </div>
@@ -249,20 +233,20 @@
     <!-- VISTA CARRITO -->
     <div id="view-carrito" class="max-w-2xl mx-auto space-y-6 hidden">
       <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-black">Tu Carrito de Compras</h2>
-        <button onclick="cambiarMenu('tienda')" class="text-xs text-mrSecondary font-bold hover:underline cursor-pointer">← Seguir Comprando</button>
+        <h2 class="text-2xl font-black text-white">Tu Carrito de Compras</h2>
+        <button onclick="cambiarMenu('tienda')" class="text-xs text-cyan-400 font-bold hover:underline cursor-pointer">← Seguir Comprando</button>
       </div>
 
-      <div class="glass-panel rounded-3xl p-6 space-y-4" id="listaCarrito">
+      <div class="bg-[#0d121f] border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl" id="listaCarrito">
         <!-- Ítems inyectados por JavaScript -->
       </div>
 
-      <div class="glass-panel rounded-3xl p-6 space-y-4">
+      <div class="bg-[#0d121f] border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl">
         <div class="flex justify-between text-sm font-bold">
           <span class="text-gray-400">Total a Pagar:</span>
           <span class="text-xl font-black text-white" id="totalCarrito">$0.00</span>
         </div>
-        <button onclick="procesarPagoDiscord()" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs transition shadow-lg shadow-indigo-500/25 cursor-pointer flex items-center justify-center gap-2">
+        <button onclick="procesarPagoDiscord()" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs transition shadow-lg shadow-indigo-600/30 cursor-pointer flex items-center justify-center gap-2">
           <i class="fa-brands fa-discord text-base"></i> Enviar Pedido por Ticket en Discord
         </button>
       </div>
@@ -271,8 +255,8 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="glass-panel border-t border-mrBorder py-6 text-center text-xs text-gray-500 mt-12">
-    <p>&copy; 2026 MRSTORE. Soporte exclusivo vía <a href="https://discord.gg/QN2Yew346d" target="_blank" class="text-mrPrimary hover:underline">Discord</a>.</p>
+  <footer class="bg-[#090d16] border-t border-gray-800 py-6 text-center text-xs text-gray-500 mt-12">
+    <p>&copy; 2026 MRSTORE. Soporte exclusivo vía <a href="https://discord.gg/QN2Yew346d" target="_blank" class="text-purple-400 hover:underline">Discord</a>.</p>
   </footer>
 
   <!-- Script JavaScript Separado -->
