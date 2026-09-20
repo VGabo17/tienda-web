@@ -1,201 +1,442 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRSTORE - Nitro, Boosts y Cuentas Premium</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Configuración personalizada de Tailwind -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkbg: '#030303',
-                        cardbg: 'rgba(17, 17, 17, 0.6)',
-                        cyanNeon: '#00ffff',
-                        lilaNeon: '#b57edd'
-                    },
-                    boxShadow: {
-                        'glow-cyan': '0 0 20px rgba(0, 255, 255, 0.3)',
-                        'glow-lila': '0 0 20px rgba(181, 126, 221, 0.3)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
-                    }
-                }
-            }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tienda Digital - Nitro, Spotify & Más</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            darkbg: '#0a0e17',
+            cardbg: '#121826',
+            cardborder: '#1e293b',
+            brandcyan: '#06b6d4',
+            brandcyanhover: '#0891b2',
+            discordblue: '#5865F2'
+          }
         }
-    </script>
-    
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    
-    <!-- Tu archivo de estilos -->
-    <link rel="stylesheet" href="styles.css">
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { background-color: #0a0e17; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+    .glass { background: rgba(18, 24, 38, 0.8); backdrop-filter: blur(12px); }
+  </style>
 </head>
-<body class="bg-darkbg text-white font-sans antialiased flex flex-col min-h-screen selection:bg-lilaNeon selection:text-white relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Elementos de fondo abstractos -->
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-lilaNeon/20 blur-[150px] rounded-full pointer-events-none z-0"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyanNeon/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 border-b border-cardborder glass">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="#" onclick="showSection('inicio')" class="flex items-center gap-2 text-xl font-bold tracking-wide text-white">
+        <i class="fa-solid fa-bolt text-brandcyan"></i>
+        <span>MI <span class="text-brandcyan">STORE</span></span>
+      </a>
 
-    <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 bg-darkbg/60 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-lilaNeon to-cyanNeon">
-                MRSTORE
-            </div>
+      <!-- Iconos de Acción Derecha -->
+      <div class="flex items-center gap-3">
+        <!-- Selector de Moneda / País -->
+        <div class="relative">
+          <button id="currencyBtn" onclick="toggleCurrencyMenu()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cardbg border border-cardborder text-xs font-semibold hover:border-brandcyan transition">
+            <span id="currentFlag">🇵🇪</span>
+            <span id="currentCurrency">PEN</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
+          </button>
+          
+          <!-- Menu Monedas -->
+          <div id="currencyMenu" class="hidden absolute right-0 mt-2 w-48 bg-cardbg border border-cardborder rounded-xl shadow-2xl py-2 z-50">
+            <p class="px-3 py-1 text-[10px] text-gray-400 uppercase font-bold tracking-wider">Selecciona tu país / moneda</p>
+            <button onclick="setCurrency('🇵🇪', 'PEN', 'S/')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇵🇪 Perú (PEN)</button>
+            <button onclick="setCurrency('🇨🇱', 'CLP', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇨🇱 Chile (CLP)</button>
+            <button onclick="setCurrency('🇪🇨', 'USD', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇪🇨 Ecuador (USD)</button>
+            <button onclick="setCurrency('🇨🇴', 'COP', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇨🇴 Colombia (COP)</button>
+            <button onclick="setCurrency('🇲🇽', 'MXN', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇲🇽 México (MXN)</button>
+            <button onclick="setCurrency('🇦🇷', 'ARS', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇦🇷 Argentina (ARS)</button>
+            <button onclick="setCurrency('🇻🇪', 'USD/BS', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇻🇪 Venezuela (PagoMóvil/Zinli)</button>
+            <button onclick="setCurrency('🟢', 'USDT', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🟢 USDT (Crypto)</button>
+          </div>
         </div>
 
-        <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-400">
-            <a href="#" class="hover:text-cyanNeon transition-all hover:scale-105">Servicios</a>
-            <a href="#" class="hover:text-lilaNeon transition-all hover:scale-105">Suscripciones</a>
-            <a href="#" class="hover:text-cyanNeon transition-all hover:scale-105">Términos</a>
-        </div>
+        <!-- Usuario / Cuenta -->
+        <button onclick="showSection('cuenta')" class="p-2 rounded-lg bg-cardbg border border-cardborder hover:border-brandcyan text-gray-300 hover:text-white transition">
+          <i class="fa-regular fa-user"></i>
+        </button>
 
-        <div class="flex items-center gap-4">
-            <button class="relative group bg-cardbg border border-white/10 hover:border-cyanNeon px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all backdrop-blur-md">
-                <i data-feather="shopping-bag" class="w-4 h-4 text-cyanNeon group-hover:animate-bounce"></i>
-                <span class="hidden sm:inline">Carrito</span>
-            </button>
-        </div>
-    </nav>
+        <!-- Botón Menú Lateral -->
+        <button onclick="toggleSidebar()" class="p-2 rounded-lg bg-cardbg border border-cardborder hover:border-brandcyan text-gray-300 hover:text-white transition">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
 
-    <!-- HERO SECTION -->
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-20 md:py-32 relative z-10">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-xs font-bold text-gray-300 mb-8 uppercase tracking-widest">
-            <span class="w-2 h-2 rounded-full bg-cyanNeon animate-pulse"></span>
-            Stock de Nitro Actualizado
-        </div>
+    </div>
+  </header>
 
-        <h1 class="text-5xl md:text-8xl font-black max-w-5xl leading-[1.1] mb-6 tracking-tighter">
-            Potencia tu entorno <br />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyanNeon via-lilaNeon to-cyanNeon animate-gradient-x">
-                digital al máximo.
-            </span>
-        </h1>
+  <!-- ================= SIDEBAR MENÚ LATERAL ================= -->
+  <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-50 hidden transition-opacity"></div>
+  <aside id="sidebar" class="fixed top-0 right-0 w-72 h-full bg-cardbg border-l border-cardborder z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-5">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-cardborder">
+        <span class="font-bold text-lg text-white">Navegación</span>
+        <button onclick="toggleSidebar()" class="text-gray-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
 
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light">
-            Discord Nitro, Boosts para tu servidor, Spotify Premium y cuentas MFA. Entrega automática y soporte especializado.
-        </p>
+      <nav class="mt-6 flex flex-col gap-3">
+        <a href="#" onclick="showSection('inicio'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
+          <i class="fa-solid fa-house text-brandcyan"></i> Inicio
+        </a>
+        <a href="#" onclick="showSection('catalogo'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
+          <i class="fa-solid fa-store text-brandcyan"></i> Catálogo
+        </a>
+        <a href="#" onclick="showSection('followers'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
+          <i class="fa-solid fa-heart text-pink-500"></i> Followers / Redes
+        </a>
+        <a href="#" onclick="showSection('cuenta'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
+          <i class="fa-solid fa-user-gear text-brandcyan"></i> Mi cuenta
+        </a>
+      </nav>
+    </div>
 
-        <div class="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto sm:max-w-none sm:w-auto">
-            <button class="bg-gradient-to-r from-cyanNeon to-blue-400 text-black font-extrabold px-8 py-4 rounded-xl shadow-glow-cyan hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
-                <i data-feather="zap" class="w-5 h-5"></i> Explorar Servicios
-            </button>
-            <button class="bg-cardbg backdrop-blur-md border border-lilaNeon/50 text-white font-bold px-8 py-4 rounded-xl hover:bg-lilaNeon/20 hover:border-lilaNeon shadow-glow-lila transition-all duration-300 flex items-center justify-center gap-3">
-                <i data-feather="message-square" class="w-5 h-5 text-lilaNeon"></i> Soporte Discord
-            </button>
-        </div>
-    </main>
+    <!-- Botón Discord en Menú -->
+    <a href="https://discord.gg" target="_blank" class="w-full py-3 bg-discordblue hover:bg-indigo-600 text-white rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg transition">
+      <i class="fa-brands fa-discord text-xl"></i> Unirse al Discord
+    </a>
+  </aside>
 
-    <!-- CATÁLOGO UNICO (GLASSMORPHISM CARDS) -->
-    <section class="max-w-7xl mx-auto w-full px-4 py-16 z-10 relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <!-- Producto: Discord Nitro -->
-            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-lilaNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
-                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-lilaNeon/20 blur-[50px] group-hover:bg-lilaNeon/40 transition-all"></div>
-                    <div class="w-14 h-14 rounded-2xl bg-lilaNeon/10 border border-lilaNeon/30 flex items-center justify-center mb-6 z-10 text-lilaNeon">
-                        <i data-feather="award" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 z-10">Discord Nitro</h3>
-                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">Boosts incluidos. Disfruta de avatares animados, banners y emojis globales.</p>
-                    <div class="flex items-center justify-between z-10">
-                        <span class="text-2xl font-black text-white">$4.99 <span class="text-xs text-gray-500 font-normal">/mes</span></span>
-                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-lilaNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
-                            <i data-feather="plus" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <!-- ================= SECCIÓN 1: INICIO Y CATÁLOGO ================= -->
+  <main id="section-inicio" class="max-w-7xl mx-auto px-4 py-8 flex-1">
+    
+    <!-- Hero Banner -->
+    <div class="text-center py-10 px-4 rounded-3xl bg-gradient-to-b from-cardbg to-transparent border border-cardborder mb-10">
+      <span class="bg-brandcyan/10 text-brandcyan text-xs font-bold px-3 py-1 rounded-full border border-brandcyan/30">
+        ⚡ Entrega Instantánea & Soporte 24/7
+      </span>
+      <h1 class="text-3xl md:text-5xl font-extrabold mt-4 mb-3 tracking-tight">
+        Suscripciones Digitales & <span class="text-brandcyan">Servicios Gamer</span>
+      </h1>
+      <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto mb-6">
+        Consigue Discord Nitro, Spotify Premium y membresías al mejor precio con métodos de pago locales.
+      </p>
+      
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="showSection('catalogo')" class="px-6 py-3 rounded-xl bg-brandcyan hover:bg-brandcyanhover font-bold text-black transition flex items-center gap-2">
+          Ver Productos <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+        <a href="https://discord.gg" target="_blank" class="px-6 py-3 rounded-xl bg-cardbg hover:bg-cardborder border border-cardborder font-semibold text-white transition flex items-center gap-2">
+          <i class="fa-brands fa-discord text-discordblue"></i> Discord
+        </a>
+      </div>
 
-            <!-- Producto: Server Boosts -->
-            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-cyanNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
-                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyanNeon/20 blur-[50px] group-hover:bg-cyanNeon/40 transition-all"></div>
-                    <div class="w-14 h-14 rounded-2xl bg-cyanNeon/10 border border-cyanNeon/30 flex items-center justify-center mb-6 z-10 text-cyanNeon">
-                        <i data-feather="server" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 z-10">Bosteo Nivel 3</h3>
-                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">14 Boosts para tu servidor de Discord. Calidad de audio máxima y URL personalizada.</p>
-                    <div class="flex items-center justify-between z-10">
-                        <span class="text-2xl font-black text-white">$12.50 <span class="text-xs text-gray-500 font-normal">/mes</span></span>
-                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-cyanNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
-                            <i data-feather="plus" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <!-- Badges Informativos -->
+      <div class="flex flex-wrap justify-center gap-4 mt-8 text-xs text-gray-400">
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Pago 100% Seguro</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-yellow-400"></i> Entrega Rápida</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-brandcyan"></i> Garantía Incluida</span>
+      </div>
+    </div>
 
-            <!-- Producto: Spotify Premium -->
-            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-lilaNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
-                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-lilaNeon/20 blur-[50px] group-hover:bg-lilaNeon/40 transition-all"></div>
-                    <div class="w-14 h-14 rounded-2xl bg-lilaNeon/10 border border-lilaNeon/30 flex items-center justify-center mb-6 z-10 text-lilaNeon">
-                        <i data-feather="music" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 z-10">Spotify Premium</h3>
-                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">Actualización a tu cuenta personal (MFA/FA). Sin anuncios, skips ilimitados.</p>
-                    <div class="flex items-center justify-between z-10">
-                        <span class="text-2xl font-black text-white">$3.00 <span class="text-xs text-gray-500 font-normal">/mes</span></span>
-                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-lilaNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
-                            <i data-feather="plus" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <!-- Catálogo Destacado (Nitro & Spotify) -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <i class="fa-solid fa-fire text-amber-500"></i> Productos Destacados
+      </h2>
 
-            <!-- Producto: Cuentas MFA -->
-            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-cyanNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
-                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyanNeon/20 blur-[50px] group-hover:bg-cyanNeon/40 transition-all"></div>
-                    <div class="w-14 h-14 rounded-2xl bg-cyanNeon/10 border border-cyanNeon/30 flex items-center justify-center mb-6 z-10 text-cyanNeon">
-                        <i data-feather="shield" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 z-10">Cuentas MFA / FA</h3>
-                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">Cuentas Full Access con todos los datos modificables. Entrega segura y privada.</p>
-                    <div class="flex items-center justify-between z-10">
-                        <span class="text-2xl font-black text-white">$8.00 <span class="text-xs text-gray-500 font-normal">/pago único</span></span>
-                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-cyanNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
-                            <i data-feather="plus" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- FOOTER Y METODOS DE PAGO -->
-    <footer class="mt-auto border-t border-white/5 bg-black/50 backdrop-blur-lg pt-12 pb-8 z-10 relative">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <h4 class="text-xl font-black text-white tracking-tighter mb-2">MRSTORE</h4>
-                <p class="text-sm text-gray-500">Servicios digitales de élite. Entrega inmediata.</p>
-            </div>
-            
-            <div class="flex flex-col items-center md:items-end gap-3">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Métodos de Pago Aceptados</span>
-                <div class="flex gap-4 opacity-70">
-                    <!-- Textos representativos para los métodos de pago -->
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Zinli</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Airtm</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Pago Móvil</span>
-                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Cripto / USDT</span>
-                </div>
-            </div>
-        </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <div class="mt-12 text-center text-xs font-medium text-gray-600">
-            &copy; 2026 MRSTORE by Aledevv. Todos los derechos reservados.
+        <!-- Tarjeta Discord Nitro 3 Meses -->
+        <div class="bg-cardbg border border-cardborder rounded-2xl p-5 hover:border-brandcyan transition flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
+                <i class="fa-brands fa-discord"></i> Discord
+              </span>
+              <span class="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded">En Stock</span>
+            </div>
+            <h3 class="text-xl font-bold mb-1">Discord Nitro (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-4">Suscripción completa con 2 Boosts, emojis personalizados y mayor calidad de transmisión.</p>
+          </div>
+          <div>
+            <div class="flex items-baseline justify-between mb-4">
+              <span class="text-2xl font-extrabold text-white"><span class="currencySymbol">S/</span> <span class="productPrice" data-base="15">15.00</span></span>
+              <span class="text-xs text-gray-500 line-through"><span class="currencySymbol">S/</span> 30.00</span>
+            </div>
+            <button onclick="alert('Producto agregado al carrito')" class="w-full py-2.5 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar
+            </button>
+          </div>
         </div>
-    </footer>
 
-    <!-- Script de Inicialización -->
-    <script src="script.js"></script>
+        <!-- Tarjeta Discord Nitro Classic / Basic -->
+        <div class="bg-cardbg border border-cardborder rounded-2xl p-5 hover:border-brandcyan transition flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
+                <i class="fa-brands fa-discord"></i> Discord
+              </span>
+              <span class="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded">En Stock</span>
+            </div>
+            <h3 class="text-xl font-bold mb-1">Nitro Basic (1 Mes)</h3>
+            <p class="text-xs text-gray-400 mb-4">Acceso a emojis en cualquier servidor y badge exclusivo de perfil.</p>
+          </div>
+          <div>
+            <div class="flex items-baseline justify-between mb-4">
+              <span class="text-2xl font-extrabold text-white"><span class="currencySymbol">S/</span> <span class="productPrice" data-base="8">8.00</span></span>
+            </div>
+            <button onclick="alert('Producto agregado al carrito')" class="w-full py-2.5 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjeta Spotify Premium 3 Meses -->
+        <div class="bg-cardbg border border-cardborder rounded-2xl p-5 hover:border-brandcyan transition flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
+                <i class="fa-brands fa-spotify"></i> Spotify
+              </span>
+              <span class="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded">En Stock</span>
+            </div>
+            <h3 class="text-xl font-bold mb-1">Spotify Premium (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-4">Música sin anuncios, descargas offline y calidad de audio sin límites en tu cuenta.</p>
+          </div>
+          <div>
+            <div class="flex items-baseline justify-between mb-4">
+              <span class="text-2xl font-extrabold text-white"><span class="currencySymbol">S/</span> <span class="productPrice" data-base="12">12.00</span></span>
+              <span class="text-xs text-gray-500 line-through"><span class="currencySymbol">S/</span> 25.00</span>
+            </div>
+            <button onclick="alert('Producto agregado al carrito')" class="w-full py-2.5 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= SECCIÓN 2: FOLLOWERS / REDES ================= -->
+  <main id="section-followers" class="max-w-4xl mx-auto px-4 py-8 flex-1 hidden">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-extrabold mb-2">Impulsa tus redes sociales</h1>
+      <p class="text-gray-400 text-sm">Selecciona la plataforma, ingresa el enlace de tu perfil y ajusta la cantidad.</p>
+    </div>
+
+    <!-- Tabs Redes -->
+    <div class="flex flex-wrap justify-center gap-2 mb-8">
+      <button class="px-4 py-2 rounded-xl bg-brandcyan text-black font-bold text-sm flex items-center gap-2">
+        <i class="fa-brands fa-tiktok"></i> TikTok
+      </button>
+      <button class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder text-gray-300 hover:text-white text-sm flex items-center gap-2">
+        <i class="fa-brands fa-instagram text-pink-500"></i> Instagram
+      </button>
+      <button class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder text-gray-300 hover:text-white text-sm flex items-center gap-2">
+        <i class="fa-brands fa-youtube text-red-500"></i> YouTube
+      </button>
+      <button class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder text-gray-300 hover:text-white text-sm flex items-center gap-2">
+        <i class="fa-brands fa-telegram text-sky-400"></i> Telegram
+      </button>
+    </div>
+
+    <!-- Formulario de Pedido -->
+    <div class="bg-cardbg border border-cardborder rounded-2xl p-6 max-w-xl mx-auto space-y-5">
+      <div>
+        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">1. Servicio</label>
+        <select class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none">
+          <option>Followers / Seguidores ($4 USD / 1K)</option>
+          <option>Likes / Me Gusta ($2 USD / 1K)</option>
+          <option>Vistas / Views ($1 USD / 1K)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">2. Tu Enlace / Usuario</label>
+        <input type="text" placeholder="https://tiktok.com/@tu_usuario" class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">3. Cantidad</label>
+        <input type="number" value="1000" min="100" step="100" class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none mb-3" />
+        <div class="flex gap-2">
+          <button class="px-3 py-1 bg-cardborder rounded-lg text-xs font-semibold">500</button>
+          <button class="px-3 py-1 bg-brandcyan text-black rounded-lg text-xs font-bold">1.000</button>
+          <button class="px-3 py-1 bg-cardborder rounded-lg text-xs font-semibold">2.500</button>
+          <button class="px-3 py-1 bg-cardborder rounded-lg text-xs font-semibold">5.000</button>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-cardborder flex items-center justify-between">
+        <div>
+          <span class="text-xs text-gray-400 block">Total a pagar:</span>
+          <span class="text-2xl font-black text-brandcyan">$4.00 USD</span>
+        </div>
+        <button onclick="alert('Procesando pedido de seguidores...')" class="px-6 py-3 bg-brandcyan hover:bg-brandcyanhover text-black font-bold rounded-xl transition">
+          Ordenar Ahora
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= SECCIÓN 3: MI CUENTA / INICIAR SESIÓN ================= -->
+  <main id="section-cuenta" class="max-w-md mx-auto px-4 py-12 flex-1 hidden">
+    <div class="bg-cardbg border border-cardborder rounded-2xl p-6 sm:p-8">
+      
+      <div class="text-center mb-6">
+        <span class="text-xs font-bold text-brandcyan uppercase tracking-widest">Tu Espacio</span>
+        <h2 class="text-2xl font-extrabold mt-1">Mi Cuenta</h2>
+        <p class="text-xs text-gray-400 mt-1">Inicia sesión para ver tus compras y recibir productos.</p>
+      </div>
+
+      <!-- Toggle Tabs -->
+      <div class="flex bg-darkbg p-1 rounded-xl mb-6 border border-cardborder">
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg text-xs font-bold bg-cardbg text-white shadow">
+          Iniciar sesión
+        </button>
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white">
+          Crear cuenta
+        </button>
+      </div>
+
+      <!-- Discord Login Button -->
+      <a href="#" onclick="alert('Iniciando sesión con Discord...')" class="w-full py-3 bg-discordblue hover:bg-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 mb-5 transition text-sm">
+        <i class="fa-brands fa-discord text-lg"></i> Entrar con Discord
+      </a>
+
+      <div class="relative flex py-2 items-center mb-5">
+        <div class="flex-grow border-t border-cardborder"></div>
+        <span class="flex-shrink mx-3 text-gray-500 text-xs">o con tu correo</span>
+        <div class="flex-grow border-t border-cardborder"></div>
+      </div>
+
+      <!-- Formulario Login -->
+      <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1">Correo electrónico</label>
+          <input type="email" placeholder="tucorreo@ejemplo.com" required class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1">Contraseña</label>
+          <input type="password" placeholder="Tu contraseña" required class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none" />
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2 text-sm">
+          <i class="fa-solid fa-right-to-bracket"></i> Entrar
+        </button>
+      </form>
+
+      <div class="text-center mt-4">
+        <a href="#" class="text-xs text-gray-400 hover:text-brandcyan transition">¿Olvidaste tu contraseña?</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-cardborder bg-cardbg py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 space-y-2">
+      <p>&copy; 2026 Store Digital. Todos los derechos reservados.</p>
+      <div class="flex justify-center gap-4 text-gray-400">
+        <a href="#" class="hover:text-white">Términos</a>
+        <a href="#" class="hover:text-white">Privacidad</a>
+        <a href="#" class="hover:text-white">Soporte</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    // Cambio entre Secciones principales (Inicio, Followers, Mi Cuenta)
+    function showSection(sectionId) {
+      document.getElementById('section-inicio').classList.add('hidden');
+      document.getElementById('section-followers').classList.add('hidden');
+      document.getElementById('section-cuenta').classList.add('hidden');
+
+      if (sectionId === 'inicio' || sectionId === 'catalogo') {
+        document.getElementById('section-inicio').classList.remove('hidden');
+      } else if (sectionId === 'followers') {
+        document.getElementById('section-followers').classList.remove('hidden');
+      } else if (sectionId === 'cuenta') {
+        document.getElementById('section-cuenta').classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Menú Sidebar Móvil
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    // Toggle Dropdown Moneda
+    function toggleCurrencyMenu() {
+      const menu = document.getElementById('currencyMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Selector de Moneda y conversión simple
+    const rates = {
+      'PEN': { flag: '🇵🇪', symbol: 'S/', multiplier: 1 },
+      'CLP': { flag: '🇨🇱', symbol: '$', multiplier: 250 },
+      'USD': { flag: '🇪🇨', symbol: '$', multiplier: 0.27 },
+      'COP': { flag: '🇨🇴', symbol: '$', multiplier: 1050 },
+      'MXN': { flag: '🇲🇽', symbol: '$', multiplier: 4.8 },
+      'ARS': { flag: '🇦🇷', symbol: '$', multiplier: 350 },
+      'USD/BS': { flag: '🇻🇪', symbol: '$', multiplier: 0.27 },
+      'USDT': { flag: '🟢', symbol: '$', multiplier: 0.27 }
+    };
+
+    function setCurrency(flag, currencyKey, symbol) {
+      document.getElementById('currentFlag').textContent = flag;
+      document.getElementById('currentCurrency').textContent = currencyKey;
+      document.getElementById('currencyMenu').classList.add('hidden');
+
+      const rate = rates[currencyKey] || rates['PEN'];
+      
+      // Actualizar símbolos
+      document.querySelectorAll('.currencySymbol').forEach(el => el.textContent = rate.symbol);
+      
+      // Actualizar precios
+      document.querySelectorAll('.productPrice').forEach(el => {
+        const base = parseFloat(el.getAttribute('data-base'));
+        const converted = (base * rate.multiplier).toFixed(2);
+        el.textContent = converted;
+      });
+    }
+
+    // Cambio de Tabs Login / Registro
+    function switchAuthTab(type) {
+      const loginBtn = document.getElementById('tabLoginBtn');
+      const regBtn = document.getElementById('tabRegisterBtn');
+
+      if (type === 'login') {
+        loginBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold bg-cardbg text-white shadow";
+        regBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white";
+      } else {
+        regBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold bg-cardbg text-white shadow";
+        loginBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white";
+      }
+    }
+
+    // Submit de Login
+    function handleAuth(e) {
+      e.preventDefault();
+      alert('¡Sesión iniciada correctamente!');
+      showSection('inicio');
+    }
+  </script>
 </body>
 </html>
