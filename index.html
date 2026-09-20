@@ -61,8 +61,8 @@
     <!-- VISTA TIENDA -->
     <div id="view-tienda" class="space-y-6">
       
-      <!-- Hero Principal Estilo Flashy -->
-      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#0a0f1d] to-[#070b14] p-6 border border-purple-500/30 shadow-2xl glow-box">
+      <!-- Hero Principal -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#0a0f1d] to-[#070b14] p-6 border border-purple-500/30 shadow-2xl">
         <div class="absolute -right-16 -top-16 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
         
@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <!-- Sección: Todo lo que ofrecemos -->
+      <!-- Categorías Rápidas -->
       <div class="space-y-3">
         <div class="text-center">
           <h2 class="text-sm font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Explora la tienda</h2>
@@ -213,26 +213,6 @@
         </div>
 
       </div>
-
-      <!-- Sección Cómo Comprar -->
-      <div class="bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-5 space-y-4">
-        <div class="text-center">
-          <h3 class="text-xs font-black uppercase tracking-widest text-cyan-400">Fácil y Rápido</h3>
-          <h4 class="text-sm font-bold text-white">¿Cómo comprar en MRSTORE?</h4>
-        </div>
-        <div class="grid grid-cols-2 gap-3 text-[11px]">
-          <div class="p-3 rounded-xl bg-[#060913] border border-purple-500/10 space-y-1">
-            <span class="w-5 h-5 rounded-full bg-purple-600 text-white font-bold text-[10px] flex items-center justify-center">1</span>
-            <p class="font-bold text-white">Elige tu producto</p>
-            <p class="text-[10px] text-gray-400">Explora el catálogo y agrégalo.</p>
-          </div>
-          <div class="p-3 rounded-xl bg-[#060913] border border-purple-500/10 space-y-1">
-            <span class="w-5 h-5 rounded-full bg-purple-600 text-white font-bold text-[10px] flex items-center justify-center">2</span>
-            <p class="font-bold text-white">Crea tu ticket</p>
-            <p class="text-[10px] text-gray-400">Guarda tu orden en la nube automáticamente.</p>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- VISTA CARRITO -->
@@ -251,10 +231,30 @@
           <span class="text-gray-400">Total a Pagar:</span>
           <span class="text-base font-black text-white" id="totalCarrito">$0.00</span>
         </div>
-        <!-- ACTUALIZADO: Llama a procesarPagoSupabase() -->
-        <button onclick="procesarPagoSupabase()" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white font-black text-xs transition shadow-lg shadow-indigo-600/30 cursor-pointer flex items-center justify-center gap-2">
-          <i class="fa-solid fa-cloud-arrow-up text-sm"></i> Generar Ticket en la Base de Datos
-        </button>
+
+        <!-- SECCIÓN 1: Si el usuario NO ha iniciado sesión -->
+        <div id="authRequiredSection" class="pt-2 text-center space-y-2">
+          <p class="text-[11px] text-gray-400">Debes iniciar sesión con Discord para poder generar tu ticket de compra.</p>
+          <button onclick="loginDiscordStore()" class="w-full py-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-xs transition shadow-lg shadow-[#5865F2]/30 cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-brands fa-discord text-sm"></i> Iniciar sesión con Discord
+          </button>
+        </div>
+
+        <!-- SECCIÓN 2: Si el usuario SÍ ha iniciado sesión (Oculto por defecto) -->
+        <div id="checkoutReadySection" class="pt-2 space-y-2.5 hidden">
+          <div class="p-2.5 rounded-xl bg-[#060913] border border-purple-500/20 text-center">
+            <p class="text-[10px] text-gray-400">Conectado como:</p>
+            <p id="userInfoText" class="text-xs font-black text-cyan-400"></p>
+          </div>
+          
+          <button onclick="procesarPagoSupabase()" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white font-black text-xs transition shadow-lg shadow-indigo-600/30 cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up text-sm"></i> Generar Ticket en la Base de Datos
+          </button>
+          
+          <button onclick="logoutStore()" class="w-full py-1 text-center text-[10px] text-red-400 hover:underline cursor-pointer bg-transparent border-none">
+            Cerrar sesión de Discord
+          </button>
+        </div>
       </div>
     </div>
 
