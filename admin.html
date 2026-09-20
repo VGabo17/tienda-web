@@ -1,105 +1,181 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Staff - Tickets NixerMC</title>
-    <!-- Script de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
-        h1 { color: #00bcd4; text-align: center; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        button { background: #00bcd4; color: #121212; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; margin-bottom: 20px; }
-        button:hover { background: #008ba3; color: white; }
-        table { width: 100%; border-collapse: collapse; background: #1e1e1e; border-radius: 8px; overflow: hidden; }
-        th, td { padding: 14px; border-bottom: 1px solid #333; text-align: left; }
-        th { background: #252525; color: #00bcd4; }
-        .btn-completar { background: #4CAF50; color: white; padding: 6px 12px; font-size: 14px; margin: 0; }
-        .btn-completar:hover { background: #45a049; }
-        pre { white-space: pre-wrap; font-family: inherit; margin: 0; color: #ddd; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | MRSTORE</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Panel de Administración - Pedidos</h1>
-        <button onclick="cargarTickets()">🔄 Actualizar Tickets</button>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Cliente</th>
-                    <th>Productos</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-tickets">
-                <tr><td colspan="6" style="text-align:center;">Cargando tickets...</td></tr>
-            </tbody>
-        </table>
+<body class="min-h-screen bg-[#04060b] text-gray-100 font-['Outfit'] flex flex-col justify-between">
+
+  <!-- LOGIN SCREEN (Se muestra si no está logueado) -->
+  <div id="loginSection" class="fixed inset-0 bg-[#04060b] z-50 flex items-center justify-center p-4">
+    <div class="bg-[#0a0f1d] border border-purple-500/30 p-8 rounded-3xl max-w-sm w-full text-center space-y-6 shadow-2xl">
+      <div class="w-14 h-14 bg-gradient-to-tr from-purple-600 to-cyan-400 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-purple-600/40">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <div class="space-y-2">
+        <h1 class="text-xl font-black text-white">Panel Administrativo</h1>
+        <p class="text-xs text-gray-400">Inicia sesión con tu cuenta de Discord autorizada para gestionar los pedidos.</p>
+      </div>
+      <button onclick="loginDiscord()" class="w-full py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 cursor-pointer">
+        <i class="fa-brands fa-discord text-base"></i> Iniciar sesión con Discord
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL DE ADMINISTRACIÓN (Oculto hasta iniciar sesión) -->
+  <div id="adminPanel" class="hidden flex-1 max-w-4xl mx-auto px-4 py-8 w-full space-y-6">
+    
+    <div class="flex items-center justify-between pb-4 border-b border-purple-500/20">
+      <div>
+        <h1 class="text-xl font-black text-white">Panel de Administración</h1>
+        <p class="text-xs text-cyan-400">MRSTORE - Gestión de Tickets en Tiempo Real</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="cargarTickets()" class="px-4 py-2 rounded-xl bg-purple-600/20 border border-purple-500/30 text-purple-300 hover:bg-purple-600/30 text-xs font-bold transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-rotate"></i> Actualizar
+        </button>
+        <button onclick="logout()" class="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 hover:bg-red-500/30 text-xs font-bold transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+        </button>
+      </div>
     </div>
 
-    <script>
-        const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+    <!-- Tabla de Tickets -->
+    <div class="bg-[#0a0f1d] border border-purple-500/20 rounded-2xl overflow-hidden shadow-2xl">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[#060913] text-gray-400 border-b border-purple-500/20 uppercase text-[10px] tracking-wider">
+            <tr>
+              <th class="p-4">Código</th>
+              <th class="p-4">Cliente</th>
+              <th class="p-4">Detalles</th>
+              <th class="p-4">Total</th>
+              <th class="p-4">Estado</th>
+              <th class="p-4 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaTickets" class="divide-y divide-purple-500/10 text-gray-200">
+            <tr>
+              <td colspan="6" class="p-6 text-center text-gray-400">Cargando tickets...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-        const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  </div>
 
-        async function cargarTickets() {
-            const tbody = document.getElementById('tabla-tickets');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Cargando...</td></tr>';
+  <footer class="text-center py-4 text-[10px] text-gray-500 border-t border-purple-500/10">
+    MRSTORE Secure System &copy; 2026
+  </footer>
 
-            const { data, error } = await _supabase
-                .from('tickets')
-                .select('*')
-                .order('created_at', { ascending: false });
+  <!-- Script de Conexión y Lógica -->
+  <script>
+    const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
 
-            if (error) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: red;">Error al cargar: ${error.message}</td></tr>`;
-                return;
-            }
+    const { createClient } = supabase;
+    const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No hay tickets registrados todavía.</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = '';
-            data.forEach(ticket => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><b>${ticket.codigo}</b></td>
-                        <td>${ticket.cliente}</td>
-                        <td><pre>${ticket.detalles}</pre></td>
-                        <td>$${ticket.total}</td>
-                        <td><span style="color: ${ticket.estado === 'Pendiente' ? '#ff9800' : '#4CAF50'}">${ticket.estado}</span></td>
-                        <td>
-                            ${ticket.estado === 'Pendiente' ? `<button class="btn-completar" onclick="completarTicket(${ticket.id})">Completar</button>` : 'Finalizado'}
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        async function completarTicket(id) {
-            const { error } = await _supabase
-                .from('tickets')
-                .update({ estado: 'Completado' })
-                .eq('id', id);
-
-            if (error) {
-                alert('Hubo un error al actualizar el estado.');
-            } else {
-                cargarTickets();
-            }
-        }
-
-        // Cargar automáticamente al entrar al panel
+    // Verificar sesión al cargar la página
+    async function verificarSesion() {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (session) {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
         cargarTickets();
-    </script>
+      } else {
+        document.getElementById('loginSection').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+      }
+    }
+
+    // Iniciar sesión con Discord
+    async function loginDiscord() {
+      const { error } = await _supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: window.location.href
+        }
+      });
+      if (error) alert('Error al iniciar sesión: ' + error.message);
+    }
+
+    // Cerrar sesión
+    async function logout() {
+      await _supabase.auth.signOut();
+      window.location.reload();
+    }
+
+    // Cargar tickets desde la base de datos
+    async function cargarTickets() {
+      const tbody = document.getElementById('tablaTickets');
+      tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">Actualizando...</td></tr>`;
+
+      const { data, error } = await _supabase
+        .from('tickets')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error:', error);
+        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-red-400">Error al cargar los datos.</td></tr>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">No hay tickets registrados todavía.</td></tr>`;
+        return;
+      }
+
+      let html = '';
+      data.forEach(ticket => {
+        html += `
+          <tr class="hover:bg-purple-500/5 transition">
+            <td class="p-4 font-mono font-bold text-cyan-400">${ticket.codigo}</td>
+            <td class="p-4 font-bold text-white">${ticket.cliente}</td>
+            <td class="p-4 whitespace-pre-line text-gray-300 text-[11px]">${ticket.detalles}</td>
+            <td class="p-4 font-black text-white">$${ticket.total.toFixed(2)}</td>
+            <td class="p-4">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">${ticket.estado}</span>
+            </td>
+            <td class="p-4 text-center">
+              <button onclick="eliminarTicket('${ticket.id}')" class="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition cursor-pointer">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    // Eliminar ticket de prueba o atendido
+    async function eliminarTicket(id) {
+      if(!confirm('¿Estás seguro de eliminar este ticket?')) return;
+      
+      const { error } = await _supabase
+        .from('tickets')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        alert('No se pudo eliminar.');
+      } else {
+        cargarTickets();
+      }
+    }
+
+    // Ejecutar verificación al cargar
+    verificarSesion();
+  </script>
 </body>
 </html>
