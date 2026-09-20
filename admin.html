@@ -1,181 +1,227 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel | MRSTORE</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Supabase JS Client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - MRSTORE</title>
+    <!-- SDK de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #07090e; color: #fff; padding: 20px; }
+        .admin-container { max-width: 1100px; margin: 0 auto; }
+        
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
+        .admin-header h2 { font-size: 22px; color: #fff; }
+        .admin-header p { font-size: 14px; color: #94a3b8; margin-top: 5px; }
+        
+        /* Botones de Acción */
+        .btn-action { color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; transition: opacity 0.2s; }
+        .btn-action:hover { opacity: 0.8; }
+        .btn-primary { background: #8b5cf6; padding: 10px 20px; font-size: 14px; }
+        .btn-chat { background: #3b82f6; }
+        .btn-status { background: #10b981; }
+        .btn-status.pendiente { background: #f59e0b; color: #000; }
+        .btn-danger { background: #ef4444; }
+
+        /* Tabla */
+        .table-responsive { width: 100%; overflow-x: auto; background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th, td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        th { background: rgba(255,255,255,0.02); color: #38bdf8; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+        tr:hover { background: rgba(255,255,255,0.02); }
+
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #000; }
+        
+        /* Modal de Chat Admin */
+        #chat-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .chat-box { background: #121826; width: 100%; max-width: 500px; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 550px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .chat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
+        .chat-messages { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; padding-right: 5px; }
+        .msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.4; }
+        .msg-admin { background: #10b981; align-self: flex-end; color: black; border-bottom-right-radius: 2px; }
+        .msg-cliente { background: #374151; align-self: flex-start; color: white; border-bottom-left-radius: 2px; }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: #07090e; color: white; outline: none; }
+        .btn-send { background: #38bdf8; color: black; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
 </head>
-<body class="min-h-screen bg-[#04060b] text-gray-100 font-['Outfit'] flex flex-col justify-between">
+<body>
 
-  <!-- LOGIN SCREEN (Se muestra si no está logueado) -->
-  <div id="loginSection" class="fixed inset-0 bg-[#04060b] z-50 flex items-center justify-center p-4">
-    <div class="bg-[#0a0f1d] border border-purple-500/30 p-8 rounded-3xl max-w-sm w-full text-center space-y-6 shadow-2xl">
-      <div class="w-14 h-14 bg-gradient-to-tr from-purple-600 to-cyan-400 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-purple-600/40">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-xl font-black text-white">Panel Administrativo</h1>
-        <p class="text-xs text-gray-400">Inicia sesión con tu cuenta de Discord autorizada para gestionar los pedidos.</p>
-      </div>
-      <button onclick="loginDiscord()" class="w-full py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 cursor-pointer">
-        <i class="fa-brands fa-discord text-base"></i> Iniciar sesión con Discord
-      </button>
-    </div>
-  </div>
-
-  <!-- PANEL DE ADMINISTRACIÓN (Oculto hasta iniciar sesión) -->
-  <div id="adminPanel" class="hidden flex-1 max-w-4xl mx-auto px-4 py-8 w-full space-y-6">
-    
-    <div class="flex items-center justify-between pb-4 border-b border-purple-500/20">
-      <div>
-        <h1 class="text-xl font-black text-white">Panel de Administración</h1>
-        <p class="text-xs text-cyan-400">MRSTORE - Gestión de Tickets en Tiempo Real</p>
-      </div>
-      <div class="flex items-center gap-3">
-        <button onclick="cargarTickets()" class="px-4 py-2 rounded-xl bg-purple-600/20 border border-purple-500/30 text-purple-300 hover:bg-purple-600/30 text-xs font-bold transition flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-rotate"></i> Actualizar
-        </button>
-        <button onclick="logout()" class="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 hover:bg-red-500/30 text-xs font-bold transition flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
-        </button>
-      </div>
+<div class="admin-container">
+    <div class="admin-header">
+        <div>
+            <h2>Panel de Administración Integral</h2>
+            <p>Gestión de Tickets y Soporte - MRSTORE</p>
+        </div>
+        <div>
+            <button class="btn-action btn-primary" onclick="cargarTicketsAdmin()">🔄 Actualizar Panel</button>
+        </div>
     </div>
 
-    <!-- Tabla de Tickets -->
-    <div class="bg-[#0a0f1d] border border-purple-500/20 rounded-2xl overflow-hidden shadow-2xl">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-[#060913] text-gray-400 border-b border-purple-500/20 uppercase text-[10px] tracking-wider">
-            <tr>
-              <th class="p-4">Código</th>
-              <th class="p-4">Cliente</th>
-              <th class="p-4">Detalles</th>
-              <th class="p-4">Total</th>
-              <th class="p-4">Estado</th>
-              <th class="p-4 text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tablaTickets" class="divide-y divide-purple-500/10 text-gray-200">
-            <tr>
-              <td colspan="6" class="p-6 text-center text-gray-400">Cargando tickets...</td>
-            </tr>
-          </tbody>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Detalles</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th style="text-align: right;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="admin-table-body">
+                <tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">Cargando sistema...</td></tr>
+            </tbody>
         </table>
-      </div>
     </div>
+</div>
 
-  </div>
+<!-- Modal de Chat de Soporte -->
+<div id="chat-modal">
+    <div class="chat-box">
+        <div class="chat-header">
+            <div>
+                <h3 id="chat-title" style="color: #38bdf8; font-size: 18px;">Chat de Soporte</h3>
+                <span id="chat-cliente-name" style="font-size: 12px; color: #94a3b8;">Cliente</span>
+            </div>
+            <button onclick="cerrarChat()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">Cerrar X</button>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages"></div>
+        
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Responde al cliente..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
+            <button class="btn-action" style="background: #4b5563;" onclick="cargarMensajes()" title="Actualizar Mensajes">🔄</button>
+            <button class="btn-send" onclick="enviarMensaje()">Enviar</button>
+        </div>
+    </div>
+</div>
 
-  <footer class="text-center py-4 text-[10px] text-gray-500 border-t border-purple-500/10">
-    MRSTORE Secure System &copy; 2026
-  </footer>
-
-  <!-- Script de Conexión y Lógica -->
-  <script>
+<script>
+    // Configuración de Supabase
     const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+    const SUPABASE_ANON_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    const adminUser = "Soporte MRSTORE"; // Nombre que verá el cliente cuando le respondas
+    let ticketActivoChat = null;
 
-    const { createClient } = supabase;
-    const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.addEventListener('DOMContentLoaded', cargarTicketsAdmin);
 
-    // Verificar sesión al cargar la página
-    async function verificarSesion() {
-      const { data: { session } } = await _supabase.auth.getSession();
-      if (session) {
-        document.getElementById('loginSection').classList.add('hidden');
-        document.getElementById('adminPanel').classList.remove('hidden');
-        cargarTickets();
-      } else {
-        document.getElementById('loginSection').classList.remove('hidden');
-        document.getElementById('adminPanel').classList.add('hidden');
-      }
-    }
+    // 1. Gestión Principal de Tickets
+    async function cargarTicketsAdmin() {
+        const { data, error } = await supabaseClient
+            .from('tickets')
+            .select('*')
+            .order('id', { ascending: false });
 
-    // Iniciar sesión con Discord
-    async function loginDiscord() {
-      const { error } = await _supabase.auth.signInWithOAuth({
-        provider: 'discord',
-        options: {
-          redirectTo: window.location.href
+        const tbody = document.getElementById('admin-table-body');
+        tbody.innerHTML = '';
+
+        if (error) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444;">Error al cargar la base de datos: ${error.message}</td></tr>`;
+            return;
         }
-      });
-      if (error) alert('Error al iniciar sesión: ' + error.message);
+
+        if (!data || data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">No hay tickets registrados en el sistema.</td></tr>`;
+            return;
+        }
+
+        data.forEach(ticket => {
+            const tr = document.createElement('tr');
+            const estadoActual = ticket.estado || 'Pendiente';
+            const colorEstado = estadoActual === 'Completado' ? '#10b981' : '#f59e0b';
+            const btnEstadoClass = estadoActual === 'Completado' ? 'btn-status pendiente' : 'btn-status';
+            const btnEstadoText = estadoActual === 'Completado' ? 'Marcar Pendiente' : 'Marcar Completado';
+
+            tr.innerHTML = `
+                <td style="color: #38bdf8; font-weight: bold;">${ticket.codigo}</td>
+                <td style="font-weight: 500;">${ticket.cliente}</td>
+                <td style="font-size: 13px; color: #cbd5e1; max-width: 250px;">${ticket.detalles}</td>
+                <td style="font-weight: bold;">$${ticket.total}</td>
+                <td><span class="badge" style="background: ${colorEstado};">${estadoActual}</span></td>
+                <td style="text-align: right;">
+                    <button class="btn-action btn-chat" onclick="abrirChat('${ticket.codigo}', '${ticket.cliente}')">💬 Chat</button>
+                    <button class="btn-action ${btnEstadoClass}" onclick="cambiarEstado(${ticket.id}, '${estadoActual}')">🔄 ${btnEstadoText}</button>
+                    <button class="btn-action btn-danger" onclick="eliminarTicket(${ticket.id})">🗑️</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
     }
 
-    // Cerrar sesión
-    async function logout() {
-      await _supabase.auth.signOut();
-      window.location.reload();
+    async function cambiarEstado(idTicket, estadoActual) {
+        const nuevoEstado = estadoActual === 'Completado' ? 'Pendiente' : 'Completado';
+        const { error } = await supabaseClient.from('tickets').update({ estado: nuevoEstado }).eq('id', idTicket);
+        if (error) alert('Error al actualizar: ' + error.message);
+        else cargarTicketsAdmin();
     }
 
-    // Cargar tickets desde la base de datos
-    async function cargarTickets() {
-      const tbody = document.getElementById('tablaTickets');
-      tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">Actualizando...</td></tr>`;
-
-      const { data, error } = await _supabase
-        .from('tickets')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error:', error);
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-red-400">Error al cargar los datos.</td></tr>`;
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">No hay tickets registrados todavía.</td></tr>`;
-        return;
-      }
-
-      let html = '';
-      data.forEach(ticket => {
-        html += `
-          <tr class="hover:bg-purple-500/5 transition">
-            <td class="p-4 font-mono font-bold text-cyan-400">${ticket.codigo}</td>
-            <td class="p-4 font-bold text-white">${ticket.cliente}</td>
-            <td class="p-4 whitespace-pre-line text-gray-300 text-[11px]">${ticket.detalles}</td>
-            <td class="p-4 font-black text-white">$${ticket.total.toFixed(2)}</td>
-            <td class="p-4">
-              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">${ticket.estado}</span>
-            </td>
-            <td class="p-4 text-center">
-              <button onclick="eliminarTicket('${ticket.id}')" class="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition cursor-pointer">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      });
-      tbody.innerHTML = html;
+    async function eliminarTicket(idTicket) {
+        if (!confirm('¿Atención! ¿Estás totalmente seguro de eliminar este ticket? Esta acción no se puede deshacer.')) return;
+        const { error } = await supabaseClient.from('tickets').delete().eq('id', idTicket);
+        if (error) alert('Error al eliminar: ' + error.message);
+        else cargarTicketsAdmin();
     }
 
-    // Eliminar ticket de prueba o atendido
-    async function eliminarTicket(id) {
-      if(!confirm('¿Estás seguro de eliminar este ticket?')) return;
-      
-      const { error } = await _supabase
-        .from('tickets')
-        .delete()
-        .eq('id', id);
-
-      if (error) {
-        alert('No se pudo eliminar.');
-      } else {
-        cargarTickets();
-      }
+    // 2. Funciones de Chat para el Administrador
+    async function abrirChat(codigo, cliente) {
+        ticketActivoChat = codigo;
+        document.getElementById('chat-title').innerText = 'Ticket: ' + codigo;
+        document.getElementById('chat-cliente-name').innerText = 'Hablando con: ' + cliente;
+        document.getElementById('chat-modal').style.display = 'flex';
+        cargarMensajes();
     }
 
-    // Ejecutar verificación al cargar
-    verificarSesion();
-  </script>
+    function cerrarChat() {
+        document.getElementById('chat-modal').style.display = 'none';
+        ticketActivoChat = null;
+    }
+
+    async function cargarMensajes() {
+        if (!ticketActivoChat) return;
+        const { data } = await supabaseClient
+            .from('mensajes')
+            .select('*')
+            .eq('ticket_codigo', ticketActivoChat)
+            .order('created_at', { ascending: true });
+        
+        const box = document.getElementById('chat-messages');
+        box.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            box.innerHTML = '<div style="text-align:center; color:#94a3b8; font-size:13px; margin-top:20px;">El cliente no ha enviado mensajes aún.</div>';
+            return;
+        }
+
+        data.forEach(msg => {
+            const isAdmin = msg.autor === adminUser;
+            box.innerHTML += `
+                <div class="msg ${isAdmin ? 'msg-admin' : 'msg-cliente'}">
+                    <b style="font-size:11px; opacity:0.8; display:block; margin-bottom:3px;">${msg.autor}</b>
+                    ${msg.contenido}
+                </div>`;
+        });
+        box.scrollTop = box.scrollHeight;
+    }
+
+    async function enviarMensaje() {
+        const input = document.getElementById('chat-input');
+        const texto = input.value.trim();
+        if (!texto || !ticketActivoChat) return;
+
+        input.disabled = true;
+        await supabaseClient.from('mensajes').insert([{ ticket_codigo: ticketActivoChat, autor: adminUser, contenido: texto }]);
+        
+        input.value = '';
+        input.disabled = false;
+        input.focus();
+        cargarMensajes();
+    }
+</script>
+
 </body>
 </html>
