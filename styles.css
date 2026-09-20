@@ -1,42 +1,20 @@
-/* styles.css */
-
-html {
-    scroll-behavior: smooth;
-    background-color: #030303;
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #030712;
+  color: #f3f4f6;
 }
 
-/* Scrollbar futurista */
-::-webkit-scrollbar {
-    width: 6px;
+.glass-panel {
+  background: rgba(11, 15, 25, 0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(31, 41, 61, 0.6);
 }
 
-::-webkit-scrollbar-track {
-    background: #030303; 
+.neon-border {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-::-webkit-scrollbar-thumb {
-    background: #1a1a1a; 
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #00ffff; 
-}
-
-/* Animación para textos con gradiente */
-@keyframes gradient-x {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.animate-gradient-x {
-    background-size: 200% 200%;
-    animation: gradient-x 4s ease infinite;
+.neon-border:hover {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
 }
