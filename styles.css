@@ -1,25 +1,42 @@
 /* styles.css */
 
-/* Comportamiento de scroll suave para toda la página */
 html {
     scroll-behavior: smooth;
+    background-color: #030303;
 }
 
-/* Personalización de la barra de desplazamiento para que coincida con el modo oscuro */
+/* Scrollbar futurista */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #050505; 
+    background: #030303; 
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #111111; 
-    border: 1px solid #333;
-    border-radius: 4px;
+    background: #1a1a1a; 
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #b57edd; 
+    background: #00ffff; 
+}
+
+/* Animación para textos con gradiente */
+@keyframes gradient-x {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 4s ease infinite;
 }
