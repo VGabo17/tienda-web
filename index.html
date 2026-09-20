@@ -1,94 +1,235 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synthetix Labs | Infraestructura & Desarrollo</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Fuente técnica para detalles -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
+:root {
+    --bg-dark: #05050A;
+    --bg-panel: rgba(15, 17, 26, 0.7);
+    --border-glow: rgba(56, 189, 248, 0.2);
+    --accent-blue: #38bdf8;
+    --accent-purple: #c084fc;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
 
-    <!-- Fondo espacial técnico -->
-    <div class="synth-background"></div>
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
 
-    <!-- Navegación -->
-    <nav class="top-nav">
-        <div class="brand">
-            <span class="lightning">⚡</span> SYNTHETIX LABS
-        </div>
-        <div class="nav-links">
-            <a href="index.html" class="active">Inicio</a>
-            <a href="minecraft.html">Networks MC</a>
-            <a href="discord.html">Bots Discord</a>
-            <a href="dashboard.html" class="staff-btn">Portal Staff</a>
-        </div>
-    </nav>
+/* Fondo Estilo Constelación / Red */
+.synth-background {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.08) 0%, transparent 40%);
+    z-index: -1;
+}
 
-    <main class="container">
-        <!-- Cabecera -->
-        <header class="hero-section">
-            <div class="tech-badge">Ingeniería de Servidores & Automatización</div>
-            <h1>Arquitecturas de alto tráfico para <span class="gradient-text">Comunidades de Gaming.</span></h1>
-            <p>Desarrollo especializado para Aledevv y clientes exigentes. Desde enrutamiento con Velocity y optimización de backends Paper, hasta bots de Discord sincronizados con nLogin y Tebex.</p>
-            <div class="hero-actions">
-                <a href="#servicios" class="btn-primary">Ver Soluciones Técnicas</a>
-                <a href="https://github.com/aledevv" target="_blank" class="btn-outline">Revisar Repositorios</a>
-            </div>
-        </header>
+/* Navegación */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(5, 5, 10, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-glow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-        <!-- Grid de Servicios (El núcleo de lo que haces) -->
-        <section id="servicios" class="services-grid">
-            
-            <!-- Servicio 1: Minecraft -->
-            <div class="service-card">
-                <div class="card-icon">🧊</div>
-                <h3>Setups de Networks MC</h3>
-                <p>Diseño de redes escalables y seguras. Implementación de proxies, protección de datos y sincronización de rangos.</p>
-                <ul class="tech-stack">
-                    <li>Velocity Proxy Routing</li>
-                    <li>Paper / Purpur Optimization</li>
-                    <li>nLogin Premium Auth</li>
-                    <li>Tebex Webstores & LuckPerms</li>
-                </ul>
-                <a href="minecraft.html" class="card-link">Explorar Setups MC →</a>
-            </div>
+.brand {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.lightning { color: var(--accent-blue); }
 
-            <!-- Servicio 2: Bots -->
-            <div class="service-card">
-                <div class="card-icon">🤖</div>
-                <h3>Sistemas & Bots de Discord</h3>
-                <p>Automatización total de tu comunidad. Verificación de cuentas, pasarelas de pago, soporte mediante tickets y moderación.</p>
-                <ul class="tech-stack">
-                    <li>Sincronización In-Game</li>
-                    <li>Sistemas de Tickets Avanzados</li>
-                    <li>Integración de Logs (LiteBans)</li>
-                    <li>Bases de datos YAML/MySQL</li>
-                </ul>
-                <a href="discord.html" class="card-link">Explorar Bots →</a>
-            </div>
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
 
-            <!-- Servicio 3: Desarrollo Extra (Mods/Anticheat) -->
-            <div class="service-card">
-                <div class="card-icon">⚙️</div>
-                <h3>Desarrollo Java & Modpacks</h3>
-                <p>Creación de plugins custom (Java/Skript) y compilación de modpacks orientados al rendimiento en clientes móviles y PC.</p>
-                <ul class="tech-stack">
-                    <li>Fabric Modpacks Custom</li>
-                    <li>Optimización PojavLauncher</li>
-                    <li>Flujos CI/CD (GitHub Actions)</li>
-                    <li>Eventos Condicionales & GUIs</li>
-                </ul>
-                <a href="#contacto" class="card-link">Cotizar Desarrollo →</a>
-            </div>
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
 
-        </section>
-    </main>
+.nav-links a:hover, .nav-links a.active {
+    color: var(--text-main);
+}
 
-    <footer class="site-footer">
-        <p>© 2026 Synthetix Labs. Operando infraestructuras de próxima generación.</p>
-    </footer>
+.staff-btn {
+    background: rgba(192, 132, 252, 0.1);
+    border: 1px solid var(--accent-purple);
+    color: var(--accent-purple) !important;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+}
 
-</body>
-</html>
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 5rem auto;
+}
+
+.tech-badge {
+    display: inline-block;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid var(--border-glow);
+    color: var(--accent-blue);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.2;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-section p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-primary, .btn-outline {
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 25px rgba(56, 189, 248, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--text-muted);
+}
+
+.btn-outline:hover {
+    border-color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Grid de Servicios */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background: var(--bg-panel);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    border-color: var(--accent-purple);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(192, 132, 252, 0.1);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.service-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+}
+
+.service-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Lista de Tecnologías estilo Terminal */
+.tech-stack {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.tech-stack li {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    background: rgba(56, 189, 248, 0.05);
+    padding: 0.4rem 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border-left: 2px solid var(--accent-blue);
+}
+
+.card-link {
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.service-card:hover .card-link {
+    color: var(--accent-purple);
+}
+
+.site-footer {
+    text-align: center;
+    padding: 3rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
