@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tienda Digital - Nitro, Spotify & Más</title>
+  <title>Nixer Store | Digital & Gaming</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -12,430 +12,487 @@
       theme: {
         extend: {
           colors: {
-            darkbg: '#0a0e17',
-            cardbg: '#121826',
-            cardborder: '#1e293b',
-            brandcyan: '#06b6d4',
-            brandcyanhover: '#0891b2',
-            discordblue: '#5865F2'
+            nxbg: '#05070b',
+            nxcard: '#0d1322',
+            nxborder: '#1e293b',
+            nxneon: '#00f2fe',
+            nxpurple: '#7928ca',
+            discord: '#5865F2'
+          },
+          boxShadow: {
+            'neon': '0 0 20px rgba(0, 242, 254, 0.15)',
+            'neon-hover': '0 0 25px rgba(0, 242, 254, 0.35)',
           }
         }
       }
     }
   </script>
-  <!-- FontAwesome Icons CDN -->
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    body { background-color: #0a0e17; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
-    .glass { background: rgba(18, 24, 38, 0.8); backdrop-filter: blur(12px); }
+    body { background-color: #05070b; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif; }
+    .glass-nav { background: rgba(5, 7, 11, 0.85); backdrop-filter: blur(16px); }
+    .glow-border { border: 1px solid rgba(30, 41, 59, 0.8); transition: all 0.3s ease; }
+    .glow-border:hover { border-color: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.2); }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#00f2fe] selection:text-black">
 
-  <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-40 border-b border-cardborder glass">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+  <!-- ================= HEADER / NAVBAR ================= -->
+  <header class="sticky top-0 z-50 glass-nav border-b border-nxborder">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
       
-      <!-- Logo -->
-      <a href="#" onclick="showSection('inicio')" class="flex items-center gap-2 text-xl font-bold tracking-wide text-white">
-        <i class="fa-solid fa-bolt text-brandcyan"></i>
-        <span>MI <span class="text-brandcyan">STORE</span></span>
-      </a>
+      <!-- Logo Único -->
+      <button onclick="cambiarSeccion('inicio')" class="flex items-center gap-2.5 text-lg font-black tracking-wider text-white group cursor-pointer bg-transparent border-none">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#00f2fe] to-[#4facfe] flex items-center justify-center text-black shadow-neon group-hover:scale-105 transition">
+          <i class="fa-solid fa-bolt-lightning text-base"></i>
+        </div>
+        <span>NIXER<span class="text-[#00f2fe]">STORE</span></span>
+      </button>
 
-      <!-- Iconos de Acción Derecha -->
+      <!-- Controles Derecha -->
       <div class="flex items-center gap-3">
+        
         <!-- Selector de Moneda / País -->
         <div class="relative">
-          <button id="currencyBtn" onclick="toggleCurrencyMenu()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cardbg border border-cardborder text-xs font-semibold hover:border-brandcyan transition">
-            <span id="currentFlag">🇵🇪</span>
-            <span id="currentCurrency">PEN</span>
+          <button id="btnMoneda" onclick="toggleMenuMoneda(event)" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-nxcard glow-border text-xs font-bold text-gray-200 cursor-pointer">
+            <span id="flagActual" class="text-sm">🇻🇪</span>
+            <span id="txtMoneda">USD/BS</span>
             <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
           </button>
           
-          <!-- Menu Monedas -->
-          <div id="currencyMenu" class="hidden absolute right-0 mt-2 w-48 bg-cardbg border border-cardborder rounded-xl shadow-2xl py-2 z-50">
-            <p class="px-3 py-1 text-[10px] text-gray-400 uppercase font-bold tracking-wider">Selecciona tu país / moneda</p>
-            <button onclick="setCurrency('🇵🇪', 'PEN', 'S/')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇵🇪 Perú (PEN)</button>
-            <button onclick="setCurrency('🇨🇱', 'CLP', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇨🇱 Chile (CLP)</button>
-            <button onclick="setCurrency('🇪🇨', 'USD', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇪🇨 Ecuador (USD)</button>
-            <button onclick="setCurrency('🇨🇴', 'COP', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇨🇴 Colombia (COP)</button>
-            <button onclick="setCurrency('🇲🇽', 'MXN', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇲🇽 México (MXN)</button>
-            <button onclick="setCurrency('🇦🇷', 'ARS', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇦🇷 Argentina (ARS)</button>
-            <button onclick="setCurrency('🇻🇪', 'USD/BS', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🇻🇪 Venezuela (PagoMóvil/Zinli)</button>
-            <button onclick="setCurrency('🟢', 'USDT', '$')" class="w-full px-3 py-2 text-left text-sm hover:bg-cardborder flex items-center gap-2">🟢 USDT (Crypto)</button>
+          <!-- Dropdown Monedas -->
+          <div id="menuMoneda" class="hidden absolute right-0 mt-2 w-52 bg-nxcard glow-border rounded-2xl shadow-2xl py-2 z-50">
+            <div class="px-3 py-1.5 text-[10px] text-gray-400 uppercase font-extrabold tracking-wider border-b border-nxborder mb-1">Método / Moneda</div>
+            <button onclick="seleccionarMoneda('🇻🇪', 'USD/BS', '$', 1)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇻🇪 Venezuela (PagoMóvil/Zinli)</button>
+            <button onclick="seleccionarMoneda('🇵🇪', 'PEN', 'S/', 3.8)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇵🇪 Perú (PEN)</button>
+            <button onclick="seleccionarMoneda('🇨🇱', 'CLP', '$', 950)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇨🇱 Chile (CLP)</button>
+            <button onclick="seleccionarMoneda('🇨🇴', 'COP', '$', 4100)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇨🇴 Colombia (COP)</button>
+            <button onclick="seleccionarMoneda('🟢', 'USDT', 'USDT', 1)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🟢 USDT (Cripto)</button>
           </div>
         </div>
 
-        <!-- Usuario / Cuenta -->
-        <button onclick="showSection('cuenta')" class="p-2 rounded-lg bg-cardbg border border-cardborder hover:border-brandcyan text-gray-300 hover:text-white transition">
-          <i class="fa-regular fa-user"></i>
+        <!-- Botón Cuenta -->
+        <button onclick="cambiarSeccion('cuenta')" class="w-10 h-10 rounded-xl bg-nxcard glow-border flex items-center justify-center text-gray-300 hover:text-white cursor-pointer transition">
+          <i class="fa-regular fa-user text-sm"></i>
         </button>
 
-        <!-- Botón Menú Lateral -->
-        <button onclick="toggleSidebar()" class="p-2 rounded-lg bg-cardbg border border-cardborder hover:border-brandcyan text-gray-300 hover:text-white transition">
-          <i class="fa-solid fa-bars text-lg"></i>
+        <!-- Botón Menú Hamburguesa -->
+        <button onclick="toggleSidebar(event)" class="w-10 h-10 rounded-xl bg-nxcard glow-border flex items-center justify-center text-[#00f2fe] hover:bg-[#00f2fe]/10 cursor-pointer transition">
+          <i class="fa-solid fa-bars-staggered text-base"></i>
         </button>
+
       </div>
-
     </div>
   </header>
 
-  <!-- ================= SIDEBAR MENÚ LATERAL ================= -->
-  <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-50 hidden transition-opacity"></div>
-  <aside id="sidebar" class="fixed top-0 right-0 w-72 h-full bg-cardbg border-l border-cardborder z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-5">
+  <!-- ================= SIDEBAR LATERAL (DRAWER) ================= -->
+  <div id="overlaySidebar" onclick="toggleSidebar()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <aside id="sidebar" class="fixed top-0 right-0 w-80 h-full bg-nxcard border-l border-nxborder z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
     <div>
-      <div class="flex items-center justify-between pb-4 border-b border-cardborder">
-        <span class="font-bold text-lg text-white">Navegación</span>
-        <button onclick="toggleSidebar()" class="text-gray-400 hover:text-white">
-          <i class="fa-solid fa-xmark text-xl"></i>
+      <div class="flex items-center justify-between pb-5 border-b border-nxborder">
+        <div class="flex items-center gap-2 font-black text-white">
+          <i class="fa-solid fa-gamepad text-[#00f2fe]"></i> NIXER MENU
+        </div>
+        <button onclick="toggleSidebar()" class="w-8 h-8 rounded-lg bg-nxborder/50 flex items-center justify-center text-gray-400 hover:text-white cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
-      <nav class="mt-6 flex flex-col gap-3">
-        <a href="#" onclick="showSection('inicio'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
-          <i class="fa-solid fa-house text-brandcyan"></i> Inicio
-        </a>
-        <a href="#" onclick="showSection('catalogo'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
-          <i class="fa-solid fa-store text-brandcyan"></i> Catálogo
-        </a>
-        <a href="#" onclick="showSection('followers'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
-          <i class="fa-solid fa-heart text-pink-500"></i> Followers / Redes
-        </a>
-        <a href="#" onclick="showSection('cuenta'); toggleSidebar();" class="px-4 py-2.5 rounded-lg hover:bg-cardborder text-gray-300 hover:text-white font-medium flex items-center gap-3">
-          <i class="fa-solid fa-user-gear text-brandcyan"></i> Mi cuenta
-        </a>
+      <nav class="mt-6 flex flex-col gap-2">
+        <button onclick="cambiarSeccion('inicio'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
+          <i class="fa-solid fa-house text-xs w-5 text-center"></i> Inicio
+        </button>
+        <button onclick="cambiarSeccion('catalogo'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
+          <i class="fa-solid fa-store text-xs w-5 text-center"></i> Catálogo Completo
+        </button>
+        <button onclick="cambiarSeccion('followers'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
+          <i class="fa-solid fa-heart text-xs w-5 text-center text-pink-400"></i> Followers & Redes
+        </button>
+        <button onclick="cambiarSeccion('cuenta'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
+          <i class="fa-solid fa-user-gear text-xs w-5 text-center"></i> Mi Cuenta / Login
+        </button>
       </nav>
     </div>
 
-    <!-- Botón Discord en Menú -->
-    <a href="https://discord.gg" target="_blank" class="w-full py-3 bg-discordblue hover:bg-indigo-600 text-white rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg transition">
-      <i class="fa-brands fa-discord text-xl"></i> Unirse al Discord
-    </a>
+    <div class="pt-4 border-t border-nxborder">
+      <a href="https://discord.gg" target="_blank" class="w-full py-3.5 bg-discord hover:bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-discord/30 transition text-sm">
+        <i class="fa-brands fa-discord text-lg"></i> Soporte en Discord
+      </a>
+    </div>
   </aside>
 
-  <!-- ================= SECCIÓN 1: INICIO Y CATÁLOGO ================= -->
-  <main id="section-inicio" class="max-w-7xl mx-auto px-4 py-8 flex-1">
+  <!-- ================= SECCIÓN 1: INICIO ================= -->
+  <main id="sec-inicio" class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
     
-    <!-- Hero Banner -->
-    <div class="text-center py-10 px-4 rounded-3xl bg-gradient-to-b from-cardbg to-transparent border border-cardborder mb-10">
-      <span class="bg-brandcyan/10 text-brandcyan text-xs font-bold px-3 py-1 rounded-full border border-brandcyan/30">
-        ⚡ Entrega Instantánea & Soporte 24/7
-      </span>
-      <h1 class="text-3xl md:text-5xl font-extrabold mt-4 mb-3 tracking-tight">
-        Suscripciones Digitales & <span class="text-brandcyan">Servicios Gamer</span>
-      </h1>
-      <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto mb-6">
-        Consigue Discord Nitro, Spotify Premium y membresías al mejor precio con métodos de pago locales.
-      </p>
+    <!-- Hero Banner Futurista -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-nxcard via-[#09101d] to-nxcard glow-border p-8 md:p-12 mb-12 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="absolute -right-20 -bottom-20 w-72 h-72 bg-[#00f2fe]/10 rounded-full blur-3xl pointer-events-none"></div>
       
-      <div class="flex flex-wrap justify-center gap-3">
-        <button onclick="showSection('catalogo')" class="px-6 py-3 rounded-xl bg-brandcyan hover:bg-brandcyanhover font-bold text-black transition flex items-center gap-2">
-          Ver Productos <i class="fa-solid fa-arrow-right text-xs"></i>
-        </button>
-        <a href="https://discord.gg" target="_blank" class="px-6 py-3 rounded-xl bg-cardbg hover:bg-cardborder border border-cardborder font-semibold text-white transition flex items-center gap-2">
-          <i class="fa-brands fa-discord text-discordblue"></i> Discord
-        </a>
+      <div class="max-w-2xl z-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#00f2fe]/10 border border-[#00f2fe]/30 text-[#00f2fe] text-xs font-bold mb-4">
+          <span class="w-2 h-2 rounded-full bg-[#00f2fe] animate-pulse"></span> Sistema Automatizado 24/7
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-4 leading-none">
+          DISCORD NITRO, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f2fe] to-[#7928ca]">SPOTIFY & MÁS</span>
+        </h1>
+        <p class="text-gray-400 text-sm md:text-base mb-8">
+          Adquiere tus servicios digitales de forma instantánea. Paga de manera segura con tu moneda local o métodos en Venezuela.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+          <button onclick="cambiarSeccion('catalogo')" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#00f2fe] to-[#4facfe] text-black font-black text-sm shadow-neon hover:shadow-neon-hover transition cursor-pointer flex items-center gap-2">
+            Ver Catálogo <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <a href="https://discord.gg" target="_blank" class="px-7 py-3.5 rounded-2xl bg-nxcard glow-border text-white font-bold text-sm hover:border-[#00f2fe] transition flex items-center gap-2">
+            <i class="fa-brands fa-discord text-discord"></i> Discord
+          </a>
+        </div>
       </div>
 
-      <!-- Badges Informativos -->
-      <div class="flex flex-wrap justify-center gap-4 mt-8 text-xs text-gray-400">
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Pago 100% Seguro</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-yellow-400"></i> Entrega Rápida</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-brandcyan"></i> Garantía Incluida</span>
+      <!-- Tarjeta Flotante Destacada -->
+      <div class="w-full md:w-80 bg-nxbg/80 backdrop-blur glow-border rounded-2xl p-6 text-center z-10">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center mx-auto mb-4 text-xl">
+          <i class="fa-brands fa-discord"></i>
+        </div>
+        <h3 class="font-black text-lg mb-1">Discord Nitro 3 Meses</h3>
+        <p class="text-xs text-gray-400 mb-4">Incluye 2 Boosts y emojis globales.</p>
+        <div class="text-2xl font-black text-[#00f2fe] mb-4">
+          <span class="simboloMoneda">$</span><span class="precioCalc" data-usd="3.50">3.50</span>
+        </div>
+        <button onclick="mostrarAlerta('¡Discord Nitro añadido al carrito con éxito!')" class="w-full py-3 rounded-xl bg-[#00f2fe] hover:bg-[#00f2fe]/80 text-black font-extrabold text-xs transition cursor-pointer">
+          Comprar Ahora
+        </button>
       </div>
     </div>
 
-    <!-- Catálogo Destacado (Nitro & Spotify) -->
+    <!-- Grid Productos Destacados -->
     <div class="mb-12">
-      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-        <i class="fa-solid fa-fire text-amber-500"></i> Productos Destacados
-      </h2>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-black flex items-center gap-2.5">
+          <i class="fa-solid fa-fire text-amber-400"></i> Destacados del Mes
+        </h2>
+        <button onclick="cambiarSeccion('catalogo')" class="text-xs font-bold text-[#00f2fe] hover:underline cursor-pointer">Ver todos →</button>
+      </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <!-- Tarjeta Discord Nitro 3 Meses -->
-        <div class="bg-cardbg border border-cardborder rounded-2xl p-5 hover:border-brandcyan transition flex flex-col justify-between">
+        <!-- Item 1 -->
+        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-1 transition duration-300">
           <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
-                <i class="fa-brands fa-discord"></i> Discord
-              </span>
-              <span class="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded">En Stock</span>
+            <div class="flex justify-between items-center mb-4">
+              <span class="px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-black uppercase">Discord</span>
+              <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">En Stock</span>
             </div>
-            <h3 class="text-xl font-bold mb-1">Discord Nitro (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-4">Suscripción completa con 2 Boosts, emojis personalizados y mayor calidad de transmisión.</p>
+            <h3 class="text-lg font-black mb-1">Nitro Basic (1 Mes)</h3>
+            <p class="text-xs text-gray-400 mb-6">Insignia de perfil y uso de emojis en cualquier server.</p>
           </div>
           <div>
-            <div class="flex items-baseline justify-between mb-4">
-              <span class="text-2xl font-extrabold text-white"><span class="currencySymbol">S/</span> <span class="productPrice" data-base="15">15.00</span></span>
-              <span class="text-xs text-gray-500 line-through"><span class="currencySymbol">S/</span> 30.00</span>
+            <div class="flex items-baseline justify-between mb-4 pt-4 border-t border-nxborder">
+              <span class="text-xs text-gray-400 font-bold">Precio:</span>
+              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="1.80">1.80</span></span>
             </div>
-            <button onclick="alert('Producto agregado al carrito')" class="w-full py-2.5 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2">
-              <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar
+            <button onclick="mostrarAlerta('¡Nitro Basic añadido!')" class="w-full py-3 rounded-xl bg-[#00f2fe]/10 hover:bg-[#00f2fe] text-[#00f2fe] hover:text-black font-black text-xs transition cursor-pointer border border-[#00f2fe]/30">
+              Comprar Producto
             </button>
           </div>
         </div>
 
-        <!-- Tarjeta Discord Nitro Classic / Basic -->
-        <div class="bg-cardbg border border-cardborder rounded-2xl p-5 hover:border-brandcyan transition flex flex-col justify-between">
+        <!-- Item 2 -->
+        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-1 transition duration-300">
           <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
-                <i class="fa-brands fa-discord"></i> Discord
-              </span>
-              <span class="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded">En Stock</span>
+            <div class="flex justify-between items-center mb-4">
+              <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">Streaming</span>
+              <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">En Stock</span>
             </div>
-            <h3 class="text-xl font-bold mb-1">Nitro Basic (1 Mes)</h3>
-            <p class="text-xs text-gray-400 mb-4">Acceso a emojis en cualquier servidor y badge exclusivo de perfil.</p>
+            <h3 class="text-lg font-black mb-1">Spotify Premium (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-6">Música sin anuncios y descargas ilimitadas en tu cuenta.</p>
           </div>
           <div>
-            <div class="flex items-baseline justify-between mb-4">
-              <span class="text-2xl font-extrabold text-white"><span class="currencySymbol">S/</span> <span class="productPrice" data-base="8">8.00</span></span>
+            <div class="flex items-baseline justify-between mb-4 pt-4 border-t border-nxborder">
+              <span class="text-xs text-gray-400 font-bold">Precio:</span>
+              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="2.50">2.50</span></span>
             </div>
-            <button onclick="alert('Producto agregado al carrito')" class="w-full py-2.5 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2">
-              <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar
+            <button onclick="mostrarAlerta('¡Spotify añadido!')" class="w-full py-3 rounded-xl bg-[#00f2fe]/10 hover:bg-[#00f2fe] text-[#00f2fe] hover:text-black font-black text-xs transition cursor-pointer border border-[#00f2fe]/30">
+              Comprar Producto
             </button>
           </div>
         </div>
 
-        <!-- Tarjeta Spotify Premium 3 Meses -->
-        <div class="bg-cardbg border border-cardborder rounded-2xl p-5 hover:border-brandcyan transition flex flex-col justify-between">
+        <!-- Item 3 -->
+        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-1 transition duration-300">
           <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
-                <i class="fa-brands fa-spotify"></i> Spotify
-              </span>
-              <span class="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded">En Stock</span>
+            <div class="flex justify-between items-center mb-4">
+              <span class="px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-black uppercase">Minecraft</span>
+              <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">En Stock</span>
             </div>
-            <h3 class="text-xl font-bold mb-1">Spotify Premium (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-4">Música sin anuncios, descargas offline y calidad de audio sin límites en tu cuenta.</p>
+            <h3 class="text-lg font-black mb-1">Minecraft Full Access</h3>
+            <p class="text-xs text-gray-400 mb-6">Cambia correo, skin y contraseña al instante.</p>
           </div>
           <div>
-            <div class="flex items-baseline justify-between mb-4">
-              <span class="text-2xl font-extrabold text-white"><span class="currencySymbol">S/</span> <span class="productPrice" data-base="12">12.00</span></span>
-              <span class="text-xs text-gray-500 line-through"><span class="currencySymbol">S/</span> 25.00</span>
+            <div class="flex items-baseline justify-between mb-4 pt-4 border-t border-nxborder">
+              <span class="text-xs text-gray-400 font-bold">Precio:</span>
+              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="4.00">4.00</span></span>
             </div>
-            <button onclick="alert('Producto agregado al carrito')" class="w-full py-2.5 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2">
-              <i class="fa-solid fa-cart-shopping text-sm"></i> Comprar
+            <button onclick="mostrarAlerta('¡Minecraft FA añadido!')" class="w-full py-3 rounded-xl bg-[#00f2fe]/10 hover:bg-[#00f2fe] text-[#00f2fe] hover:text-black font-black text-xs transition cursor-pointer border border-[#00f2fe]/30">
+              Comprar Producto
             </button>
           </div>
         </div>
 
       </div>
     </div>
-
   </main>
 
-  <!-- ================= SECCIÓN 2: FOLLOWERS / REDES ================= -->
-  <main id="section-followers" class="max-w-4xl mx-auto px-4 py-8 flex-1 hidden">
+  <!-- ================= SECCIÓN 2: CATÁLOGO COMPLETO ================= -->
+  <main id="sec-catalogo" class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full hidden">
+    <div class="mb-8">
+      <h1 class="text-3xl font-black mb-2">Catálogo General</h1>
+      <p class="text-gray-400 text-sm">Explora por categorías y filtra según lo que necesites.</p>
+    </div>
+
+    <!-- Botones Filtro Catálogo -->
+    <div class="flex flex-wrap gap-2 mb-8">
+      <button onclick="filtrarCat('todo')" id="f-todo" class="px-4 py-2 rounded-xl bg-[#00f2fe] text-black font-black text-xs cursor-pointer transition">Todo</button>
+      <button onclick="filtrarCat('discord')" id="f-discord" class="px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition">Discord Nitro</button>
+      <button onclick="filtrarCat('streaming')" id="f-streaming" class="px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition">Streaming</button>
+      <button onclick="filtrarCat('minecraft')" id="f-minecraft" class="px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition">Minecraft</button>
+    </div>
+
+    <!-- Grid de Artículos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gridCatalogo">
+      
+      <div class="tarjeta-prod" data-cat="discord">
+        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between h-full">
+          <div>
+            <span class="text-[10px] font-black uppercase text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg">Discord</span>
+            <h3 class="text-lg font-black mt-3 mb-1">Discord Nitro (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-6">Cuenta completa con 2 Boosts.</p>
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-4 pt-3 border-t border-nxborder">
+              <span class="text-xs text-gray-400">Precio:</span>
+              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="3.50">3.50</span></span>
+            </div>
+            <button onclick="mostrarAlerta('Producto añadido al carrito')" class="w-full py-3 rounded-xl bg-[#00f2fe] text-black font-black text-xs hover:bg-[#00f2fe]/80 transition cursor-pointer">Comprar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjeta-prod" data-cat="streaming">
+        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between h-full">
+          <div>
+            <span class="text-[10px] font-black uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg">Streaming</span>
+            <h3 class="text-lg font-black mt-3 mb-1">Spotify Premium (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-6">Individual sin anuncios.</p>
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-4 pt-3 border-t border-nxborder">
+              <span class="text-xs text-gray-400">Precio:</span>
+              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="2.50">2.50</span></span>
+            </div>
+            <button onclick="mostrarAlerta('Producto añadido al carrito')" class="w-full py-3 rounded-xl bg-[#00f2fe] text-black font-black text-xs hover:bg-[#00f2fe]/80 transition cursor-pointer">Comprar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjeta-prod" data-cat="minecraft">
+        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between h-full">
+          <div>
+            <span class="text-[10px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg">Minecraft</span>
+            <h3 class="text-lg font-black mt-3 mb-1">Capa OptiFine o Custom</h3>
+            <p class="text-xs text-gray-400 mb-6>Personaliza tu skin en servidores.</p>
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-4 pt-3 border-t border-nxborder">
+              <span class="text-xs text-gray-400">Precio:</span>
+              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="2.00">2.00</span></span>
+            </div>
+            <button onclick="mostrarAlerta('Producto añadido al carrito')" class="w-full py-3 rounded-xl bg-[#00f2fe] text-black font-black text-xs hover:bg-[#00f2fe]/80 transition cursor-pointer">Comprar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= SECCIÓN 3: FOLLOWERS & REDES ================= -->
+  <main id="sec-followers" class="max-w-3xl mx-auto px-4 py-10 flex-1 w-full hidden">
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-extrabold mb-2">Impulsa tus redes sociales</h1>
-      <p class="text-gray-400 text-sm">Selecciona la plataforma, ingresa el enlace de tu perfil y ajusta la cantidad.</p>
+      <h1 class="text-3xl font-black mb-2">Impulsa tus Redes Sociales</h1>
+      <p class="text-gray-400 text-sm">Selecciona tu plataforma, ingresa tu enlace y calcula al instante.</p>
     </div>
 
-    <!-- Tabs Redes -->
-    <div class="flex flex-wrap justify-center gap-2 mb-8">
-      <button class="px-4 py-2 rounded-xl bg-brandcyan text-black font-bold text-sm flex items-center gap-2">
-        <i class="fa-brands fa-tiktok"></i> TikTok
-      </button>
-      <button class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder text-gray-300 hover:text-white text-sm flex items-center gap-2">
-        <i class="fa-brands fa-instagram text-pink-500"></i> Instagram
-      </button>
-      <button class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder text-gray-300 hover:text-white text-sm flex items-center gap-2">
-        <i class="fa-brands fa-youtube text-red-500"></i> YouTube
-      </button>
-      <button class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder text-gray-300 hover:text-white text-sm flex items-center gap-2">
-        <i class="fa-brands fa-telegram text-sky-400"></i> Telegram
-      </button>
-    </div>
-
-    <!-- Formulario de Pedido -->
-    <div class="bg-cardbg border border-cardborder rounded-2xl p-6 max-w-xl mx-auto space-y-5">
+    <div class="bg-nxcard glow-border rounded-3xl p-6 md:p-8 space-y-6">
       <div>
-        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">1. Servicio</label>
-        <select class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none">
-          <option>Followers / Seguidores ($4 USD / 1K)</option>
-          <option>Likes / Me Gusta ($2 USD / 1K)</option>
-          <option>Vistas / Views ($1 USD / 1K)</option>
+        <label class="block text-xs font-black uppercase text-gray-400 mb-2">Plataforma</label>
+        <div class="grid grid-cols-3 gap-2">
+          <button class="py-2.5 px-3 rounded-xl bg-[#00f2fe]/10 border border-[#00f2fe] text-[#00f2fe] font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"><i class="fa-brands fa-tiktok"></i> TikTok</button>
+          <button class="py-2.5 px-3 rounded-xl bg-nxbg border border-nxborder text-gray-300 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:border-gray-500"><i class="fa-brands fa-instagram text-pink-400"></i> Instagram</button>
+          <button class="py-2.5 px-3 rounded-xl bg-nxbg border border-nxborder text-gray-300 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:border-gray-500"><i class="fa-brands fa-youtube text-red-500"></i> YouTube</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-black uppercase text-gray-400 mb-2">Servicio</label>
+        <select class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs font-bold text-white focus:border-[#00f2fe] outline-none">
+          <option>Seguidores / Followers (Alta calidad)</option>
+          <option>Likes / Me Gusta</option>
+          <option>Vistas / Views</option>
         </select>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">2. Tu Enlace / Usuario</label>
-        <input type="text" placeholder="https://tiktok.com/@tu_usuario" class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none" />
+        <label class="block text-xs font-black uppercase text-gray-400 mb-2">Enlace de tu perfil o publicación</label>
+        <input type="text" placeholder="https://tiktok.com/@tuusuario" class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs text-white focus:border-[#00f2fe] outline-none" />
       </div>
 
-      <div>
-        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">3. Cantidad</label>
-        <input type="number" value="1000" min="100" step="100" class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none mb-3" />
-        <div class="flex gap-2">
-          <button class="px-3 py-1 bg-cardborder rounded-lg text-xs font-semibold">500</button>
-          <button class="px-3 py-1 bg-brandcyan text-black rounded-lg text-xs font-bold">1.000</button>
-          <button class="px-3 py-1 bg-cardborder rounded-lg text-xs font-semibold">2.500</button>
-          <button class="px-3 py-1 bg-cardborder rounded-lg text-xs font-semibold">5.000</button>
-        </div>
-      </div>
-
-      <div class="pt-4 border-t border-cardborder flex items-center justify-between">
+      <div class="pt-4 border-t border-nxborder flex items-center justify-between">
         <div>
-          <span class="text-xs text-gray-400 block">Total a pagar:</span>
-          <span class="text-2xl font-black text-brandcyan">$4.00 USD</span>
+          <span class="text-xs text-gray-400 block font-bold">Total a pagar:</span>
+          <span class="text-2xl font-black text-[#00f2fe]"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="3.00">3.00</span></span>
         </div>
-        <button onclick="alert('Procesando pedido de seguidores...')" class="px-6 py-3 bg-brandcyan hover:bg-brandcyanhover text-black font-bold rounded-xl transition">
-          Ordenar Ahora
+        <button onclick="mostrarAlerta('¡Orden de seguidores generada!')" class="px-6 py-3.5 bg-[#00f2fe] hover:bg-[#00f2fe]/80 text-black font-black text-xs rounded-xl transition cursor-pointer">
+          Procesar Pedido
         </button>
       </div>
     </div>
   </main>
 
-  <!-- ================= SECCIÓN 3: MI CUENTA / INICIAR SESIÓN ================= -->
-  <main id="section-cuenta" class="max-w-md mx-auto px-4 py-12 flex-1 hidden">
-    <div class="bg-cardbg border border-cardborder rounded-2xl p-6 sm:p-8">
+  <!-- ================= SECCIÓN 4: MI CUENTA / LOGIN ================= -->
+  <main id="sec-cuenta" class="max-w-md mx-auto px-4 py-12 flex-1 w-full hidden">
+    <div class="bg-nxcard glow-border rounded-3xl p-6 md:p-8">
       
       <div class="text-center mb-6">
-        <span class="text-xs font-bold text-brandcyan uppercase tracking-widest">Tu Espacio</span>
-        <h2 class="text-2xl font-extrabold mt-1">Mi Cuenta</h2>
-        <p class="text-xs text-gray-400 mt-1">Inicia sesión para ver tus compras y recibir productos.</p>
+        <div class="w-12 h-12 rounded-2xl bg-[#00f2fe]/10 border border-[#00f2fe]/30 text-[#00f2fe] flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h2 class="text-2xl font-black">Mi Cuenta</h2>
+        <p class="text-xs text-gray-400 mt-1">Inicia sesión para gestionar tus compras y entregas.</p>
       </div>
 
-      <!-- Toggle Tabs -->
-      <div class="flex bg-darkbg p-1 rounded-xl mb-6 border border-cardborder">
-        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg text-xs font-bold bg-cardbg text-white shadow">
-          Iniciar sesión
-        </button>
-        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white">
-          Crear cuenta
-        </button>
-      </div>
-
-      <!-- Discord Login Button -->
-      <a href="#" onclick="alert('Iniciando sesión con Discord...')" class="w-full py-3 bg-discordblue hover:bg-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 mb-5 transition text-sm">
-        <i class="fa-brands fa-discord text-lg"></i> Entrar con Discord
+      <!-- Botón Discord Login -->
+      <a href="#" onclick="mostrarAlerta('Conectando con Discord...'); return false;" class="w-full py-3.5 bg-discord hover:bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 mb-6 shadow-lg shadow-discord/25 transition text-xs cursor-pointer">
+        <i class="fa-brands fa-discord text-base"></i> Entrar con Discord
       </a>
 
-      <div class="relative flex py-2 items-center mb-5">
-        <div class="flex-grow border-t border-cardborder"></div>
-        <span class="flex-shrink mx-3 text-gray-500 text-xs">o con tu correo</span>
-        <div class="flex-grow border-t border-cardborder"></div>
+      <div class="relative flex py-2 items-center mb-6">
+        <div class="flex-grow border-t border-nxborder"></div>
+        <span class="flex-shrink mx-3 text-gray-500 text-[10px] font-black uppercase">O con correo</span>
+        <div class="flex-grow border-t border-nxborder"></div>
       </div>
 
-      <!-- Formulario Login -->
-      <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+      <form onsubmit="event.preventDefault(); mostrarAlerta('¡Inicio de sesión exitoso!'); cambiarSeccion('inicio');" class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-gray-400 mb-1">Correo electrónico</label>
-          <input type="email" placeholder="tucorreo@ejemplo.com" required class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none" />
+          <label class="block text-xs font-bold text-gray-400 mb-1.5">Correo electrónico</label>
+          <input type="email" required placeholder="tu@correo.com" class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs text-white focus:border-[#00f2fe] outline-none" />
         </div>
-
         <div>
-          <label class="block text-xs font-medium text-gray-400 mb-1">Contraseña</label>
-          <input type="password" placeholder="Tu contraseña" required class="w-full bg-darkbg border border-cardborder rounded-xl p-3 text-sm focus:border-brandcyan outline-none" />
+          <label class="block text-xs font-bold text-gray-400 mb-1.5">Contraseña</label>
+          <input type="password" required placeholder="••••••••" class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs text-white focus:border-[#00f2fe] outline-none" />
         </div>
-
-        <button type="submit" class="w-full py-3 rounded-xl bg-brandcyan hover:bg-brandcyanhover text-black font-bold transition flex items-center justify-center gap-2 text-sm">
-          <i class="fa-solid fa-right-to-bracket"></i> Entrar
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00f2fe] hover:bg-[#00f2fe]/80 text-black font-black text-xs transition cursor-pointer shadow-neon">
+          Iniciar Sesión
         </button>
       </form>
-
-      <div class="text-center mt-4">
-        <a href="#" class="text-xs text-gray-400 hover:text-brandcyan transition">¿Olvidaste tu contraseña?</a>
-      </div>
-
     </div>
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-cardborder bg-cardbg py-6 mt-12">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 space-y-2">
-      <p>&copy; 2026 Store Digital. Todos los derechos reservados.</p>
-      <div class="flex justify-center gap-4 text-gray-400">
-        <a href="#" class="hover:text-white">Términos</a>
-        <a href="#" class="hover:text-white">Privacidad</a>
-        <a href="#" class="hover:text-white">Soporte</a>
-      </div>
-    </div>
+  <footer class="border-t border-nxborder py-6 bg-nxcard/50 mt-12 text-center text-xs text-gray-500">
+    <p>&copy; 2026 Nixer Store. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- ================= JAVASCRIPT ================= -->
+  <!-- ================= JAVASCRIPT FUNCIONAL ================= -->
   <script>
-    // Cambio entre Secciones principales (Inicio, Followers, Mi Cuenta)
-    function showSection(sectionId) {
-      document.getElementById('section-inicio').classList.add('hidden');
-      document.getElementById('section-followers').classList.add('hidden');
-      document.getElementById('section-cuenta').classList.add('hidden');
+    let multiplicadorActual = 1;
+    let simboloActual = '$';
 
-      if (sectionId === 'inicio' || sectionId === 'catalogo') {
-        document.getElementById('section-inicio').classList.remove('hidden');
-      } else if (sectionId === 'followers') {
-        document.getElementById('section-followers').classList.remove('hidden');
-      } else if (sectionId === 'cuenta') {
-        document.getElementById('section-cuenta').classList.remove('hidden');
-      }
+    // Cambiar entre vistas de la tienda
+    function cambiarSeccion(id) {
+      const secciones = ['inicio', 'catalogo', 'followers', 'cuenta'];
+      secciones.forEach(s => {
+        const el = document.getElementById('sec-' + s);
+        if (el) el.classList.add('hidden');
+      });
+      const objetivo = document.getElementById('sec-' + id);
+      if (objetivo) objetivo.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Menú Sidebar Móvil
-    function toggleSidebar() {
+    // Toggle menú lateral (Drawer)
+    function toggleSidebar(e) {
+      if(e) e.stopPropagation();
       const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
+      const overlay = document.getElementById('overlaySidebar');
       sidebar.classList.toggle('translate-x-full');
       overlay.classList.toggle('hidden');
     }
 
-    // Toggle Dropdown Moneda
-    function toggleCurrencyMenu() {
-      const menu = document.getElementById('currencyMenu');
+    // Toggle dropdown moneda
+    function toggleMenuMoneda(e) {
+      if(e) e.stopPropagation();
+      const menu = document.getElementById('menuMoneda');
       menu.classList.toggle('hidden');
     }
 
-    // Selector de Moneda y conversión simple
-    const rates = {
-      'PEN': { flag: '🇵🇪', symbol: 'S/', multiplier: 1 },
-      'CLP': { flag: '🇨🇱', symbol: '$', multiplier: 250 },
-      'USD': { flag: '🇪🇨', symbol: '$', multiplier: 0.27 },
-      'COP': { flag: '🇨🇴', symbol: '$', multiplier: 1050 },
-      'MXN': { flag: '🇲🇽', symbol: '$', multiplier: 4.8 },
-      'ARS': { flag: '🇦🇷', symbol: '$', multiplier: 350 },
-      'USD/BS': { flag: '🇻🇪', symbol: '$', multiplier: 0.27 },
-      'USDT': { flag: '🟢', symbol: '$', multiplier: 0.27 }
-    };
+    // Cerrar menús al hacer click fuera
+    window.addEventListener('click', () => {
+      document.getElementById('menuMoneda').classList.add('hidden');
+    });
 
-    function setCurrency(flag, currencyKey, symbol) {
-      document.getElementById('currentFlag').textContent = flag;
-      document.getElementById('currentCurrency').textContent = currencyKey;
-      document.getElementById('currencyMenu').classList.add('hidden');
+    // Seleccionar Moneda y convertir precios automáticamente
+    function seleccionarMoneda(bandera, codigo, simbolo, tasa) {
+      document.getElementById('flagActual').textContent = bandera;
+      document.getElementById('txtMoneda').textContent = codigo;
+      simboloActual = simbolo;
+      multiplicadorActual = tasa;
 
-      const rate = rates[currencyKey] || rates['PEN'];
-      
       // Actualizar símbolos
-      document.querySelectorAll('.currencySymbol').forEach(el => el.textContent = rate.symbol);
-      
-      // Actualizar precios
-      document.querySelectorAll('.productPrice').forEach(el => {
-        const base = parseFloat(el.getAttribute('data-base'));
-        const converted = (base * rate.multiplier).toFixed(2);
-        el.textContent = converted;
+      document.querySelectorAll('.simboloMoneda').forEach(el => {
+        el.textContent = simbolo + ' ';
+      });
+
+      // Recalcular montos
+      document.querySelectorAll('.precioCalc').forEach(el => {
+        const usdBase = parseFloat(el.getAttribute('data-usd'));
+        const convertido = (usdBase * tasa).toFixed(2);
+        el.textContent = convertido;
       });
     }
 
-    // Cambio de Tabs Login / Registro
-    function switchAuthTab(type) {
-      const loginBtn = document.getElementById('tabLoginBtn');
-      const regBtn = document.getElementById('tabRegisterBtn');
+    // Filtrar catálogo por categoría
+    function filtrarCat(categoria) {
+      // Cambiar diseño de botones de filtro
+      ['todo', 'discord', 'streaming', 'minecraft'].forEach(c => {
+        const btn = document.getElementById('f-' + c);
+        if(btn) {
+          if(c === categoria) {
+            btn.className = "px-4 py-2 rounded-xl bg-[#00f2fe] text-black font-black text-xs cursor-pointer transition";
+          } else {
+            btn.className = "px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition";
+          }
+        }
+      });
 
-      if (type === 'login') {
-        loginBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold bg-cardbg text-white shadow";
-        regBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white";
-      } else {
-        regBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold bg-cardbg text-white shadow";
-        loginBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 hover:text-white";
-      }
+      // Filtrar tarjetas
+      document.querySelectorAll('.tarjeta-prod').forEach(card => {
+        if(categoria === 'todo' || card.getAttribute('data-cat') === categoria) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
 
-    // Submit de Login
-    function handleAuth(e) {
-      e.preventDefault();
-      alert('¡Sesión iniciada correctamente!');
-      showSection('inicio');
+    // Sistema de notificaciones/alertas funcionales
+    function mostrarAlerta(mensaje) {
+      const alerta = document.createElement('div');
+      alerta.className = "fixed bottom-6 right-6 bg-[#00f2fe] text-black font-black px-6 py-3.5 rounded-2xl shadow-2xl z-50 animate-bounce text-xs flex items-center gap-3";
+      alerta.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i> ${mensaje}`;
+      document.body.appendChild(alerta);
+      setTimeout(() => {
+        alerta.remove();
+      }, 3000);
     }
   </script>
 </body>
