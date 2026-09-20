@@ -3,88 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synthetix Labs | Ingeniería de alto rendimiento</title>
-    <!-- Tu archivo de estilos -->
+    <title>Synthetix Labs | Studio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- ==========================================================
-       CABECERA Y BOTÓN PARA ABRIR EL MENÚ MÓVIL
-       ========================================================== -->
-    <header>
-        <div class="logo">⚡ SYNTHETIX LABS</div>
-        <!-- Botón que activa el menú drawer -->
-        <button class="menu-toggle-btn" onclick="toggleSynthDrawer()">☰</button>
-    </header>
-
-    <!-- ==========================================================
-       MENÚ DESPLEGABLE LATERAL (Inicia Oculto con la clase 'hidden')
-       ========================================================== -->
+    <!-- MENÚ LATERAL / DRAWER (Inicia oculto con la clase 'hidden' para corregir el bug visual) -->
     <div id="synthDrawer" class="synth-drawer-overlay hidden" onclick="toggleSynthDrawer(event)">
         <div class="synth-drawer-content" onclick="event.stopPropagation()">
-            <div class="synth-drawer-header">
-                <h3>Synthetix Nav</h3>
-                <button class="synth-drawer-close" onclick="toggleSynthDrawer()">&times;</button>
+            <div class="drawer-header">
+                <span class="portal-staff">Portal Staff</span>
+                <button class="close-btn" onclick="toggleSynthDrawer()">✕</button>
             </div>
-            <nav class="synth-drawer-links">
-                <a href="#inicio" onclick="toggleSynthDrawer()">Portal Principal</a>
-                <a href="#infraestructura" onclick="toggleSynthDrawer()">Estado de Infraestructura</a>
-                <a href="#pilares" onclick="toggleSynthDrawer()">Pilares Tecnológicos</a>
-                <a href="#tickets" onclick="toggleSynthDrawer()">Sistema de Tickets</a>
-            </nav>
+            
+            <div class="drawer-section">
+                <h4>NAVIGATION CORE</h4>
+                <a href="#inicio" onclick="toggleSynthDrawer()">• Plataforma Principal</a>
+                <a href="#infraestructura" onclick="toggleSynthDrawer()">• Estado de Infraestructura</a>
+                <a href="#pilares" onclick="toggleSynthDrawer()">• Pilares Tecnológicos</a>
+                <a href="#tickets" onclick="toggleSynthDrawer()">• Sistema de Tickets</a>
+            </div>
+
+            <div class="drawer-section">
+                <h4>ESTADO DE INFRAESTRUCTURA</h4>
+                <p>NixerMC Proxy (Velocity)</p>
+                <p>API & Web Services</p>
+                <p>Build Pipelines (CI/CD)</p>
+                <a href="#tickets" class="ticket-link" onclick="toggleSynthDrawer()">Abrir Ticket de Soporte</a>
+            </div>
+
+            <div class="drawer-section footer-drawer">
+                <p class="launch-title">Synthetix Core v2.0 Global Launch</p>
+            </div>
         </div>
     </div>
 
-    <!-- Contenido Principal -->
+    <!-- NAVEGACIÓN SUPERIOR / HEADER -->
+    <header class="main-header">
+        <div class="brand-box">
+            <span class="lightning">⚡</span>
+            <span class="brand-name">SYNTHETIX LABS</span>
+        </div>
+        <div class="header-right">
+            <span class="staff-badge">Portal Staff</span>
+            <button class="hamburger-btn" onclick="toggleSynthDrawer()">☰</button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main id="inicio">
-        <section>
-            <h1>Ingeniería de alto rendimiento para Networks & Sistemas Escalables.</h1>
-            <p>Desarrollo de software a medida, optimización extrema de arquitecturas Java/Fabric y despliegue de infraestructura sin latencia.</p>
+        
+        <!-- ESTADO DE INFRAESTRUCTURA -->
+        <section id="infraestructura" class="infra-bar">
+            <div class="infra-content">
+                <span class="infra-label">ESTADO DE INFRAESTRUCTURA</span>
+                <div class="infra-items">
+                    <span>NixerMC Proxy (Velocity)</span>
+                    <span>API & Web Services</span>
+                    <span>Build Pipelines (CI/CD)</span>
+                </div>
+                <a href="#tickets" class="open-ticket-mini">Abrir Ticket de Soporte ↗</a>
+                <span class="core-launch">Synthetix Core v2.0 Global Launch</span>
+            </div>
         </section>
 
-        <!-- ==========================================================
-           SECCIÓN: SYNTHETIX TICKET SYSTEM (Con Seguridad Anti-Spam)
-           ========================================================== -->
-        <section id="tickets">
-            <h2>Synthetix Ticket System</h2>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <h1>Ingeniería de alto rendimiento para Networks & Sistemas Escalables.</h1>
+            <p>Desarrollo de software a medida, optimización extrema de arquitecturas Java/Fabric y despliegue de infraestructura sin latencia para comunidades de alto tráfico.</p>
+            
+            <div class="hero-buttons">
+                <a href="#tickets" class="btn-main">Iniciar Proyecto 🛠️</a>
+                <a href="#pilares" class="btn-secondary">Explorar Soluciones</a>
+            </div>
+
+            <div class="stats-row">
+                <div>
+                    <h2>99.9%</h2>
+                    <p>Uptime Garantizado</p>
+                </div>
+                <div>
+                    <h2>0ms</h2>
+                    <p>Optimización de Lag</p>
+                </div>
+                <div>
+                    <h2>24/7</h2>
+                    <p>Monitoreo Activo</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PILARES TECNOLÓGICOS -->
+        <section id="pilares" class="pillars">
+            <h2>Nuestros Pilares Tecnológicos</h2>
+            <p class="pillars-desc">Soluciones arquitectónicas diseñadas bajo estándares de rendimiento industrial.</p>
+            
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <h3>🤖 Sistemas & Bots de Discord</h3>
+                    <p>Automatización avanzada con verificación nLogin, sincronización de registros web, pasarelas de pago y moderación inteligente.</p>
+                    <a href="#tickets">Cotizar módulo de bot →</a>
+                </div>
+
+                <div class="pillar-card">
+                    <h3>🌐 Setups de Networks MC</h3>
+                    <p>Arquitecturas robustas utilizando Velocity proxies, backends Paper optimizados, árboles de permisos LuckPerms y tiendas Tebex.</p>
+                    <a href="#tickets">Cotizar infraestructura →</a>
+                </div>
+
+                <div class="pillar-card">
+                    <h3>⚡ Modpacks Fabric & Performance</h3>
+                    <p>Desarrollo y compilación de paquetes a medida, hiper-optimizados para clientes de PC y móviles (PojavLauncher/Mojo) sin caída de TPS.</p>
+                    <a href="#tickets">Cotizar modpack →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYNTHETIX TICKET SYSTEM -->
+        <section id="tickets" class="ticket-section">
+            <h2>⚡ Synthetix Ticket System</h2>
             <p>Completa los datos iniciales para derivar tu solicitud directamente con el equipo de ingeniería.</p>
             
             <form id="ticketForm" onsubmit="handleTicketSubmit(event)">
-                <!-- Campo de Discord -->
-                <div class="form-group">
-                    <label for="discordTag">Tu Usuario de Discord / Tag</label>
-                    <input type="text" id="discordTag" name="discordTag" placeholder="ej. @aledevv" required>
+                <div class="input-group">
+                    <label>Tu Usuario de Discord / Tag</label>
+                    <input type="text" id="discordTag" placeholder="ej. @aledevv" required>
                 </div>
 
-                <!-- Área de Interés -->
-                <div class="form-group">
-                    <label for="interestArea">Área de Interés</label>
-                    <select id="interestArea" name="interestArea">
+                <div class="input-group">
+                    <label>Área de Interés</label>
+                    <select id="interestArea">
                         <option value="bots">Bots de Discord Custom</option>
                         <option value="networks">Setups de Networks MC</option>
                         <option value="modpacks">Modpacks Fabric & Performance</option>
                     </select>
                 </div>
 
-                <!-- Especificaciones -->
-                <div class="form-group">
-                    <label for="projectSpecs">Especificaciones del Proyecto</label>
-                    <textarea id="projectSpecs" name="projectSpecs" placeholder="Describe brevemente los requerimientos técnicos..." required></textarea>
+                <div class="input-group">
+                    <label>Especificaciones del Proyecto</label>
+                    <textarea id="projectSpecs" placeholder="Describe brevemente los requerimientos técnicos..." required></textarea>
                 </div>
 
-                <!-- CAPA DE SEGURIDAD (HONEYPOT ANTI-BOTS) -->
+                <!-- CAPA DE SEGURIDAD ANTISPAM (HONEYPOT) -->
                 <div class="bot-trap-container">
-                    <label for="website_url_verification">No llenar si eres humano:</label>
-                    <input type="text" id="website_url_verification" name="website_url_verification" autocomplete="off">
+                    <label>No llenar:</label>
+                    <input type="text" id="website_url_verification" autocomplete="off">
                 </div>
 
-                <button type="submit" class="btn-submit">Enviar Requerimiento ⚡</button>
+                <button type="submit" class="submit-btn">Enviar Requerimiento ⚡</button>
             </form>
         </section>
     </main>
 
-    <!-- Tu archivo de lógica JavaScript -->
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <p>Infraestructura de próxima generación para comunidades digitales y videojuegos.</p>
+        <div class="footer-links">
+            <div class="footer-group">
+                <h4>Legal & Seguridad</h4>
+                <a href="#">Políticas de Privacidad & Protocolos de Privacidad</a>
+            </div>
+            <div class="footer-group">
+                <h4>Accesos</h4>
+                <a href="#">Panel de Autenticación con Endpoint Técnico</a>
+            </div>
+        </div>
+        <p class="copy">© 2026 Synthetix Labs. Todos los derechos reservados. Diseñado bajo estándares de alta disponibilidad.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
