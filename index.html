@@ -1,274 +1,248 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MRSTORE | Digital & Gaming Vault</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Supabase JS Client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- FontAwesome & Google Fonts -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRSTORE - Digital Vault</title>
+    <!-- SDK de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #07090e; color: #fff; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; }
+        
+        /* Encabezado */
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 24px; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .header span { color: #38bdf8; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Tarjetas Principales */
+        .card { background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        .total-box { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; font-size: 18px; font-weight: bold; }
+        .total-price { color: #38bdf8; }
+        .user-box { background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px; font-size: 14px; color: #cbd5e1; }
+        .user-box span { color: #38bdf8; font-weight: bold; }
+        
+        /* Botones */
+        .btn { width: 100%; background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .logout-link { display: block; text-align: center; margin-top: 10px; color: #ef4444; font-size: 12px; text-decoration: none; }
+        
+        /* Lista de Tickets */
+        .ticket-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .ticket-code { color: #38bdf8; font-weight: bold; font-size: 15px; }
+        .ticket-desc { color: #94a3b8; font-size: 13px; margin-bottom: 8px; }
+        .ticket-footer { display: flex; justify-content: space-between; align-items: center; }
+        .ticket-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #000; }
+        .btn-chat { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; display: flex; gap: 5px; align-items: center; }
+
+        /* Modal de Chat */
+        #chat-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .chat-box { background: #121826; width: 100%; max-width: 450px; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .chat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
+        .chat-messages { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; padding-right: 5px; }
+        .msg { padding: 10px 14px; border-radius: 12px; font-size: 13.5px; max-width: 85%; line-height: 1.4; }
+        .msg-mio { background: #3b82f6; align-self: flex-end; color: white; border-bottom-right-radius: 2px; }
+        .msg-otro { background: #374151; align-self: flex-start; color: white; border-bottom-left-radius: 2px; }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: #07090e; color: white; outline: none; }
+        .btn-send { background: #10b981; color: white; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-refresh { background: #4b5563; color: white; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between bg-[#04060b] text-gray-100 selection:bg-purple-600 selection:text-white">
+<body>
 
-  <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-50 bg-[#060913]/80 backdrop-blur-xl border-b border-purple-500/20">
-    <div class="max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
-      
-      <!-- Logo -->
-      <a href="#" onclick="cambiarMenu('tienda')" class="flex items-center gap-2.5 group text-decoration-none">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-purple-600/40">
-          <i class="fa-solid fa-bolt-lightning text-sm"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-base font-black tracking-wider text-white">MR<span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">STORE</span></span>
-          <span class="text-[8px] font-bold text-cyan-400 tracking-widest uppercase">Digital Vault</span>
-        </div>
-      </a>
-
-      <!-- Controles (Moneda + Carrito) -->
-      <div class="flex items-center gap-2.5">
-        <!-- Selector de Moneda -->
-        <div class="relative">
-          <button onclick="toggleMonedaMenu(event)" class="px-3 py-1.5 rounded-xl bg-[#0d1322] border border-purple-500/30 text-[11px] font-bold text-gray-200 flex items-center gap-1.5 hover:border-cyan-400 transition cursor-pointer">
-            <span id="flagLbl">🇻🇪</span> <span id="currLbl">USD</span> <i class="fa-solid fa-chevron-down text-[9px] text-purple-400"></i>
-          </button>
-          <div id="dropdownMoneda" class="hidden absolute right-0 mt-2 w-40 bg-[#0a0f1d] border border-purple-500/30 rounded-2xl shadow-2xl py-2 z-50">
-            <button onclick="setMoneda('🇻🇪', 'USD', 1, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-purple-600/20 flex items-center gap-2 text-gray-200">🇻🇪 Venezuela (USD)</button>
-            <button onclick="setMoneda('🇵🇪', 'PEN', 3.8, 'S/')" class="w-full text-left px-4 py-2 text-xs hover:bg-purple-600/20 flex items-center gap-2 text-gray-200">🇵🇪 Perú (PEN)</button>
-            <button onclick="setMoneda('🇨🇱', 'CLP', 950, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-purple-600/20 flex items-center gap-2 text-gray-200">🇨🇱 Chile (CLP)</button>
-            <button onclick="setMoneda('🟢', 'USDT', 1, 'USDT')" class="w-full text-left px-4 py-2 text-xs hover:bg-purple-600/20 flex items-center gap-2 text-gray-200">🟢 USDT Cripto</button>
-          </div>
-        </div>
-
-        <!-- Carrito -->
-        <button onclick="cambiarMenu('carrito')" class="relative w-9 h-9 rounded-xl bg-[#0d1322] border border-purple-500/30 flex items-center justify-center text-gray-300 hover:text-white hover:border-cyan-400 transition cursor-pointer">
-          <i class="fa-solid fa-cart-shopping text-xs"></i>
-          <span id="cartCount" class="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-purple-600 to-cyan-500 text-white rounded-full text-[9px] font-black flex items-center justify-center shadow-md">0</span>
-        </button>
-      </div>
+<div class="container">
+    <div class="header">
+        <h1>⚡ MRSTORE</h1>
+        <span>Digital Vault</span>
     </div>
-  </header>
 
-  <!-- ================= CONTENIDO PRINCIPAL ================= -->
-  <main class="max-w-md mx-auto px-4 py-6 flex-1 w-full space-y-6">
+    <!-- Sección del Carrito -->
+    <div class="card">
+        <h3 style="margin-bottom: 15px; font-size: 16px;">Tu Carrito de Compras</h3>
+        <div id="cart-content">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
+                <span>Nitro Boost (1 Mes) + Minecraft MFA</span>
+                <span style="color: #38bdf8;">$13.30</span>
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.08); margin: 15px 0;">
+        <div class="total-box">
+            <span>Total a Pagar:</span>
+            <span class="total-price" id="cart-total">$13.30</span>
+        </div>
 
-    <!-- VISTA TIENDA -->
-    <div id="view-tienda" class="space-y-6">
-      
-      <!-- Hero Principal -->
-      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#0a0f1d] to-[#070b14] p-6 border border-purple-500/30 shadow-2xl">
-        <div class="absolute -right-16 -top-16 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="user-box">
+            Conectado como: <span id="discord-user">@vgabo17</span>
+        </div>
+
+        <button class="btn" onclick="generarTicket()">🚀 Generar Ticket de Compra</button>
+        <a href="#" class="logout-link" onclick="cerrarSesion()">Cerrar sesión de Discord</a>
+    </div>
+
+    <!-- Sección de Mis Tickets -->
+    <div class="card" id="user-tickets-section" style="display: none;">
+        <h3 style="margin-bottom: 15px; font-size: 16px;">📦 Tus Tickets Activos</h3>
+        <div id="tickets-list-container"></div>
+    </div>
+</div>
+
+<!-- Modal de Chat -->
+<div id="chat-modal">
+    <div class="chat-box">
+        <div class="chat-header">
+            <div>
+                <h3 id="chat-title" style="color: #38bdf8; font-size: 18px;">Chat del Ticket</h3>
+                <span style="font-size: 12px; color: #94a3b8;">Soporte MRSTORE</span>
+            </div>
+            <button onclick="cerrarChat()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">Cerrar X</button>
+        </div>
         
-        <div class="relative z-10 text-center space-y-3">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-[10px] font-bold">
-            <i class="fa-solid fa-shield-halved text-cyan-400"></i> Stock Verificado & Garantizado
-          </span>
-          <h1 class="text-2xl font-black tracking-tight leading-tight text-white">
-            Cuentas, Streaming y <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Servicios Digitales</span>
-          </h1>
-          <p class="text-xs text-gray-400 leading-relaxed px-2">
-            Lo pides hoy, lo tienes hoy. Compra directa en la web o atención personalizada por ticket en Discord.
-          </p>
-          <div class="pt-2 flex flex-col gap-2.5">
-            <a href="#catalogo" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-extrabold text-xs shadow-lg shadow-purple-600/30 hover:opacity-90 transition text-center">
-              Ver Catálogo Completo <i class="fa-solid fa-arrow-down ml-1"></i>
-            </a>
-            <a href="https://discord.gg/QN2Yew346d" target="_blank" class="w-full py-2.5 rounded-xl bg-[#0d1322] border border-purple-500/30 text-purple-300 font-extrabold text-xs hover:border-cyan-400 transition flex items-center justify-center gap-2">
-              <i class="fa-brands fa-discord text-cyan-400"></i> Unirse al Discord
-            </a>
-          </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Mensajes se cargarán aquí -->
         </div>
-      </div>
-
-      <!-- Categorías Rápidas -->
-      <div class="space-y-3">
-        <div class="text-center">
-          <h2 class="text-sm font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">Explora la tienda</h2>
-          <p class="text-xs text-gray-400">Todo lo que ofrecemos en un solo lugar</p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div onclick="filtrarProductos('discord')" class="p-4 rounded-2xl bg-[#0a0f1d] border border-purple-500/20 hover:border-purple-500/60 transition cursor-pointer space-y-2 group">
-            <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm group-hover:scale-110 transition">
-              <i class="fa-brands fa-discord"></i>
-            </div>
-            <h3 class="text-xs font-black text-white">Discord & Nitro</h3>
-            <p class="text-[10px] text-gray-400 leading-tight">Boosts, Nitro Monthly & Basic.</p>
-          </div>
-
-          <div onclick="filtrarProductos('streaming')" class="p-4 rounded-2xl bg-[#0a0f1d] border border-purple-500/20 hover:border-purple-500/60 transition cursor-pointer space-y-2 group">
-            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm group-hover:scale-110 transition">
-              <i class="fa-solid fa-music"></i>
-            </div>
-            <h3 class="text-xs font-black text-white">Streaming</h3>
-            <p class="text-[10px] text-gray-400 leading-tight">Spotify Premium cuentas personales.</p>
-          </div>
-
-          <div onclick="filtrarProductos('minecraft')" class="p-4 rounded-2xl bg-[#0a0f1d] border border-purple-500/20 hover:border-purple-500/60 transition cursor-pointer space-y-2 group">
-            <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm group-hover:scale-110 transition">
-              <i class="fa-solid fa-cube"></i>
-            </div>
-            <h3 class="text-xs font-black text-white">Minecraft</h3>
-            <p class="text-[10px] text-gray-400 leading-tight">Cuentas MFA Full Access & Capas.</p>
-          </div>
-
-          <div onclick="filtrarProductos('social')" class="p-4 rounded-2xl bg-[#0a0f1d] border border-purple-500/20 hover:border-purple-500/60 transition cursor-pointer space-y-2 group">
-            <div class="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-sm group-hover:scale-110 transition">
-              <i class="fa-solid fa-fire"></i>
-            </div>
-            <h3 class="text-xs font-black text-white">Social Boost</h3>
-            <p class="text-[10px] text-gray-400 leading-tight">Impulsa tus redes reales.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filtros de Categoría -->
-      <div id="catalogo" class="flex items-center gap-1.5 overflow-x-auto pb-1">
-        <button onclick="filtrarProductos('todos')" id="btn-cat-todos" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold text-[11px] shrink-0 shadow-md">🔥 Todos</button>
-        <button onclick="filtrarProductos('discord')" id="btn-cat-discord" class="px-3.5 py-2 rounded-xl bg-[#0a0f1d] border border-purple-500/20 text-gray-300 font-bold text-[11px] shrink-0 hover:border-cyan-400 transition">Discord</button>
-        <button onclick="filtrarProductos('streaming')" id="btn-cat-streaming" class="px-3.5 py-2 rounded-xl bg-[#0a0f1d] border border-purple-500/20 text-gray-300 font-bold text-[11px] shrink-0 hover:border-cyan-400 transition">Streaming</button>
-        <button onclick="filtrarProductos('minecraft')" id="btn-cat-minecraft" class="px-3.5 py-2 rounded-xl bg-[#0a0f1d] border border-purple-500/20 text-gray-300 font-bold text-[11px] shrink-0 hover:border-cyan-400 transition">Minecraft</button>
-      </div>
-
-      <!-- GRID DE PRODUCTOS -->
-      <div class="grid grid-cols-1 gap-3.5" id="gridProductos">
         
-        <!-- 1. Nitro Boost -->
-        <div class="prod-card bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-4 flex flex-col justify-between hover:border-purple-500/60 transition shadow-xl" data-cat="discord">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="px-2.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[9px] font-black uppercase border border-indigo-500/20">Discord</span>
-              <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
-            </div>
-            <h3 class="text-sm font-black mb-1 text-white">Nitro Boost (1 Mes)</h3>
-            <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">Suscripción de 1 mes con 2 Bosteos para servidor incluidos y ventajas completas.</p>
-          </div>
-          <div class="flex items-center justify-between pt-3 border-t border-purple-500/10">
-            <span class="text-base font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="5.00">5.00</span></span>
-            <button onclick="agregarAlCarrito('Nitro Boost (1 Mes)', 5.00)" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-[11px] transition shadow-md shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-cart-plus text-[10px]"></i> Comprar
-            </button>
-          </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
+            <button class="btn-refresh" onclick="cargarMensajes()" title="Actualizar Mensajes">🔄</button>
+            <button class="btn-send" onclick="enviarMensaje()">Enviar</button>
         </div>
-
-        <!-- 2. Nitro Basic -->
-        <div class="prod-card bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-4 flex flex-col justify-between hover:border-purple-500/60 transition shadow-xl" data-cat="discord">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="px-2.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[9px] font-black uppercase border border-indigo-500/20">Discord</span>
-              <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
-            </div>
-            <h3 class="text-sm font-black mb-1 text-white">Nitro Basic (1 Mes)</h3>
-            <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">Insignia exclusiva en tu perfil, emojis globales y mayor límite de subida.</p>
-          </div>
-          <div class="flex items-center justify-between pt-3 border-t border-purple-500/10">
-            <span class="text-base font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="1.80">1.80</span></span>
-            <button onclick="agregarAlCarrito('Nitro Basic (1 Mes)', 1.80)" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-[11px] transition shadow-md shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-cart-plus text-[10px]"></i> Comprar
-            </button>
-          </div>
-        </div>
-
-        <!-- 3. Spotify Premium -->
-        <div class="prod-card bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-4 flex flex-col justify-between hover:border-purple-500/60 transition shadow-xl" data-cat="streaming">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 text-[9px] font-black uppercase border border-emerald-500/20">Streaming</span>
-              <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
-            </div>
-            <h3 class="text-sm font-black mb-1 text-white">Spotify Premium (3 Meses)</h3>
-            <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">Música sin anuncios, saltos ilimitados y alta calidad en tu propia cuenta personal.</p>
-          </div>
-          <div class="flex items-center justify-between pt-3 border-t border-purple-500/10">
-            <span class="text-base font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="2.50">2.50</span></span>
-            <button onclick="agregarAlCarrito('Spotify Premium (3 Meses)', 2.50)" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-[11px] transition shadow-md shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-cart-plus text-[10px]"></i> Comprar
-            </button>
-          </div>
-        </div>
-
-        <!-- 4. Minecraft MFA -->
-        <div class="prod-card bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-4 flex flex-col justify-between hover:border-purple-500/60 transition shadow-xl" data-cat="minecraft">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="px-2.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-300 text-[9px] font-black uppercase border border-cyan-500/20">Minecraft</span>
-              <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Stock Activo</span>
-            </div>
-            <h3 class="text-sm font-black mb-1 text-white">Minecraft MFA Premium</h3>
-            <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">Full Access con cambio de correo, contraseña y skin propia. Listo para servidores premium.</p>
-          </div>
-          <div class="flex items-center justify-between pt-3 border-t border-purple-500/10">
-            <span class="text-base font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="4.00">4.00</span></span>
-            <button onclick="agregarAlCarrito('Minecraft MFA Premium', 4.00)" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-[11px] transition shadow-md shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-cart-plus text-[10px]"></i> Comprar
-            </button>
-          </div>
-        </div>
-
-      </div>
     </div>
+</div>
 
-    <!-- VISTA CARRITO -->
-    <div id="view-carrito" class="space-y-4 hidden">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-black text-white">Tu Carrito de Compras</h2>
-        <button onclick="cambiarMenu('tienda')" class="text-[11px] text-cyan-400 font-bold hover:underline cursor-pointer">← Seguir Comprando</button>
-      </div>
+<script>
+    // Configuración de Supabase
+    const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      <div class="bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-4 space-y-3 shadow-xl" id="listaCarrito">
-        <!-- Ítems inyectados por JavaScript -->
-      </div>
+    let usuarioActual = localStorage.getItem('discord_user') || '@vgabo17';
+    let ticketActivoChat = null;
 
-      <div class="bg-[#0a0f1d] border border-purple-500/20 rounded-2xl p-4 space-y-3 shadow-xl">
-        <div class="flex justify-between text-xs font-bold">
-          <span class="text-gray-400">Total a Pagar:</span>
-          <span class="text-base font-black text-white" id="totalCarrito">$0.00</span>
-        </div>
+    document.getElementById('discord-user').innerText = usuarioActual;
 
-        <!-- SECCIÓN 1: Si el usuario NO ha iniciado sesión -->
-        <div id="authRequiredSection" class="pt-2 text-center space-y-2">
-          <p class="text-[11px] text-gray-400">Debes iniciar sesión con Discord para poder generar tu ticket de compra.</p>
-          <button onclick="loginDiscordStore()" class="w-full py-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-xs transition shadow-lg shadow-[#5865F2]/30 cursor-pointer flex items-center justify-center gap-2">
-            <i class="fa-brands fa-discord text-sm"></i> Iniciar sesión con Discord
-          </button>
-        </div>
+    window.addEventListener('DOMContentLoaded', () => {
+        cargarMisTickets(usuarioActual);
+    });
 
-        <!-- SECCIÓN 2: Si el usuario SÍ ha iniciado sesión (Oculto por defecto) -->
-        <div id="checkoutReadySection" class="pt-2 space-y-2.5 hidden">
-          <div class="p-2.5 rounded-xl bg-[#060913] border border-purple-500/20 text-center">
-            <p class="text-[10px] text-gray-400">Conectado como:</p>
-            <p id="userInfoText" class="text-xs font-black text-cyan-400"></p>
-          </div>
-          
-          <button onclick="procesarPagoSupabase()" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white font-black text-xs transition shadow-lg shadow-indigo-600/30 cursor-pointer flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up text-sm"></i> Generar Ticket en la Base de Datos
-          </button>
-          
-          <button onclick="logoutStore()" class="w-full py-1 text-center text-[10px] text-red-400 hover:underline cursor-pointer bg-transparent border-none">
-            Cerrar sesión de Discord
-          </button>
-        </div>
-      </div>
-    </div>
+    // 1. Funciones de Compra y Tickets
+    async function generarTicket() {
+        const codigoTicket = 'MR-' + Math.floor(100000 + Math.random() * 900000);
+        const detallesCompra = 'Nitro Boost (1 Mes) + Minecraft MFA Premium';
+        const totalCompra = 13.30;
 
-  </main>
+        const { error } = await supabaseClient
+            .from('tickets')
+            .insert([{ codigo: codigoTicket, cliente: usuarioActual, detalles: detallesCompra, total: totalCompra, estado: 'Pendiente' }]);
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#060913] border-t border-purple-500/20 py-5 text-center text-[11px] text-gray-400 mt-8 space-y-2">
-    <p>&copy; 2026 MRSTORE. Todos los derechos reservados.</p>
-    <a href="https://discord.gg/QN2Yew346d" target="_blank" class="inline-flex items-center gap-1.5 text-cyan-400 font-bold hover:underline">
-      <i class="fa-brands fa-discord"></i> Unirse al soporte por Discord
-    </a>
-  </footer>
+        if (error) {
+            alert('Error al generar el ticket: ' + error.message);
+        } else {
+            alert('¡Ticket generado con éxito! Puedes verlo y abrir el chat abajo.');
+            cargarMisTickets(usuarioActual);
+        }
+    }
 
-  <!-- Script JavaScript -->
-  <script src="script.js"></script>
+    async function cargarMisTickets(username) {
+        const { data, error } = await supabaseClient
+            .from('tickets')
+            .select('*')
+            .eq('cliente', username)
+            .order('id', { ascending: false });
+
+        const container = document.getElementById('tickets-list-container');
+        const section = document.getElementById('user-tickets-section');
+
+        if (error || !data || data.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        container.innerHTML = '';
+
+        data.forEach(ticket => {
+            const div = document.createElement('div');
+            div.className = 'ticket-item';
+            
+            const colorBadge = ticket.estado === 'Completado' ? '#10b981' : '#f59e0b';
+
+            div.innerHTML = `
+                <div class="ticket-header">
+                    <span class="ticket-code">${ticket.codigo}</span>
+                    <button class="btn-chat" onclick="abrirChat('${ticket.codigo}')">💬 Abrir Chat</button>
+                </div>
+                <div class="ticket-desc">${ticket.detalles}</div>
+                <div class="ticket-footer">
+                    <span style="font-size: 12px; color: #94a3b8;">Total: $${ticket.total}</span>
+                    <span class="ticket-badge" style="background: ${colorBadge};">${ticket.estado || 'Pendiente'}</span>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // 2. Funciones del Chat Integrado
+    async function abrirChat(codigo) {
+        ticketActivoChat = codigo;
+        document.getElementById('chat-title').innerText = 'Ticket ' + codigo;
+        document.getElementById('chat-modal').style.display = 'flex';
+        cargarMensajes();
+    }
+
+    function cerrarChat() {
+        document.getElementById('chat-modal').style.display = 'none';
+        ticketActivoChat = null;
+    }
+
+    async function cargarMensajes() {
+        if (!ticketActivoChat) return;
+        const { data, error } = await supabaseClient
+            .from('mensajes')
+            .select('*')
+            .eq('ticket_codigo', ticketActivoChat)
+            .order('created_at', { ascending: true });
+        
+        const box = document.getElementById('chat-messages');
+        box.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            box.innerHTML = '<div style="text-align:center; color:#94a3b8; font-size:13px; margin-top:20px;">No hay mensajes. ¡Escribe a soporte!</div>';
+            return;
+        }
+
+        data.forEach(msg => {
+            const isMe = msg.autor === usuarioActual;
+            box.innerHTML += `
+                <div class="msg ${isMe ? 'msg-mio' : 'msg-otro'}">
+                    <b style="font-size:11px; opacity:0.8; display:block; margin-bottom:3px;">${msg.autor}</b>
+                    ${msg.contenido}
+                </div>`;
+        });
+        box.scrollTop = box.scrollHeight; // Auto-scroll hacia abajo
+    }
+
+    async function enviarMensaje() {
+        const input = document.getElementById('chat-input');
+        const texto = input.value.trim();
+        if (!texto || !ticketActivoChat) return;
+
+        input.disabled = true; // Prevenir doble envío
+        await supabaseClient.from('mensajes').insert([{ ticket_codigo: ticketActivoChat, autor: usuarioActual, contenido: texto }]);
+        
+        input.value = '';
+        input.disabled = false;
+        input.focus();
+        cargarMensajes();
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('discord_user');
+        location.reload();
+    }
+</script>
+
 </body>
 </html>
