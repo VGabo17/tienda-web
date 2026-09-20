@@ -1,5 +1,5 @@
 /**
- * Controla la apertura y cierre del menú lateral (Drawer)
+ * Abre y cierra el menú lateral deslizante (Drawer)
  */
 function toggleSynthDrawer(event) {
     if (event) {
@@ -18,12 +18,12 @@ function toggleSynthDrawer(event) {
 }
 
 /**
- * Valida la seguridad antispam (Honeypot) y procesa el envío
+ * Valida el sistema de tickets y el sistema antispam (Honeypot)
  */
 function handleTicketSubmit(event) {
     event.preventDefault();
 
-    // Verificación de trampa para bots (Honeypot)
+    // Verificación oculta antispam (Honeypot)
     const botTrap = document.getElementById('website_url_verification').value;
     if (botTrap && botTrap.trim() !== "") {
         alert("¡Solicitud enviada con éxito!");
@@ -39,7 +39,7 @@ function handleTicketSubmit(event) {
         return;
     }
 
-    console.log("Enviado por Aledevv:", {
+    console.log("Requerimiento enviado por Aledevv:", {
         discord: discordTag,
         area: interestArea,
         specs: projectSpecs
