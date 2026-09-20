@@ -1,3 +1,11 @@
+// --- CONFIGURACIÓN DE SUPABASE ---
+const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+
+const { createClient } = supabase;
+const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// --- VARIABLES DE LA TIENDA ---
 let carrito = [];
 let tasaMoneda = 1;
 let simboloMoneda = '$';
@@ -90,7 +98,7 @@ function renderizarCarrito() {
           <span class="font-bold text-white block mb-0.5">${item.nombre}</span>
           <span class="text-cyan-400 font-medium">${simboloMoneda}${(item.precioUsd * tasaMoneda).toFixed(2)}</span>
         </div>
-        <button onclick="eliminarItem(${index})" class="text-red-400 hover:text-red-300 p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition cursor-pointer"><i class="fa-solid fa-trash text-[11px]"></i></button>
+        <button onclick="eliminarItem(${index})" class="text-red-400 hover:text-red-300 p-2 rounded-lg bg-red-500/10 hover:bg-red-500/25 transition cursor-pointer"><i class="fa-solid fa-trash text-[11px]"></i></button>
       </div>
     `;
   });
@@ -105,30 +113,58 @@ function eliminarItem(index) {
   renderizarCarrito();
 }
 
-// Procesar pedido y enviar al Discord
-function procesarPagoDiscord() {
+// NUEVO: Procesar pedido y guardarlo automáticamente en Supabase
+async function procesarPagoSupabase() {
   if(carrito.length === 0) {
     mostrarNotificacion('Agrega productos antes de realizar el pedido.');
     return;
   }
 
-  let resumen = "Hola, quiero realizar el siguiente pedido en MRSTORE:\n";
-  let totalUsd = 0;
-  carrito.forEach(item => {
-    resumen += `- ${item.nombre} ($${item.precioUsd.toFixed(2)})\n`;
-    totalUsd += item.precioUsd;
-  });
-  resumen += `Total: $${totalUsd.toFixed(2)}`;
+  // Pedir nombre o usuario de Discord al cliente para identificarlo en el ticket
+  let nombreCliente = prompt("Ingresa tu nombre o usuario de Discord para el ticket:");
+  if (!nombreCliente || nombreCliente.trim() === "") {
+    mostrarNotificacion('Debes ingresar un nombre o usuario.');
+    return;
+  }
 
-  navigator.clipboard.writeText(resumen).then(() => {
-    mostrarNotificacion('¡Pedido copiado! Abriendo Discord...');
-    setTimeout(() => {
-      window.open('https://discord.gg/QN2Yew346d', '_blank');
-    }, 1200);
-  }).catch(() => {
-    alert('Copia tu pedido y ábrelo en un ticket de Discord.');
-    window.open('https://discord.gg/QN2Yew346d', '_blank');
-  });
+  mostrarNotificacion('Generando tu ticket...');
+
+  // Generar código único para el ticket (ej: NIXER-4829)
+  const codigoAleatorio = 'NIXER-' + Math.floor(1000 + Math.random() * 9000);
+
+  let totalUsd = 0;
+  let resumenProductos = carrito.map(item => {
+    totalUsd += item.precioUsd;
+    return `• ${item.nombre} ($${item.precioUsd.toFixed(2)})`;
+  }).join('\n');
+
+  // Enviar los datos a Supabase
+  const { data, error } = await _supabase
+    .from('tickets')
+    .insert([
+      {
+        codigo: codigoAleatorio,
+        cliente: nombreCliente.trim(),
+        detalles: resumenProductos,
+        total: totalUsd,
+        estado: 'Pendiente'
+      }
+    ])
+    .select();
+
+  if (error) {
+    console.error("Error al registrar el ticket:", error);
+    mostrarNotificacion('Hubo un error al crear el ticket. Intenta de nuevo.');
+    return;
+  }
+
+  // Si todo sale bien, mostramos alerta con el código, limpiamos el carrito y regresamos a la tienda
+  alert(`¡Pedido creado con éxito!\n\nTu código de ticket es: ${codigoAleatorio}\n\nGuárdalo bien. Ya fue enviado al panel del staff.`);
+  
+  carrito = [];
+  document.getElementById('cartCount').textContent = '0';
+  renderizarCarrito();
+  cambiarMenu('tienda');
 }
 
 // Notificaciones flotantes estilo Flashy
