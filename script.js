@@ -1,50 +1,28 @@
-/**
- * Abre y cierra el menú lateral deslizante (Drawer)
- */
-function toggleSynthDrawer(event) {
-    if (event) {
-        if (event.target !== document.getElementById('synthDrawer')) return;
-    }
+// script.js
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Inicializar iconos de Feather
+    feather.replace();
+
+    // Efecto de click en los botones de "añadir"
+    const addButtons = document.querySelectorAll('button:has(i[data-feather="plus"])');
     
-    const drawer = document.getElementById('synthDrawer');
-    if (drawer) {
-        drawer.classList.toggle('hidden');
-        if (!drawer.classList.contains('hidden')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-    }
-}
-
-/**
- * Valida el sistema de tickets y el sistema antispam (Honeypot)
- */
-function handleTicketSubmit(event) {
-    event.preventDefault();
-
-    // Verificación oculta antispam (Honeypot)
-    const botTrap = document.getElementById('website_url_verification').value;
-    if (botTrap && botTrap.trim() !== "") {
-        alert("¡Solicitud enviada con éxito!");
-        return;
-    }
-
-    const discordTag = document.getElementById('discordTag').value.trim();
-    const interestArea = document.getElementById('interestArea').value;
-    const projectSpecs = document.getElementById('projectSpecs').value.trim();
-
-    if (discordTag.length < 3 || projectSpecs.length < 5) {
-        alert("Por favor, completa los datos correctamente.");
-        return;
-    }
-
-    console.log("Requerimiento enviado por Aledevv:", {
-        discord: discordTag,
-        area: interestArea,
-        specs: projectSpecs
+    addButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const originalHTML = this.innerHTML;
+            // Cambiar a un check temporalmente
+            this.innerHTML = '<i data-feather="check" class="w-5 h-5"></i>';
+            feather.replace();
+            
+            // Volver al icono de plus después de 1.5s
+            setTimeout(() => {
+                this.innerHTML = originalHTML;
+                feather.replace();
+            }, 1500);
+            
+            console.log("Producto añadido al carrito en MRSTORE");
+        });
     });
 
-    alert("¡Requerimiento enviado correctamente a Synthetix Labs!");
-    document.getElementById('ticketForm').reset();
-}
+    console.log("MRSTORE Frontend cargado con éxito.");
+});
