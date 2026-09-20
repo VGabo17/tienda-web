@@ -1,0 +1,25 @@
+/* styles.css */
+
+/* Comportamiento de scroll suave para toda la página */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Personalización de la barra de desplazamiento para que coincida con el modo oscuro */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050505; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #111111; 
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b57edd; 
+}
