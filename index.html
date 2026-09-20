@@ -54,11 +54,16 @@
         .item-hero { grid-column: span 4; }
         .item-square { grid-column: span 1; }
 
+        /* Ajustes responsivos corregidos */
         @media (max-width: 900px) {
-            .item-square { grid-column: span 2; }
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .item-hero { grid-column: span 2; }
+            .item-square { grid-column: span 1; }
         }
+        
         @media (max-width: 600px) {
             .bento-grid { grid-template-columns: 1fr; }
+            .item-hero { grid-column: span 1; }
             .item-square { grid-column: span 1; }
         }
 
@@ -104,7 +109,7 @@
 
         /* Contenedor dinámico para los productos */
         #productos-dinamicos {
-            display: contents; /* Permite que los hijos se adapten al grid padre */
+            display: contents;
         }
     </style>
 </head>
@@ -123,7 +128,7 @@
 
         <!-- Aquí se inyectarán los productos desde Java -->
         <div id="productos-dinamicos">
-            <p style="grid-column: span 4; text-align: center; color: #888;">Cargando recursos...</p>
+            <p style="grid-column: span 1; text-align: center; color: #888;">Cargando recursos...</p>
         </div>
     </div>
 
@@ -136,15 +141,10 @@
             const contenedor = document.getElementById('productos-dinamicos');
             
             try {
-                // 1. Aquí irá la IP de tu VPS cuando lo configuremos (ej: http://123.45.67.89:8080/api/resources)
-                // const respuesta = await fetch('URL_DE_TU_API_JAVA');
-                // const datos = await respuesta.json();
-                
                 // Forzamos el error intencionalmente en GitHub Pages para usar los datos locales hasta tener el hosting
                 throw new Error("Backend Java en configuración");
 
             } catch (error) {
-                // 2. Datos de respaldo exactos a los de tu ResourceController.java
                 const datosSimulados = [
                     { id: "1", title: "Velocity Proxy Setup Premium", category: "Setups", price: "15.00" },
                     { id: "2", title: "NixerAntiCheat Pro", category: "Plugins", price: "0.00" },
@@ -152,9 +152,8 @@
                     { id: "4", title: "Discord Auth Bot", category: "Bots", price: "5.00" }
                 ];
 
-                contenedor.innerHTML = ''; // Limpiamos el texto de "Cargando..."
+                contenedor.innerHTML = ''; 
 
-                // 3. Renderizamos las tarjetas dinámicamente
                 datosSimulados.forEach(recurso => {
                     const precioFormateado = recurso.price === "0.00" ? "Gratis" : `$${recurso.price}`;
                     
