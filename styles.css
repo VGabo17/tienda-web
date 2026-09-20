@@ -1,12 +1,10 @@
-/* ==========================================================
-   ESTILOS GENERALES & VARIABLES
-   ========================================================== */
 :root {
     --bg-main: #04060f;
     --bg-surface: #0b0f19;
-    --border-color: rgba(255, 255, 255, 0.1);
-    --accent-color: #3b82f6;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --accent-blue: #3b82f6;
     --text-color: #ffffff;
+    --text-muted: #94a3b8;
 }
 
 body {
@@ -15,32 +13,58 @@ body {
     font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
-header {
+/* Header */
+.main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 15px 25px;
     background: var(--bg-surface);
     border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.menu-toggle-btn {
+.brand-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.staff-badge {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.hamburger-btn {
     background: transparent;
     border: 1px solid var(--border-color);
     color: #fff;
     font-size: 20px;
-    padding: 6px 12px;
-    cursor: pointer;
+    padding: 5px 10px;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 /* ==========================================================
-   SISTEMA DE NAVEGACIÓN MOBILE / DRAWER & SEGURIDAD UI
+   DRAWER / MENÚ LATERAL (ESTILO ORIGINAL + CLASE .hidden)
    ========================================================== */
-
-/* Overlay general del cajón móvil (por defecto visible en estructura pero controlado por .hidden) */
 .synth-drawer-overlay {
     position: fixed;
     top: 0;
@@ -57,123 +81,310 @@ header {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* ESTADO OCULTO CRÍTICO: Evita que aparezca abierto al cargar la web */
+/* ESTADO OCULTO QUE EVITA EL BUG AL CARGAR */
 .synth-drawer-overlay.hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
 }
 
-/* Contenedor deslizante del menú lateral */
 .synth-drawer-content {
     width: 100%;
-    max-width: 360px;
+    max-width: 320px;
     height: 100vh;
     background: var(--bg-surface);
     border-left: 1px solid var(--border-color);
-    padding: 30px;
+    padding: 25px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.9);
+    gap: 20px;
     overflow-y: auto;
+    box-shadow: -20px 0 40px rgba(0,0,0,0.8);
     transform: translateX(0);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s ease;
 }
 
-/* Animación de salida del panel lateral cuando está oculto */
 .synth-drawer-overlay.hidden .synth-drawer-content {
     transform: translateX(100%);
 }
 
-.synth-drawer-header {
+.drawer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 15px;
 }
 
-.synth-drawer-close {
+.portal-staff {
+    color: #60a5fa;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.close-btn {
     background: transparent;
     border: none;
     color: #fff;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
 }
 
-.synth-drawer-links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.synth-drawer-links a {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 10px;
-    border-radius: 6px;
-    transition: background 0.2s;
-}
-
-.synth-drawer-links a:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-}
-
-/* ==========================================================
-   FORMULARIO Y SEGURIDAD HONEYPOT
-   ========================================================== */
-section {
-    padding: 40px 20px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 20px;
+.drawer-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.drawer-section h4 {
+    color: #fff;
+    font-size: 12px;
+    margin: 0 0 5px 0;
+    letter-spacing: 1px;
+}
+
+.drawer-section a {
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 4px 0;
+}
+
+.ticket-link {
+    color: var(--accent-blue) !important;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.launch-title {
+    color: var(--accent-blue);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Barra de Infraestructura */
+.infra-bar {
+    background: rgba(11, 15, 25, 0.7);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    font-size: 12px;
+}
+
+.infra-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.infra-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.infra-items {
+    display: flex;
+    gap: 15px;
+    color: #34d399;
+}
+
+.open-ticket-mini {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+.core-launch {
+    color: var(--text-muted);
+}
+
+/* Secciones */
+section {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero {
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 25px auto;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.btn-main, .btn-secondary {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-main { background: var(--accent-blue); color: #fff; }
+.btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border-color); }
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.stats-row div {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.stats-row h2 {
+    margin: 0 0 5px 0;
+    color: var(--accent-blue);
+}
+
+.pillars-desc {
+    color: var(--text-muted);
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
+.pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.pillar-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pillar-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pillar-card a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+/* Ticket System */
+.ticket-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.ticket-section p {
+    color: var(--text-muted);
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: var(--text-muted);
 }
 
 input, select, textarea {
-    background: var(--bg-surface);
+    background: var(--bg-main);
     border: 1px solid var(--border-color);
     color: #fff;
     padding: 12px;
     border-radius: 6px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
+textarea { min-height: 90px; resize: vertical; }
 
-.btn-submit {
-    background: var(--accent-color);
-    color: white;
+.submit-btn {
+    background: var(--accent-blue);
+    color: #fff;
     border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 12px;
     border-radius: 6px;
+    font-weight: bold;
+    width: 100%;
     cursor: pointer;
-    transition: opacity 0.2s;
+    margin-top: 10px;
 }
 
-.btn-submit:hover {
-    opacity: 0.9;
+/* Footer */
+.main-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Ocultar totalmente el campo trampa para bots de la vista del usuario */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.footer-group h4 {
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.footer-group a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+.copy {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Ocultar trampa honeypot */
 .bot-trap-container {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    position: absolute !important;
-    left: -9999px !important;
 }
