@@ -3,175 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aledevv | Synthetix Labs Marketplace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-main: #050505;
-            --surface: #0e0e0e;
-            --border: #222;
-            --border-hover: #444;
-            --text-main: #ededed;
-            --text-muted: #888;
-            --cyan-glow: rgba(0, 242, 254, 0.15);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            padding: 2rem;
-            background-image: radial-gradient(circle at 50% 0%, #111 0%, transparent 70%);
-            min-height: 100vh;
-        }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-            grid-auto-rows: minmax(180px, auto);
-        }
-
-        .bento-item {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .bento-item:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-        }
-
-        .item-hero { grid-column: span 4; }
-        .item-square { grid-column: span 1; }
-
-        /* Ajustes responsivos corregidos */
-        @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: repeat(2, 1fr); }
-            .item-hero { grid-column: span 2; }
-            .item-square { grid-column: span 1; }
-        }
-        
-        @media (max-width: 600px) {
-            .bento-grid { grid-template-columns: 1fr; }
-            .item-hero { grid-column: span 1; }
-            .item-square { grid-column: span 1; }
-        }
-
-        .badge {
-            display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: #fff;
-            background: #222;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            margin-bottom: 1.2rem;
-            border: 1px solid #333;
-        }
-
-        h1 { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 1rem; line-height: 1.1; }
-        h3 { font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem; }
-        p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
-        
-        .price-tag {
-            font-family: 'JetBrains Mono', monospace;
-            color: #4facfe;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 1rem;
-        }
-
-        .btn-group { display: flex; gap: 1rem; margin-top: 1.5rem; }
-        
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .btn-primary { background: var(--text-main); color: var(--bg-main); }
-        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 100%; text-align: center; display: block; }
-        .btn-secondary:hover { background: #111; border-color: #444; }
-
-        /* Contenedor dinámico para los productos */
-        #productos-dinamicos {
-            display: contents;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="bento-grid">
-        <!-- Hero Section -->
-        <div class="bento-item item-hero">
-            <span class="badge">Marketplace Oficial</span>
-            <h1>Synthetix Labs.</h1>
-            <p style="max-width: 600px;">
-                Descarga setups, plugins custom y optimizaciones Fabric desarrolladas por Aledevv. 
-                Infraestructura de alto rendimiento para tu network.
-            </p>
-        </div>
-
-        <!-- Aquí se inyectarán los productos desde Java -->
-        <div id="productos-dinamicos">
-            <p style="grid-column: span 1; text-align: center; color: #888;">Cargando recursos...</p>
-        </div>
-    </div>
-
+    <title>MRSTORE - Cuentas y Productos Digitales</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            cargarRecursos();
-        });
-
-        async function cargarRecursos() {
-            const contenedor = document.getElementById('productos-dinamicos');
-            
-            try {
-                // Forzamos el error intencionalmente en GitHub Pages para usar los datos locales hasta tener el hosting
-                throw new Error("Backend Java en configuración");
-
-            } catch (error) {
-                const datosSimulados = [
-                    { id: "1", title: "Velocity Proxy Setup Premium", category: "Setups", price: "15.00" },
-                    { id: "2", title: "NixerAntiCheat Pro", category: "Plugins", price: "0.00" },
-                    { id: "3", title: "Ale Optimized Modpack", category: "Modpacks", price: "0.00" },
-                    { id: "4", title: "Discord Auth Bot", category: "Bots", price: "5.00" }
-                ];
-
-                contenedor.innerHTML = ''; 
-
-                datosSimulados.forEach(recurso => {
-                    const precioFormateado = recurso.price === "0.00" ? "Gratis" : `$${recurso.price}`;
-                    
-                    const tarjetaHTML = `
-                        <div class="bento-item item-square">
-                            <span class="badge">${recurso.category}</span>
-                            <h3>${recurso.title}</h3>
-                            <p class="price-tag">${precioFormateado}</p>
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-secondary">Añadir al Carrito</a>
-                            </div>
-                        </div>
-                    `;
-                    
-                    contenedor.innerHTML += tarjetaHTML;
-                });
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#050505',
+                        cardbg: '#111111',
+                        cyanNeon: '#00ffff',
+                        lilaNeon: '#b57edd'
+                    },
+                    boxShadow: {
+                        'glow-cyan': '0 0 15px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2)',
+                        'glow-lila': '0 0 15px rgba(181, 126, 221, 0.4)',
+                    }
+                }
             }
         }
     </script>
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Tu archivo de estilos -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-darkbg text-white font-sans antialiased flex flex-col min-h-screen selection:bg-cyanNeon selection:text-black">
+
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-darkbg/80 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-lilaNeon to-cyanNeon flex items-center justify-center shadow-glow-cyan">
+                <i data-feather="zap" class="text-black"></i>
+            </div>
+            <span class="text-xl font-black tracking-widest text-white">FLASHY STORE</span>
+        </div>
+
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+            <a href="#" class="hover:text-cyanNeon transition-colors">Inicio</a>
+            <a href="#" class="hover:text-cyanNeon transition-colors">Catálogo</a>
+            <a href="#" class="hover:text-cyanNeon transition-colors">Soporte</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <select class="bg-transparent border border-gray-700 text-sm rounded-lg px-2 py-1 outline-none focus:border-cyanNeon cursor-pointer">
+                <option value="USD" class="bg-darkbg">USD</option>
+                <option value="EUR" class="bg-darkbg">EUR</option>
+            </select>
+            <button class="flex items-center gap-2 border-2 border-lilaNeon text-lilaNeon hover:bg-lilaNeon hover:text-black hover:shadow-glow-lila transition-all px-4 py-2 rounded-xl text-sm font-bold">
+                <i data-feather="shopping-cart" class="w-4 h-4"></i>
+                Carrito
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-24 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-lilaNeon/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="bg-lilaNeon/20 border border-lilaNeon/40 text-lilaNeon px-5 py-1.5 rounded-full text-sm font-semibold mb-8 flex items-center gap-2 shadow-[0_0_10px_rgba(181,126,221,0.2)]">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lilaNeon opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-lilaNeon"></span>
+            </span>
+            12 cuentas de Minecraft disponibles ahora
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-extrabold max-w-4xl leading-tight mb-6 tracking-tight">
+            <span class="bg-gradient-to-r from-lilaNeon to-cyanNeon bg-clip-text text-transparent">Cuentas de Minecraft y productos digitales.</span><br>
+            <span class="text-white">Lo pides hoy, lo tienes hoy.</span>
+        </h1>
+
+        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10">
+            Compra de forma directa en nuestra web o a través de Discord de manera 100% segura, rápida y con soporte garantizado.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-5">
+            <button class="bg-cyanNeon text-black font-extrabold px-8 py-4 rounded-xl shadow-glow-cyan hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                Ver productos <i data-feather="arrow-right" class="w-5 h-5"></i>
+            </button>
+            <button class="bg-transparent border-2 border-lilaNeon text-white font-bold px-8 py-4 rounded-xl hover:bg-lilaNeon/10 shadow-glow-lila transition-all flex items-center justify-center gap-2">
+                <i data-feather="message-circle" class="w-5 h-5 text-lilaNeon"></i> Unirse al Discord
+            </button>
+        </div>
+    </main>
+
+    <!-- INDICADORES DE CONFIANZA -->
+    <section class="border-y border-white/10 bg-cardbg py-6">
+        <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-12 md:gap-24 text-sm md:text-base font-bold text-gray-300">
+            <div class="flex items-center gap-3">
+                <i data-feather="users" class="text-cyanNeon w-5 h-5"></i> +500 referencias reales
+            </div>
+            <div class="flex items-center gap-3">
+                <i data-feather="truck" class="text-cyanNeon w-5 h-5"></i> Entrega el mismo día
+            </div>
+            <div class="flex items-center gap-3">
+                <i data-feather="shield-check" class="text-cyanNeon w-5 h-5"></i> Pago verificado
+            </div>
+        </div>
+    </section>
+
+    <!-- CATÁLOGO -->
+    <section class="max-w-6xl mx-auto w-full px-4 py-20">
+        <h2 class="text-3xl font-bold mb-12 text-center text-white">Nuestros Productos Destacados</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Producto 1 -->
+            <div class="bg-cardbg rounded-2xl border border-white/5 overflow-hidden group hover:border-cyanNeon/50 hover:shadow-glow-cyan transition-all duration-300 relative">
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cardbg to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Minecraft" class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-6 relative z-20">
+                    <h3 class="text-xl font-bold text-white mb-2">Cuenta Minecraft Premium</h3>
+                    <div class="flex items-end gap-3 mt-4">
+                        <span class="text-gray-500 line-through text-sm">$30.00</span>
+                        <span class="text-2xl font-black text-cyanNeon drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">$19.99</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="bg-cardbg rounded-2xl border border-white/5 overflow-hidden group hover:border-cyanNeon/50 hover:shadow-glow-cyan transition-all duration-300 relative">
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cardbg to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Free Fire" class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-6 relative z-20">
+                    <h3 class="text-xl font-bold text-white mb-2">Recarga Diamantes FF</h3>
+                    <div class="flex items-end gap-3 mt-4">
+                        <span class="text-gray-500 line-through text-sm">$15.00</span>
+                        <span class="text-2xl font-black text-cyanNeon drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">$9.99</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="bg-cardbg rounded-2xl border border-white/5 overflow-hidden group hover:border-cyanNeon/50 hover:shadow-glow-cyan transition-all duration-300 relative">
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cardbg to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="GTA V" class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-6 relative z-20">
+                    <h3 class="text-xl font-bold text-white mb-2">Grand Theft Auto V</h3>
+                    <div class="flex items-end gap-3 mt-4">
+                        <span class="text-gray-500 line-through text-sm">$25.00</span>
+                        <span class="text-2xl font-black text-cyanNeon drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">$12.50</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS / FOOTER -->
+    <footer class="bg-cardbg border-t border-white/10 pt-12 pb-6 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div class="flex flex-col gap-3">
+                <div class="w-12 h-12 rounded-lg bg-lilaNeon/10 flex items-center justify-center text-lilaNeon border border-lilaNeon/20">
+                    <i data-feather="lock"></i>
+                </div>
+                <h4 class="font-bold text-white">Conexión segura</h4>
+                <p class="text-gray-400 text-sm">Transacciones encriptadas de extremo a extremo.</p>
+            </div>
+            <!-- (El resto de los beneficios) -->
+        </div>
+        <div class="text-center border-t border-white/5 pt-6 text-xs text-gray-600">
+            &copy; 2026 MRSTORE by Aledevv. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Tu archivo JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
