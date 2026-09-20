@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nixer Store | Digital & Gaming</title>
-  <!-- Tailwind CSS CDN -->
+  <title>MRSTORE | Digital & Gaming Vault</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -12,487 +12,405 @@
       theme: {
         extend: {
           colors: {
-            nxbg: '#05070b',
-            nxcard: '#0d1322',
-            nxborder: '#1e293b',
-            nxneon: '#00f2fe',
-            nxpurple: '#7928ca',
-            discord: '#5865F2'
+            mrDark: '#030712',
+            mrCard: '#0b0f19',
+            mrBorder: '#1f293d',
+            mrPrimary: '#8b5cf6', // Violeta Neón Exclusivo
+            mrSecondary: '#06b6d4', // cian eléctrico
+            mrAccent: '#f43f5e'
           },
           boxShadow: {
-            'neon': '0 0 20px rgba(0, 242, 254, 0.15)',
-            'neon-hover': '0 0 25px rgba(0, 242, 254, 0.35)',
+            'mr-glow': '0 0 25px rgba(139, 92, 246, 0.2)',
+            'mr-glow-cyan': '0 0 25px rgba(6, 182, 212, 0.2)',
           }
         }
       }
     }
   </script>
-  <!-- FontAwesome -->
+  <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
   <style>
-    body { background-color: #05070b; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif; }
-    .glass-nav { background: rgba(5, 7, 11, 0.85); backdrop-filter: blur(16px); }
-    .glow-border { border: 1px solid rgba(30, 41, 59, 0.8); transition: all 0.3s ease; }
-    .glow-border:hover { border-color: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.2); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; }
+    .glass-panel { background: rgba(11, 15, 25, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(31, 41, 61, 0.6); }
+    .neon-border { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .neon-border:hover { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-[#00f2fe] selection:text-black">
+<body class="min-h-screen flex flex-col justify-between selection:bg-mrPrimary selection:text-white">
 
-  <!-- ================= HEADER / NAVBAR ================= -->
-  <header class="sticky top-0 z-50 glass-nav border-b border-nxborder">
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+  <!-- ================= NAVBAR SUPERIOR ================= -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-mrBorder">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       
-      <!-- Logo Único -->
-      <button onclick="cambiarSeccion('inicio')" class="flex items-center gap-2.5 text-lg font-black tracking-wider text-white group cursor-pointer bg-transparent border-none">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#00f2fe] to-[#4facfe] flex items-center justify-center text-black shadow-neon group-hover:scale-105 transition">
-          <i class="fa-solid fa-bolt-lightning text-base"></i>
+      <!-- Logo MRSTORE -->
+      <a href="#" onclick="cambiarMenu('tienda')" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-mrPrimary to-mrSecondary flex items-center justify-center text-white shadow-lg shadow-mrPrimary/30 group-hover:scale-105 transition">
+          <i class="fa-solid fa-gem text-lg"></i>
         </div>
-        <span>NIXER<span class="text-[#00f2fe]">STORE</span></span>
-      </button>
+        <div class="flex flex-col">
+          <span class="text-xl font-black tracking-wider text-white">MR<span class="text-mrPrimary">STORE</span></span>
+          <span class="text-[9px] font-bold text-cyan-400 tracking-widest uppercase">Digital Vault</span>
+        </div>
+      </a>
 
-      <!-- Controles Derecha -->
+      <!-- Acciones de Navegación -->
       <div class="flex items-center gap-3">
-        
-        <!-- Selector de Moneda / País -->
+        <!-- Selector de Moneda -->
         <div class="relative">
-          <button id="btnMoneda" onclick="toggleMenuMoneda(event)" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-nxcard glow-border text-xs font-bold text-gray-200 cursor-pointer">
-            <span id="flagActual" class="text-sm">🇻🇪</span>
-            <span id="txtMoneda">USD/BS</span>
-            <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
+          <button onclick="toggleMonedaMenu(event)" class="px-3.5 py-2 rounded-xl glass-panel text-xs font-bold text-gray-200 flex items-center gap-2 hover:border-mrPrimary transition cursor-pointer">
+            <span id="flagLbl">🇻🇪</span> <span id="currLbl">USD</span> <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
           </button>
-          
-          <!-- Dropdown Monedas -->
-          <div id="menuMoneda" class="hidden absolute right-0 mt-2 w-52 bg-nxcard glow-border rounded-2xl shadow-2xl py-2 z-50">
-            <div class="px-3 py-1.5 text-[10px] text-gray-400 uppercase font-extrabold tracking-wider border-b border-nxborder mb-1">Método / Moneda</div>
-            <button onclick="seleccionarMoneda('🇻🇪', 'USD/BS', '$', 1)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇻🇪 Venezuela (PagoMóvil/Zinli)</button>
-            <button onclick="seleccionarMoneda('🇵🇪', 'PEN', 'S/', 3.8)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇵🇪 Perú (PEN)</button>
-            <button onclick="seleccionarMoneda('🇨🇱', 'CLP', '$', 950)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇨🇱 Chile (CLP)</button>
-            <button onclick="seleccionarMoneda('🇨🇴', 'COP', '$', 4100)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🇨🇴 Colombia (COP)</button>
-            <button onclick="seleccionarMoneda('🟢', 'USDT', 'USDT', 1)" class="w-full px-3 py-2 text-left text-xs hover:bg-nxborder flex items-center gap-2.5 transition">🟢 USDT (Cripto)</button>
+          <div id="dropdownMoneda" class="hidden absolute right-0 mt-2 w-44 glass-panel rounded-2xl shadow-2xl py-2 z-50">
+            <button onclick="setMoneda('🇻🇪', 'USD', 1, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🇻🇪 Venezuela (USD)</button>
+            <button onclick="setMoneda('🇵🇪', 'PEN', 3.8, 'S/')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🇵🇪 Perú (PEN)</button>
+            <button onclick="setMoneda('🇨🇱', 'CLP', 950, '$')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🇨🇱 Chile (CLP)</button>
+            <button onclick="setMoneda('🟢', 'USDT', 1, 'USDT')" class="w-full text-left px-4 py-2 text-xs hover:bg-mrBorder flex items-center gap-2">🟢 USDT Cripto</button>
           </div>
         </div>
 
-        <!-- Botón Cuenta -->
-        <button onclick="cambiarSeccion('cuenta')" class="w-10 h-10 rounded-xl bg-nxcard glow-border flex items-center justify-center text-gray-300 hover:text-white cursor-pointer transition">
-          <i class="fa-regular fa-user text-sm"></i>
+        <!-- Botón Carrito / Pedidos -->
+        <button onclick="cambiarMenu('carrito')" class="relative w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-gray-300 hover:text-white hover:border-mrPrimary transition cursor-pointer">
+          <i class="fa-solid fa-cart-shopping text-sm"></i>
+          <span id="cartCount" class="absolute -top-1 -right-1 w-5 h-5 bg-mrPrimary text-white rounded-full text-[10px] font-black flex items-center justify-center shadow">0</span>
         </button>
-
-        <!-- Botón Menú Hamburguesa -->
-        <button onclick="toggleSidebar(event)" class="w-10 h-10 rounded-xl bg-nxcard glow-border flex items-center justify-center text-[#00f2fe] hover:bg-[#00f2fe]/10 cursor-pointer transition">
-          <i class="fa-solid fa-bars-staggered text-base"></i>
-        </button>
-
       </div>
     </div>
   </header>
 
-  <!-- ================= SIDEBAR LATERAL (DRAWER) ================= -->
-  <div id="overlaySidebar" onclick="toggleSidebar()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
-  <aside id="sidebar" class="fixed top-0 right-0 w-80 h-full bg-nxcard border-l border-nxborder z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
-    <div>
-      <div class="flex items-center justify-between pb-5 border-b border-nxborder">
-        <div class="flex items-center gap-2 font-black text-white">
-          <i class="fa-solid fa-gamepad text-[#00f2fe]"></i> NIXER MENU
-        </div>
-        <button onclick="toggleSidebar()" class="w-8 h-8 rounded-lg bg-nxborder/50 flex items-center justify-center text-gray-400 hover:text-white cursor-pointer">
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
-      </div>
+  <!-- ================= CONTENEDOR PRINCIPAL / MENÚS ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
 
-      <nav class="mt-6 flex flex-col gap-2">
-        <button onclick="cambiarSeccion('inicio'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
-          <i class="fa-solid fa-house text-xs w-5 text-center"></i> Inicio
-        </button>
-        <button onclick="cambiarSeccion('catalogo'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
-          <i class="fa-solid fa-store text-xs w-5 text-center"></i> Catálogo Completo
-        </button>
-        <button onclick="cambiarSeccion('followers'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
-          <i class="fa-solid fa-heart text-xs w-5 text-center text-pink-400"></i> Followers & Redes
-        </button>
-        <button onclick="cambiarSeccion('cuenta'); toggleSidebar();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-[#00f2fe]/10 hover:text-[#00f2fe] text-gray-300 font-bold text-sm flex items-center gap-3 transition cursor-pointer">
-          <i class="fa-solid fa-user-gear text-xs w-5 text-center"></i> Mi Cuenta / Login
-        </button>
-      </nav>
-    </div>
-
-    <div class="pt-4 border-t border-nxborder">
-      <a href="https://discord.gg" target="_blank" class="w-full py-3.5 bg-discord hover:bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-discord/30 transition text-sm">
-        <i class="fa-brands fa-discord text-lg"></i> Soporte en Discord
-      </a>
-    </div>
-  </aside>
-
-  <!-- ================= SECCIÓN 1: INICIO ================= -->
-  <main id="sec-inicio" class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
-    
-    <!-- Hero Banner Futurista -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-nxcard via-[#09101d] to-nxcard glow-border p-8 md:p-12 mb-12 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
-      <div class="absolute -right-20 -bottom-20 w-72 h-72 bg-[#00f2fe]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- VISTA 1: TIENDA PRINCIPAL -->
+    <div id="view-tienda" class="space-y-8">
       
-      <div class="max-w-2xl z-10">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#00f2fe]/10 border border-[#00f2fe]/30 text-[#00f2fe] text-xs font-bold mb-4">
-          <span class="w-2 h-2 rounded-full bg-[#00f2fe] animate-pulse"></span> Sistema Automatizado 24/7
-        </div>
-        <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-4 leading-none">
-          DISCORD NITRO, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f2fe] to-[#7928ca]">SPOTIFY & MÁS</span>
-        </h1>
-        <p class="text-gray-400 text-sm md:text-base mb-8">
-          Adquiere tus servicios digitales de forma instantánea. Paga de manera segura con tu moneda local o métodos en Venezuela.
-        </p>
-        <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-          <button onclick="cambiarSeccion('catalogo')" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#00f2fe] to-[#4facfe] text-black font-black text-sm shadow-neon hover:shadow-neon-hover transition cursor-pointer flex items-center gap-2">
-            Ver Catálogo <i class="fa-solid fa-arrow-right"></i>
-          </button>
-          <a href="https://discord.gg" target="_blank" class="px-7 py-3.5 rounded-2xl bg-nxcard glow-border text-white font-bold text-sm hover:border-[#00f2fe] transition flex items-center gap-2">
-            <i class="fa-brands fa-discord text-discord"></i> Discord
-          </a>
-        </div>
-      </div>
-
-      <!-- Tarjeta Flotante Destacada -->
-      <div class="w-full md:w-80 bg-nxbg/80 backdrop-blur glow-border rounded-2xl p-6 text-center z-10">
-        <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center mx-auto mb-4 text-xl">
-          <i class="fa-brands fa-discord"></i>
-        </div>
-        <h3 class="font-black text-lg mb-1">Discord Nitro 3 Meses</h3>
-        <p class="text-xs text-gray-400 mb-4">Incluye 2 Boosts y emojis globales.</p>
-        <div class="text-2xl font-black text-[#00f2fe] mb-4">
-          <span class="simboloMoneda">$</span><span class="precioCalc" data-usd="3.50">3.50</span>
-        </div>
-        <button onclick="mostrarAlerta('¡Discord Nitro añadido al carrito con éxito!')" class="w-full py-3 rounded-xl bg-[#00f2fe] hover:bg-[#00f2fe]/80 text-black font-extrabold text-xs transition cursor-pointer">
-          Comprar Ahora
-        </button>
-      </div>
-    </div>
-
-    <!-- Grid Productos Destacados -->
-    <div class="mb-12">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-black flex items-center gap-2.5">
-          <i class="fa-solid fa-fire text-amber-400"></i> Destacados del Mes
-        </h2>
-        <button onclick="cambiarSeccion('catalogo')" class="text-xs font-bold text-[#00f2fe] hover:underline cursor-pointer">Ver todos →</button>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Banner Hero Único -->
+      <div class="relative overflow-hidden rounded-3xl glass-panel p-8 sm:p-12 border border-mrBorder flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-mrPrimary/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-mrSecondary/10 rounded-full blur-3xl pointer-events-none"></div>
         
-        <!-- Item 1 -->
-        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-1 transition duration-300">
+        <div class="relative z-10 max-w-xl text-center md:text-left">
+          <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mrPrimary/10 border border-mrPrimary/30 text-mrPrimary text-xs font-bold mb-4">
+            <i class="fa-solid fa-bolt"></i> Entrega Automatizada 24/7
+          </span>
+          <h1 class="text-4xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
+            SERVICIOS DIGITALES & <span class="text-transparent bg-clip-text bg-gradient-to-r from-mrPrimary to-mrSecondary">GAMING VAULT</span>
+          </h1>
+          <p class="text-gray-400 text-sm mb-6">
+            Los mejores precios del mercado en Discord Nitro, Bosteos, Streaming y Minecraft MFA con garantía total.
+          </p>
+          <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+            <a href="#productos" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-mrPrimary to-purple-600 text-white font-extrabold text-xs shadow-lg shadow-mrPrimary/30 hover:opacity-90 transition cursor-pointer">
+              Explorar Catálogo <i class="fa-solid fa-arrow-down ml-1"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative z-10 w-full md:w-72 glass-panel p-6 rounded-2xl text-center border border-mrBorder">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3 class="font-extrabold text-sm mb-1">Garantía MRSTORE</h3>
+          <p class="text-[11px] text-gray-400 mb-4">Soporte directo vía Discord y atención inmediata tras tu pago.</p>
+          <div class="text-xs text-mrSecondary font-bold bg-mrSecondary/10 py-2 rounded-xl">
+            <i class="fa-solid fa-circle-check"></i> 100% Confiable
+          </div>
+        </div>
+      </div>
+
+      <!-- Menú de Filtros por Categoría -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-mrBorder" id="productos">
+        <button onclick="filtrarProductos('todos')" id="btn-cat-todos" class="px-4 py-2.5 rounded-xl bg-mrPrimary text-white font-bold text-xs shrink-0 transition cursor-pointer">🔥 Todos</button>
+        <button onclick="filtrarProductos('discord')" id="btn-cat-discord" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">💬 Discord Nitro & Boosts</button>
+        <button onclick="filtrarProductos('streaming')" id="btn-cat-streaming" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">🎵 Streaming</button>
+        <button onclick="filtrarProductos('minecraft')" id="btn-cat-minecraft" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">⛏️ Minecraft MFA</button>
+      </div>
+
+      <!-- GRID DE LOS 5 PRODUCTOS EXACTOS SOLICITADOS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gridProductos">
+        
+        <!-- 1. Nitro Boost -->
+        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
           <div>
             <div class="flex justify-between items-center mb-4">
-              <span class="px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-black uppercase">Discord</span>
-              <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">En Stock</span>
+              <span class="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase border border-indigo-500/20">Discord</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <h3 class="text-lg font-black mb-1">Nitro Boost (3 Meses)</h3>
+            <p class="text-xs text-gray-400 mb-6">Suscripción completa con 2 Boosts incluidos, emojis globales y streaming HD.</p>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+              <span class="text-xs text-gray-400 font-bold">Precio:</span>
+              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="3.50">3.50</span></span>
+            </div>
+            <button onclick="agregarAlCarrito('Nitro Boost (3 Meses)', 3.50)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
+              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Nitro Basic -->
+        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase border border-indigo-500/20">Discord</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl">
+              <i class="fa-solid fa-rocket"></i>
             </div>
             <h3 class="text-lg font-black mb-1">Nitro Basic (1 Mes)</h3>
-            <p class="text-xs text-gray-400 mb-6">Insignia de perfil y uso de emojis en cualquier server.</p>
+            <p class="text-xs text-gray-400 mb-6">Insignia de perfil exclusiva, emojis en cualquier servidor y subidas de archivos grandes.</p>
           </div>
           <div>
-            <div class="flex items-baseline justify-between mb-4 pt-4 border-t border-nxborder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
-              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="1.80">1.80</span></span>
+              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="1.80">1.80</span></span>
             </div>
-            <button onclick="mostrarAlerta('¡Nitro Basic añadido!')" class="w-full py-3 rounded-xl bg-[#00f2fe]/10 hover:bg-[#00f2fe] text-[#00f2fe] hover:text-black font-black text-xs transition cursor-pointer border border-[#00f2fe]/30">
-              Comprar Producto
+            <button onclick="agregarAlCarrito('Nitro Basic (1 Mes)', 1.80)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
+              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
-        <!-- Item 2 -->
-        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-1 transition duration-300">
+        <!-- 3. Bosteo de Servidor -->
+        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
           <div>
             <div class="flex justify-between items-center mb-4">
-              <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">Streaming</span>
-              <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">En Stock</span>
+              <span class="px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase border border-purple-500/20">Servidores</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 text-xl">
+              <i class="fa-solid fa-bolt-lightning"></i>
+            </div>
+            <h3 class="text-lg font-black mb-1">Bosteos de Servidor (Pack Nivel 3)</h3>
+            <p class="text-xs text-gray-400 mb-6">14 Bosteos estables por 3 meses para llevar tu servidor de Discord al Nivel máximo.</p>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
+              <span class="text-xs text-gray-400 font-bold">Precio:</span>
+              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="6.50">6.50</span></span>
+            </div>
+            <button onclick="agregarAlCarrito('Bosteos de Servidor (Pack Nivel 3)', 6.50)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
+              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Spotify -->
+        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="streaming">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase border border-emerald-500/20">Streaming</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 text-xl">
+              <i class="fa-brands fa-spotify"></i>
             </div>
             <h3 class="text-lg font-black mb-1">Spotify Premium (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-6">Música sin anuncios y descargas ilimitadas en tu cuenta.</p>
+            <p class="text-xs text-gray-400 mb-6">Música sin anuncios, saltos ilimitados y alta calidad en tu propia cuenta personal.</p>
           </div>
           <div>
-            <div class="flex items-baseline justify-between mb-4 pt-4 border-t border-nxborder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
-              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="2.50">2.50</span></span>
+              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="2.50">2.50</span></span>
             </div>
-            <button onclick="mostrarAlerta('¡Spotify añadido!')" class="w-full py-3 rounded-xl bg-[#00f2fe]/10 hover:bg-[#00f2fe] text-[#00f2fe] hover:text-black font-black text-xs transition cursor-pointer border border-[#00f2fe]/30">
-              Comprar Producto
+            <button onclick="agregarAlCarrito('Spotify Premium (3 Meses)', 2.50)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
+              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
-        <!-- Item 3 -->
-        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-1 transition duration-300">
+        <!-- 5. MFA Premium -->
+        <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="minecraft">
           <div>
             <div class="flex justify-between items-center mb-4">
-              <span class="px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-black uppercase">Minecraft</span>
-              <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">En Stock</span>
+              <span class="px-3 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 text-[10px] font-black uppercase border border-cyan-500/20">Minecraft</span>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Stock Activo</span>
             </div>
-            <h3 class="text-lg font-black mb-1">Minecraft Full Access</h3>
-            <p class="text-xs text-gray-400 mb-6">Cambia correo, skin y contraseña al instante.</p>
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4 text-xl">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <h3 class="text-lg font-black mb-1">Minecraft MFA Premium</h3>
+            <p class="text-xs text-gray-400 mb-6">Full Access con cambio de correo, contraseña y skin propia. Entra a cualquier servidor premium.</p>
           </div>
           <div>
-            <div class="flex items-baseline justify-between mb-4 pt-4 border-t border-nxborder">
+            <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
-              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="4.00">4.00</span></span>
+              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="4.00">4.00</span></span>
             </div>
-            <button onclick="mostrarAlerta('¡Minecraft FA añadido!')" class="w-full py-3 rounded-xl bg-[#00f2fe]/10 hover:bg-[#00f2fe] text-[#00f2fe] hover:text-black font-black text-xs transition cursor-pointer border border-[#00f2fe]/30">
-              Comprar Producto
+            <button onclick="agregarAlCarrito('Minecraft MFA Premium', 4.00)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
+              <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
             </button>
           </div>
         </div>
 
       </div>
     </div>
-  </main>
 
-  <!-- ================= SECCIÓN 2: CATÁLOGO COMPLETO ================= -->
-  <main id="sec-catalogo" class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full hidden">
-    <div class="mb-8">
-      <h1 class="text-3xl font-black mb-2">Catálogo General</h1>
-      <p class="text-gray-400 text-sm">Explora por categorías y filtra según lo que necesites.</p>
-    </div>
+    <!-- VISTA 2: CARRITO / CHECKOUT -->
+    <div id="view-carrito" class="max-w-2xl mx-auto space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-black">Tu Carrito de Compras</h2>
+        <button onclick="cambiarMenu('tienda')" class="text-xs text-mrSecondary font-bold hover:underline">← Seguir Comprando</button>
+      </div>
 
-    <!-- Botones Filtro Catálogo -->
-    <div class="flex flex-wrap gap-2 mb-8">
-      <button onclick="filtrarCat('todo')" id="f-todo" class="px-4 py-2 rounded-xl bg-[#00f2fe] text-black font-black text-xs cursor-pointer transition">Todo</button>
-      <button onclick="filtrarCat('discord')" id="f-discord" class="px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition">Discord Nitro</button>
-      <button onclick="filtrarCat('streaming')" id="f-streaming" class="px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition">Streaming</button>
-      <button onclick="filtrarCat('minecraft')" id="f-minecraft" class="px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition">Minecraft</button>
-    </div>
+      <div class="glass-panel rounded-3xl p-6 space-y-4" id="listaCarrito">
+        <!-- Los ítems del carrito se inyectan por JS -->
+      </div>
 
-    <!-- Grid de Artículos -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gridCatalogo">
-      
-      <div class="tarjeta-prod" data-cat="discord">
-        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between h-full">
-          <div>
-            <span class="text-[10px] font-black uppercase text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg">Discord</span>
-            <h3 class="text-lg font-black mt-3 mb-1">Discord Nitro (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-6">Cuenta completa con 2 Boosts.</p>
-          </div>
-          <div>
-            <div class="flex justify-between items-center mb-4 pt-3 border-t border-nxborder">
-              <span class="text-xs text-gray-400">Precio:</span>
-              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="3.50">3.50</span></span>
-            </div>
-            <button onclick="mostrarAlerta('Producto añadido al carrito')" class="w-full py-3 rounded-xl bg-[#00f2fe] text-black font-black text-xs hover:bg-[#00f2fe]/80 transition cursor-pointer">Comprar</button>
-          </div>
+      <div class="glass-panel rounded-3xl p-6 space-y-4">
+        <div class="flex justify-between text-sm font-bold">
+          <span class="text-gray-400">Total a Pagar:</span>
+          <span class="text-xl font-black text-white" id="totalCarrito">$0.00</span>
         </div>
-      </div>
-
-      <div class="tarjeta-prod" data-cat="streaming">
-        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between h-full">
-          <div>
-            <span class="text-[10px] font-black uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg">Streaming</span>
-            <h3 class="text-lg font-black mt-3 mb-1">Spotify Premium (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-6">Individual sin anuncios.</p>
-          </div>
-          <div>
-            <div class="flex justify-between items-center mb-4 pt-3 border-t border-nxborder">
-              <span class="text-xs text-gray-400">Precio:</span>
-              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="2.50">2.50</span></span>
-            </div>
-            <button onclick="mostrarAlerta('Producto añadido al carrito')" class="w-full py-3 rounded-xl bg-[#00f2fe] text-black font-black text-xs hover:bg-[#00f2fe]/80 transition cursor-pointer">Comprar</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="tarjeta-prod" data-cat="minecraft">
-        <div class="bg-nxcard glow-border rounded-3xl p-6 flex flex-col justify-between h-full">
-          <div>
-            <span class="text-[10px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg">Minecraft</span>
-            <h3 class="text-lg font-black mt-3 mb-1">Capa OptiFine o Custom</h3>
-            <p class="text-xs text-gray-400 mb-6>Personaliza tu skin en servidores.</p>
-          </div>
-          <div>
-            <div class="flex justify-between items-center mb-4 pt-3 border-t border-nxborder">
-              <span class="text-xs text-gray-400">Precio:</span>
-              <span class="text-xl font-black text-white"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="2.00">2.00</span></span>
-            </div>
-            <button onclick="mostrarAlerta('Producto añadido al carrito')" class="w-full py-3 rounded-xl bg-[#00f2fe] text-black font-black text-xs hover:bg-[#00f2fe]/80 transition cursor-pointer">Comprar</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- ================= SECCIÓN 3: FOLLOWERS & REDES ================= -->
-  <main id="sec-followers" class="max-w-3xl mx-auto px-4 py-10 flex-1 w-full hidden">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-black mb-2">Impulsa tus Redes Sociales</h1>
-      <p class="text-gray-400 text-sm">Selecciona tu plataforma, ingresa tu enlace y calcula al instante.</p>
-    </div>
-
-    <div class="bg-nxcard glow-border rounded-3xl p-6 md:p-8 space-y-6">
-      <div>
-        <label class="block text-xs font-black uppercase text-gray-400 mb-2">Plataforma</label>
-        <div class="grid grid-cols-3 gap-2">
-          <button class="py-2.5 px-3 rounded-xl bg-[#00f2fe]/10 border border-[#00f2fe] text-[#00f2fe] font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"><i class="fa-brands fa-tiktok"></i> TikTok</button>
-          <button class="py-2.5 px-3 rounded-xl bg-nxbg border border-nxborder text-gray-300 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:border-gray-500"><i class="fa-brands fa-instagram text-pink-400"></i> Instagram</button>
-          <button class="py-2.5 px-3 rounded-xl bg-nxbg border border-nxborder text-gray-300 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:border-gray-500"><i class="fa-brands fa-youtube text-red-500"></i> YouTube</button>
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-xs font-black uppercase text-gray-400 mb-2">Servicio</label>
-        <select class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs font-bold text-white focus:border-[#00f2fe] outline-none">
-          <option>Seguidores / Followers (Alta calidad)</option>
-          <option>Likes / Me Gusta</option>
-          <option>Vistas / Views</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-xs font-black uppercase text-gray-400 mb-2">Enlace de tu perfil o publicación</label>
-        <input type="text" placeholder="https://tiktok.com/@tuusuario" class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs text-white focus:border-[#00f2fe] outline-none" />
-      </div>
-
-      <div class="pt-4 border-t border-nxborder flex items-center justify-between">
-        <div>
-          <span class="text-xs text-gray-400 block font-bold">Total a pagar:</span>
-          <span class="text-2xl font-black text-[#00f2fe]"><span class="simboloMoneda">$</span><span class="precioCalc" data-usd="3.00">3.00</span></span>
-        </div>
-        <button onclick="mostrarAlerta('¡Orden de seguidores generada!')" class="px-6 py-3.5 bg-[#00f2fe] hover:bg-[#00f2fe]/80 text-black font-black text-xs rounded-xl transition cursor-pointer">
-          Procesar Pedido
+        <button onclick="procesarPago()" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black font-black text-xs transition shadow-lg shadow-emerald-500/25 cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Completar Pedido vía WhatsApp / Discord
         </button>
       </div>
     </div>
-  </main>
 
-  <!-- ================= SECCIÓN 4: MI CUENTA / LOGIN ================= -->
-  <main id="sec-cuenta" class="max-w-md mx-auto px-4 py-12 flex-1 w-full hidden">
-    <div class="bg-nxcard glow-border rounded-3xl p-6 md:p-8">
-      
-      <div class="text-center mb-6">
-        <div class="w-12 h-12 rounded-2xl bg-[#00f2fe]/10 border border-[#00f2fe]/30 text-[#00f2fe] flex items-center justify-center mx-auto mb-3 text-xl">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h2 class="text-2xl font-black">Mi Cuenta</h2>
-        <p class="text-xs text-gray-400 mt-1">Inicia sesión para gestionar tus compras y entregas.</p>
-      </div>
-
-      <!-- Botón Discord Login -->
-      <a href="#" onclick="mostrarAlerta('Conectando con Discord...'); return false;" class="w-full py-3.5 bg-discord hover:bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 mb-6 shadow-lg shadow-discord/25 transition text-xs cursor-pointer">
-        <i class="fa-brands fa-discord text-base"></i> Entrar con Discord
-      </a>
-
-      <div class="relative flex py-2 items-center mb-6">
-        <div class="flex-grow border-t border-nxborder"></div>
-        <span class="flex-shrink mx-3 text-gray-500 text-[10px] font-black uppercase">O con correo</span>
-        <div class="flex-grow border-t border-nxborder"></div>
-      </div>
-
-      <form onsubmit="event.preventDefault(); mostrarAlerta('¡Inicio de sesión exitoso!'); cambiarSeccion('inicio');" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-gray-400 mb-1.5">Correo electrónico</label>
-          <input type="email" required placeholder="tu@correo.com" class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs text-white focus:border-[#00f2fe] outline-none" />
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-gray-400 mb-1.5">Contraseña</label>
-          <input type="password" required placeholder="••••••••" class="w-full bg-nxbg border border-nxborder rounded-xl p-3 text-xs text-white focus:border-[#00f2fe] outline-none" />
-        </div>
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00f2fe] hover:bg-[#00f2fe]/80 text-black font-black text-xs transition cursor-pointer shadow-neon">
-          Iniciar Sesión
-        </button>
-      </form>
-    </div>
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-nxborder py-6 bg-nxcard/50 mt-12 text-center text-xs text-gray-500">
-    <p>&copy; 2026 Nixer Store. Todos los derechos reservados.</p>
+  <footer class="glass-panel border-t border-mrBorder py-6 text-center text-xs text-gray-500 mt-12">
+    <p>&copy; 2026 MRSTORE. Todos los derechos reservados.</p>
   </footer>
 
   <!-- ================= JAVASCRIPT FUNCIONAL ================= -->
   <script>
-    let multiplicadorActual = 1;
-    let simboloActual = '$';
+    let carrito = [];
+    let tasaMoneda = 1;
+    let simboloMoneda = '$';
 
-    // Cambiar entre vistas de la tienda
-    function cambiarSeccion(id) {
-      const secciones = ['inicio', 'catalogo', 'followers', 'cuenta'];
-      secciones.forEach(s => {
-        const el = document.getElementById('sec-' + s);
-        if (el) el.classList.add('hidden');
-      });
-      const objetivo = document.getElementById('sec-' + id);
-      if (objetivo) objetivo.classList.remove('hidden');
+    // Cambiar vistas de manera fluida
+    function cambiarMenu(vista) {
+      document.getElementById('view-tienda').classList.add('hidden');
+      document.getElementById('view-carrito').classList.add('hidden');
+      
+      if(vista === 'tienda') {
+        document.getElementById('view-tienda').classList.remove('hidden');
+      } else if(vista === 'carrito') {
+        document.getElementById('view-carrito').classList.remove('hidden');
+        renderizarCarrito();
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Toggle menú lateral (Drawer)
-    function toggleSidebar(e) {
-      if(e) e.stopPropagation();
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlaySidebar');
-      sidebar.classList.toggle('translate-x-full');
-      overlay.classList.toggle('hidden');
-    }
-
-    // Toggle dropdown moneda
-    function toggleMenuMoneda(e) {
-      if(e) e.stopPropagation();
-      const menu = document.getElementById('menuMoneda');
+    // Toggle menú de monedas
+    function toggleMonedaMenu(e) {
+      e.stopPropagation();
+      const menu = document.getElementById('dropdownMoneda');
       menu.classList.toggle('hidden');
     }
-
-    // Cerrar menús al hacer click fuera
     window.addEventListener('click', () => {
-      document.getElementById('menuMoneda').classList.add('hidden');
+      document.getElementById('dropdownMoneda').classList.add('hidden');
     });
 
-    // Seleccionar Moneda y convertir precios automáticamente
-    function seleccionarMoneda(bandera, codigo, simbolo, tasa) {
-      document.getElementById('flagActual').textContent = bandera;
-      document.getElementById('txtMoneda').textContent = codigo;
-      simboloActual = simbolo;
-      multiplicadorActual = tasa;
+    // Configurar Moneda
+    function setMoneda(flag, codigo, tasa, simbolo) {
+      document.getElementById('flagLbl').textContent = flag;
+      document.getElementById('currLbl').textContent = codigo;
+      tasaMoneda = tasa;
+      simboloMoneda = simbolo;
 
-      // Actualizar símbolos
-      document.querySelectorAll('.simboloMoneda').forEach(el => {
-        el.textContent = simbolo + ' ';
+      document.querySelectorAll('.simbolo').forEach(el => el.textContent = simbolo);
+      document.querySelectorAll('.precio').forEach(el => {
+        let usd = parseFloat(el.getAttribute('data-usd'));
+        el.textContent = (usd * tasa).toFixed(2);
       });
-
-      // Recalcular montos
-      document.querySelectorAll('.precioCalc').forEach(el => {
-        const usdBase = parseFloat(el.getAttribute('data-usd'));
-        const convertido = (usdBase * tasa).toFixed(2);
-        el.textContent = convertido;
-      });
+      renderizarCarrito();
     }
 
-    // Filtrar catálogo por categoría
-    function filtrarCat(categoria) {
-      // Cambiar diseño de botones de filtro
-      ['todo', 'discord', 'streaming', 'minecraft'].forEach(c => {
-        const btn = document.getElementById('f-' + c);
+    // Filtrar Productos por categoría
+    function filtrarProductos(cat) {
+      ['todos', 'discord', 'streaming', 'minecraft'].forEach(c => {
+        const btn = document.getElementById('btn-cat-' + c);
         if(btn) {
-          if(c === categoria) {
-            btn.className = "px-4 py-2 rounded-xl bg-[#00f2fe] text-black font-black text-xs cursor-pointer transition";
+          if(c === cat) {
+            btn.className = "px-4 py-2.5 rounded-xl bg-mrPrimary text-white font-bold text-xs shrink-0 transition cursor-pointer";
           } else {
-            btn.className = "px-4 py-2 rounded-xl bg-nxcard glow-border text-gray-300 font-bold text-xs cursor-pointer transition";
+            btn.className = "px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer";
           }
         }
       });
 
-      // Filtrar tarjetas
-      document.querySelectorAll('.tarjeta-prod').forEach(card => {
-        if(categoria === 'todo' || card.getAttribute('data-cat') === categoria) {
-          card.style.display = 'block';
+      document.querySelectorAll('.prod-card').forEach(card => {
+        if(cat === 'todos' || card.getAttribute('data-cat') === cat) {
+          card.style.display = 'flex';
         } else {
           card.style.display = 'none';
         }
       });
     }
 
-    // Sistema de notificaciones/alertas funcionales
-    function mostrarAlerta(mensaje) {
-      const alerta = document.createElement('div');
-      alerta.className = "fixed bottom-6 right-6 bg-[#00f2fe] text-black font-black px-6 py-3.5 rounded-2xl shadow-2xl z-50 animate-bounce text-xs flex items-center gap-3";
-      alerta.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i> ${mensaje}`;
-      document.body.appendChild(alerta);
+    // Agregar producto al carrito
+    function agregarAlCarrito(nombre, precioUsd) {
+      carrito.push({ nombre, precioUsd });
+      document.getElementById('cartCount').textContent = carrito.length;
+      mostrarNotificacion(`¡${nombre} agregado al carrito!`);
+    }
+
+    // Renderizar Carrito
+    function renderizarCarrito() {
+      const contenedor = document.getElementById('listaCarrito');
+      if(carrito.length === 0) {
+        contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">Tu carrito está vacío.</p>`;
+        document.getElementById('totalCarrito').textContent = simboloMoneda + '0.00';
+        return;
+      }
+
+      let html = '';
+      let totalUsd = 0;
+      carrito.forEach((item, index) => {
+        totalUsd += item.precioUsd;
+        html += `
+          <div class="flex items-center justify-between pb-3 border-b border-mrBorder text-xs">
+            <div>
+              <span class="font-bold text-white block">${item.nombre}</span>
+              <span class="text-gray-400">${simboloMoneda}${(item.precioUsd * tasaMoneda).toFixed(2)}</span>
+            </div>
+            <button onclick="eliminarItem(${index})" class="text-red-400 hover:text-red-300 p-1.5"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      });
+      contenedor.innerHTML = html;
+      document.getElementById('totalCarrito').textContent = simboloMoneda + (totalUsd * tasaMoneda).toFixed(2);
+    }
+
+    // Eliminar item
+    function eliminarItem(index) {
+      carrito.splice(index, 1);
+      document.getElementById('cartCount').textContent = carrito.length;
+      renderizarCarrito();
+    }
+
+    // Procesar pago simulado
+    function procesarPago() {
+      if(carrito.length === 0) {
+        mostrarNotificacion('Agrega productos antes de pagar.');
+        return;
+      }
+      mostrarNotificacion('¡Redirigiendo a pasarela de atención!');
       setTimeout(() => {
-        alerta.remove();
-      }, 3000);
+        alert('Orden registrada con éxito para MRSTORE. Contacta al soporte para verificar tu pago local o internacional.');
+        carrito = [];
+        document.getElementById('cartCount').textContent = '0';
+        cambiarMenu('tienda');
+      }, 1500);
+    }
+
+    // Notificaciones flotantes elegantes
+    function mostrarNotificacion(msg) {
+      const noti = document.createElement('div');
+      noti.className = "fixed bottom-6 right-6 glass-panel border border-mrPrimary text-white font-bold px-5 py-3 rounded-2xl shadow-2xl z-50 text-xs flex items-center gap-3 animate-bounce";
+      noti.innerHTML = `<i class="fa-solid fa-circle-check text-mrPrimary text-base"></i> ${msg}`;
+      document.body.appendChild(noti);
+      setTimeout(() => noti.remove(), 3000);
     }
   </script>
 </body>
