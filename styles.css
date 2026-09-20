@@ -1,5 +1,5 @@
 :root {
-    --bg-main: #04060f;
+    --bg-main: #050714;
     --bg-surface: #0b0f19;
     --border-color: rgba(255, 255, 255, 0.08);
     --accent-blue: #3b82f6;
@@ -10,7 +10,7 @@
 body {
     background-color: var(--bg-main);
     color: var(--text-color);
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -21,7 +21,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 25px;
+    padding: 16px 30px;
     background: var(--bg-surface);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
@@ -32,47 +32,52 @@ body {
 .brand-box {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-weight: bold;
-    font-size: 15px;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.5px;
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 .staff-badge {
     background: rgba(59, 130, 246, 0.15);
     color: #60a5fa;
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 4px;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
     border: 1px solid rgba(59, 130, 246, 0.3);
+    font-weight: 500;
 }
 
 .hamburger-btn {
     background: transparent;
     border: 1px solid var(--border-color);
     color: #fff;
-    font-size: 20px;
-    padding: 5px 10px;
+    font-size: 18px;
+    padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-/* ==========================================================
-   DRAWER / MENÚ LATERAL (ESTILO ORIGINAL + CLASE .hidden)
-   ========================================================== */
+.hamburger-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Drawer / Menú Lateral */
 .synth-drawer-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(4, 6, 15, 0.85);
-    backdrop-filter: blur(8px);
+    background: rgba(4, 6, 15, 0.75);
+    backdrop-filter: blur(6px);
     z-index: 2000;
     display: flex;
     justify-content: flex-end;
@@ -81,7 +86,6 @@ body {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* ESTADO OCULTO QUE EVITA EL BUG AL CARGAR */
 .synth-drawer-overlay.hidden {
     opacity: 0;
     visibility: hidden;
@@ -94,15 +98,15 @@ body {
     height: 100vh;
     background: var(--bg-surface);
     border-left: 1px solid var(--border-color);
-    padding: 25px;
+    padding: 30px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
     overflow-y: auto;
-    box-shadow: -20px 0 40px rgba(0,0,0,0.8);
+    box-shadow: -20px 0 50px rgba(0,0,0,0.8);
     transform: translateX(0);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .synth-drawer-overlay.hidden .synth-drawer-content {
@@ -119,39 +123,48 @@ body {
 
 .portal-staff {
     color: #60a5fa;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
 }
 
 .close-btn {
     background: transparent;
     border: none;
-    color: #fff;
-    font-size: 20px;
+    color: var(--text-muted);
+    font-size: 18px;
     cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #fff;
 }
 
 .drawer-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     font-size: 13px;
     color: var(--text-muted);
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
+    padding-bottom: 20px;
 }
 
 .drawer-section h4 {
     color: #fff;
-    font-size: 12px;
+    font-size: 11px;
     margin: 0 0 5px 0;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
 
 .drawer-section a {
     color: #cbd5e1;
     text-decoration: none;
-    padding: 4px 0;
+    padding: 3px 0;
+    transition: color 0.2s;
+}
+
+.drawer-section a:hover {
+    color: var(--accent-blue);
 }
 
 .ticket-link {
@@ -166,22 +179,22 @@ body {
     font-weight: 500;
 }
 
-/* Barra de Infraestructura */
+/* Infra Bar */
 .infra-bar {
-    background: rgba(11, 15, 25, 0.7);
+    background: rgba(11, 15, 25, 0.5);
     border-bottom: 1px solid var(--border-color);
-    padding: 12px 20px;
+    padding: 12px 30px;
     font-size: 12px;
 }
 
 .infra-content {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 15px;
 }
 
 .infra-label {
@@ -192,185 +205,239 @@ body {
 
 .infra-items {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     color: #34d399;
+    font-weight: 500;
 }
 
 .open-ticket-mini {
     color: var(--accent-blue);
     text-decoration: none;
+    font-weight: 500;
 }
 
 .core-launch {
     color: var(--text-muted);
 }
 
-/* Secciones */
+/* Secciones Generales */
 section {
-    padding: 40px 20px;
-    max-width: 900px;
+    padding: 60px 20px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .hero {
     text-align: center;
+    padding-top: 50px;
 }
 
 .hero h1 {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+    line-height: 1.2;
 }
 
 .hero p {
     color: var(--text-muted);
     line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto 25px auto;
+    max-width: 750px;
+    margin: 0 auto 35px auto;
+    font-size: 16px;
 }
 
 .hero-buttons {
     display: flex;
     gap: 15px;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .btn-main, .btn-secondary {
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 12px 24px;
+    border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
     font-size: 14px;
+    transition: filter 0.2s;
 }
 
 .btn-main { background: var(--accent-blue); color: #fff; }
-.btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border-color); }
+.btn-main:hover { filter: brightness(1.1); }
+
+.btn-secondary { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border-color); }
+.btn-secondary:hover { background: rgba(255,255,255,0.06); }
 
 .stats-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
 }
 
 .stats-row div {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: left;
 }
 
 .stats-row h2 {
     margin: 0 0 5px 0;
     color: var(--accent-blue);
+    font-size: 1.8rem;
+}
+
+.stats-row p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* Pilares */
+.pillars h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
 }
 
 .pillars-desc {
     color: var(--text-muted);
-    margin-top: -10px;
-    margin-bottom: 25px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 15px;
 }
 
 .pillars-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
 }
 
 .pillar-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    padding: 25px;
-    border-radius: 8px;
+    padding: 30px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: border-color 0.2s;
+}
+
+.pillar-card:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+.pillar-card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
 }
 
 .pillar-card p {
     color: var(--text-muted);
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .pillar-card a {
     color: var(--accent-blue);
     text-decoration: none;
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 14px;
+    font-weight: 500;
 }
 
 /* Ticket System */
 .ticket-section {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 30px;
-    margin-top: 30px;
+    border-radius: 14px;
+    padding: 40px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.ticket-section h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .ticket-section p {
     color: var(--text-muted);
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .input-group label {
     font-size: 13px;
     color: var(--text-muted);
+    font-weight: 500;
 }
 
 input, select, textarea {
     background: var(--bg-main);
     border: 1px solid var(--border-color);
     color: #fff;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 14px;
+    border-radius: 8px;
     font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-textarea { min-height: 90px; resize: vertical; }
+input:focus, select:focus, textarea:focus {
+    border-color: var(--accent-blue);
+}
+
+textarea { min-height: 110px; resize: vertical; }
 
 .submit-btn {
     background: var(--accent-blue);
     color: #fff;
     border: none;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 14px;
+    border-radius: 8px;
     font-weight: bold;
     width: 100%;
     cursor: pointer;
-    margin-top: 10px;
+    font-size: 15px;
+    transition: filter 0.2s;
+}
+
+.submit-btn:hover {
+    filter: brightness(1.1);
 }
 
 /* Footer */
 .main-footer {
     background: var(--bg-surface);
     border-top: 1px solid var(--border-color);
-    padding: 40px 20px;
+    padding: 50px 30px;
     text-align: center;
     color: var(--text-muted);
     font-size: 13px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 60px;
     flex-wrap: wrap;
 }
 
 .footer-group h4 {
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 13px;
 }
 
@@ -381,10 +448,5 @@ textarea { min-height: 90px; resize: vertical; }
 
 .copy {
     font-size: 12px;
-    opacity: 0.7;
-}
-
-/* Ocultar trampa honeypot */
-.bot-trap-container {
-    display: none !important;
+    opacity: 0.6;
 }
