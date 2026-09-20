@@ -15,13 +15,8 @@
             mrDark: '#030712',
             mrCard: '#0b0f19',
             mrBorder: '#1f293d',
-            mrPrimary: '#8b5cf6', // Violeta Neón Exclusivo
-            mrSecondary: '#06b6d4', // cian eléctrico
-            mrAccent: '#f43f5e'
-          },
-          boxShadow: {
-            'mr-glow': '0 0 25px rgba(139, 92, 246, 0.2)',
-            'mr-glow-cyan': '0 0 25px rgba(6, 182, 212, 0.2)',
+            mrPrimary: '#8b5cf6', // Violeta neón exclusivo
+            mrSecondary: '#06b6d4', // Cian eléctrico
           }
         }
       }
@@ -30,16 +25,12 @@
   <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; }
-    .glass-panel { background: rgba(11, 15, 25, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(31, 41, 61, 0.6); }
-    .neon-border { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .neon-border:hover { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
-  </style>
+  <!-- Estilos personalizados separados -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-mrPrimary selection:text-white">
 
-  <!-- ================= NAVBAR SUPERIOR ================= -->
+  <!-- ================= NAVBAR ================= -->
   <header class="sticky top-0 z-50 glass-panel border-b border-mrBorder">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       
@@ -54,7 +45,7 @@
         </div>
       </a>
 
-      <!-- Acciones de Navegación -->
+      <!-- Controles Superiores -->
       <div class="flex items-center gap-3">
         <!-- Selector de Moneda -->
         <div class="relative">
@@ -69,7 +60,7 @@
           </div>
         </div>
 
-        <!-- Botón Carrito / Pedidos -->
+        <!-- Carrito -->
         <button onclick="cambiarMenu('carrito')" class="relative w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-gray-300 hover:text-white hover:border-mrPrimary transition cursor-pointer">
           <i class="fa-solid fa-cart-shopping text-sm"></i>
           <span id="cartCount" class="absolute -top-1 -right-1 w-5 h-5 bg-mrPrimary text-white rounded-full text-[10px] font-black flex items-center justify-center shadow">0</span>
@@ -78,47 +69,50 @@
     </div>
   </header>
 
-  <!-- ================= CONTENEDOR PRINCIPAL / MENÚS ================= -->
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
 
-    <!-- VISTA 1: TIENDA PRINCIPAL -->
+    <!-- VISTA TIENDA -->
     <div id="view-tienda" class="space-y-8">
       
-      <!-- Banner Hero Único -->
+      <!-- Hero Banner -->
       <div class="relative overflow-hidden rounded-3xl glass-panel p-8 sm:p-12 border border-mrBorder flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="absolute -right-20 -top-20 w-80 h-80 bg-mrPrimary/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-mrSecondary/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div class="relative z-10 max-w-xl text-center md:text-left">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-mrPrimary/10 border border-mrPrimary/30 text-mrPrimary text-xs font-bold mb-4">
-            <i class="fa-solid fa-bolt"></i> Entrega Automatizada 24/7
+          <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold mb-4">
+            <i class="fa-brands fa-discord"></i> Soporte Exclusivo vía Discord
           </span>
           <h1 class="text-4xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
             SERVICIOS DIGITALES & <span class="text-transparent bg-clip-text bg-gradient-to-r from-mrPrimary to-mrSecondary">GAMING VAULT</span>
           </h1>
           <p class="text-gray-400 text-sm mb-6">
-            Los mejores precios del mercado en Discord Nitro, Bosteos, Streaming y Minecraft MFA con garantía total.
+            Adquiere tus productos digitales con garantía total. Atención profesional y apertura de tickets únicamente en nuestra comunidad.
           </p>
           <div class="flex flex-wrap gap-3 justify-center md:justify-start">
             <a href="#productos" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-mrPrimary to-purple-600 text-white font-extrabold text-xs shadow-lg shadow-mrPrimary/30 hover:opacity-90 transition cursor-pointer">
-              Explorar Catálogo <i class="fa-solid fa-arrow-down ml-1"></i>
+              Ver Catálogo <i class="fa-solid fa-arrow-down ml-1"></i>
+            </a>
+            <a href="https://discord.gg/QN2Yew346d" target="_blank" class="px-6 py-3.5 rounded-2xl glass-panel text-white font-extrabold text-xs hover:border-mrPrimary transition cursor-pointer flex items-center gap-2">
+              <i class="fa-brands fa-discord text-indigo-400"></i> Unirse al Discord
             </a>
           </div>
         </div>
 
         <div class="relative z-10 w-full md:w-72 glass-panel p-6 rounded-2xl text-center border border-mrBorder">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
-            <i class="fa-solid fa-shield-halved"></i>
+          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mx-auto mb-3 text-lg font-bold">
+            <i class="fa-solid fa-headset"></i>
           </div>
-          <h3 class="font-extrabold text-sm mb-1">Garantía MRSTORE</h3>
-          <p class="text-[11px] text-gray-400 mb-4">Soporte directo vía Discord y atención inmediata tras tu pago.</p>
-          <div class="text-xs text-mrSecondary font-bold bg-mrSecondary/10 py-2 rounded-xl">
-            <i class="fa-solid fa-circle-check"></i> 100% Confiable
-          </div>
+          <h3 class="font-extrabold text-sm mb-1">¿Dudas o Compras?</h3>
+          <p class="text-[11px] text-gray-400 mb-4">Únete al servidor para ser atendido por el staff de MRSTORE.</p>
+          <a href="https://discord.gg/QN2Yew346d" target="_blank" class="block w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition">
+            Abrir Ticket <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+          </a>
         </div>
       </div>
 
-      <!-- Menú de Filtros por Categoría -->
+      <!-- Menú de Filtros -->
       <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-mrBorder" id="productos">
         <button onclick="filtrarProductos('todos')" id="btn-cat-todos" class="px-4 py-2.5 rounded-xl bg-mrPrimary text-white font-bold text-xs shrink-0 transition cursor-pointer">🔥 Todos</button>
         <button onclick="filtrarProductos('discord')" id="btn-cat-discord" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">💬 Discord Nitro & Boosts</button>
@@ -126,10 +120,10 @@
         <button onclick="filtrarProductos('minecraft')" id="btn-cat-minecraft" class="px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer">⛏️ Minecraft MFA</button>
       </div>
 
-      <!-- GRID DE LOS 5 PRODUCTOS EXACTOS SOLICITADOS -->
+      <!-- GRID DE PRODUCTOS (Actualizado con Nitro Boost a $5) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gridProductos">
         
-        <!-- 1. Nitro Boost -->
+        <!-- 1. Nitro Boost (1 Mes) - $5.00 -->
         <div class="prod-card glass-panel rounded-3xl p-6 flex flex-col justify-between neon-border" data-cat="discord">
           <div>
             <div class="flex justify-between items-center mb-4">
@@ -139,15 +133,15 @@
             <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 text-xl">
               <i class="fa-brands fa-discord"></i>
             </div>
-            <h3 class="text-lg font-black mb-1">Nitro Boost (3 Meses)</h3>
-            <p class="text-xs text-gray-400 mb-6">Suscripción completa con 2 Boosts incluidos, emojis globales y streaming HD.</p>
+            <h3 class="text-lg font-black mb-1">Nitro Boost (1 Mes)</h3>
+            <p class="text-xs text-gray-400 mb-6">Suscripción de 1 mes con 2 Bosteos para servidor incluidos y ventajas completas.</p>
           </div>
           <div>
             <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
               <span class="text-xs text-gray-400 font-bold">Precio:</span>
-              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="3.50">3.50</span></span>
+              <span class="text-2xl font-black text-white"><span class="simbolo">$</span><span class="precio" data-usd="5.00">5.00</span></span>
             </div>
-            <button onclick="agregarAlCarrito('Nitro Boost (3 Meses)', 3.50)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
+            <button onclick="agregarAlCarrito('Nitro Boost (1 Mes)', 5.00)" class="w-full py-3 rounded-xl bg-mrPrimary hover:bg-mrPrimary/80 text-white font-extrabold text-xs transition cursor-pointer shadow-lg shadow-mrPrimary/20">
               <i class="fa-solid fa-cart-plus mr-1.5"></i> Agregar al Carrito
             </button>
           </div>
@@ -164,7 +158,7 @@
               <i class="fa-solid fa-rocket"></i>
             </div>
             <h3 class="text-lg font-black mb-1">Nitro Basic (1 Mes)</h3>
-            <p class="text-xs text-gray-400 mb-6">Insignia de perfil exclusiva, emojis en cualquier servidor y subidas de archivos grandes.</p>
+            <p class="text-xs text-gray-400 mb-6">Insignia exclusiva en tu perfil, emojis globales y mayor límite de subida de archivos.</p>
           </div>
           <div>
             <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
@@ -188,7 +182,7 @@
               <i class="fa-solid fa-bolt-lightning"></i>
             </div>
             <h3 class="text-lg font-black mb-1">Bosteos de Servidor (Pack Nivel 3)</h3>
-            <p class="text-xs text-gray-400 mb-6">14 Bosteos estables por 3 meses para llevar tu servidor de Discord al Nivel máximo.</p>
+            <p class="text-xs text-gray-400 mb-6">14 Bosteos estables por 3 meses para llevar tu servidor de Discord al máximo nivel.</p>
           </div>
           <div>
             <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
@@ -236,7 +230,7 @@
               <i class="fa-solid fa-cube"></i>
             </div>
             <h3 class="text-lg font-black mb-1">Minecraft MFA Premium</h3>
-            <p class="text-xs text-gray-400 mb-6">Full Access con cambio de correo, contraseña y skin propia. Entra a cualquier servidor premium.</p>
+            <p class="text-xs text-gray-400 mb-6">Full Access con cambio de correo, contraseña y skin propia. Listo para servidores premium.</p>
           </div>
           <div>
             <div class="flex items-center justify-between mb-4 pt-4 border-t border-mrBorder">
@@ -252,15 +246,15 @@
       </div>
     </div>
 
-    <!-- VISTA 2: CARRITO / CHECKOUT -->
+    <!-- VISTA CARRITO -->
     <div id="view-carrito" class="max-w-2xl mx-auto space-y-6 hidden">
       <div class="flex items-center justify-between">
         <h2 class="text-2xl font-black">Tu Carrito de Compras</h2>
-        <button onclick="cambiarMenu('tienda')" class="text-xs text-mrSecondary font-bold hover:underline">← Seguir Comprando</button>
+        <button onclick="cambiarMenu('tienda')" class="text-xs text-mrSecondary font-bold hover:underline cursor-pointer">← Seguir Comprando</button>
       </div>
 
       <div class="glass-panel rounded-3xl p-6 space-y-4" id="listaCarrito">
-        <!-- Los ítems del carrito se inyectan por JS -->
+        <!-- Ítems inyectados por JavaScript -->
       </div>
 
       <div class="glass-panel rounded-3xl p-6 space-y-4">
@@ -268,8 +262,8 @@
           <span class="text-gray-400">Total a Pagar:</span>
           <span class="text-xl font-black text-white" id="totalCarrito">$0.00</span>
         </div>
-        <button onclick="procesarPago()" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black font-black text-xs transition shadow-lg shadow-emerald-500/25 cursor-pointer">
-          <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Completar Pedido vía WhatsApp / Discord
+        <button onclick="procesarPagoDiscord()" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs transition shadow-lg shadow-indigo-500/25 cursor-pointer flex items-center justify-center gap-2">
+          <i class="fa-brands fa-discord text-base"></i> Enviar Pedido por Ticket en Discord
         </button>
       </div>
     </div>
@@ -278,140 +272,10 @@
 
   <!-- ================= FOOTER ================= -->
   <footer class="glass-panel border-t border-mrBorder py-6 text-center text-xs text-gray-500 mt-12">
-    <p>&copy; 2026 MRSTORE. Todos los derechos reservados.</p>
+    <p>&copy; 2026 MRSTORE. Soporte exclusivo vía <a href="https://discord.gg/QN2Yew346d" target="_blank" class="text-mrPrimary hover:underline">Discord</a>.</p>
   </footer>
 
-  <!-- ================= JAVASCRIPT FUNCIONAL ================= -->
-  <script>
-    let carrito = [];
-    let tasaMoneda = 1;
-    let simboloMoneda = '$';
-
-    // Cambiar vistas de manera fluida
-    function cambiarMenu(vista) {
-      document.getElementById('view-tienda').classList.add('hidden');
-      document.getElementById('view-carrito').classList.add('hidden');
-      
-      if(vista === 'tienda') {
-        document.getElementById('view-tienda').classList.remove('hidden');
-      } else if(vista === 'carrito') {
-        document.getElementById('view-carrito').classList.remove('hidden');
-        renderizarCarrito();
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Toggle menú de monedas
-    function toggleMonedaMenu(e) {
-      e.stopPropagation();
-      const menu = document.getElementById('dropdownMoneda');
-      menu.classList.toggle('hidden');
-    }
-    window.addEventListener('click', () => {
-      document.getElementById('dropdownMoneda').classList.add('hidden');
-    });
-
-    // Configurar Moneda
-    function setMoneda(flag, codigo, tasa, simbolo) {
-      document.getElementById('flagLbl').textContent = flag;
-      document.getElementById('currLbl').textContent = codigo;
-      tasaMoneda = tasa;
-      simboloMoneda = simbolo;
-
-      document.querySelectorAll('.simbolo').forEach(el => el.textContent = simbolo);
-      document.querySelectorAll('.precio').forEach(el => {
-        let usd = parseFloat(el.getAttribute('data-usd'));
-        el.textContent = (usd * tasa).toFixed(2);
-      });
-      renderizarCarrito();
-    }
-
-    // Filtrar Productos por categoría
-    function filtrarProductos(cat) {
-      ['todos', 'discord', 'streaming', 'minecraft'].forEach(c => {
-        const btn = document.getElementById('btn-cat-' + c);
-        if(btn) {
-          if(c === cat) {
-            btn.className = "px-4 py-2.5 rounded-xl bg-mrPrimary text-white font-bold text-xs shrink-0 transition cursor-pointer";
-          } else {
-            btn.className = "px-4 py-2.5 rounded-xl glass-panel text-gray-300 font-bold text-xs shrink-0 hover:border-mrPrimary transition cursor-pointer";
-          }
-        }
-      });
-
-      document.querySelectorAll('.prod-card').forEach(card => {
-        if(cat === 'todos' || card.getAttribute('data-cat') === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    // Agregar producto al carrito
-    function agregarAlCarrito(nombre, precioUsd) {
-      carrito.push({ nombre, precioUsd });
-      document.getElementById('cartCount').textContent = carrito.length;
-      mostrarNotificacion(`¡${nombre} agregado al carrito!`);
-    }
-
-    // Renderizar Carrito
-    function renderizarCarrito() {
-      const contenedor = document.getElementById('listaCarrito');
-      if(carrito.length === 0) {
-        contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">Tu carrito está vacío.</p>`;
-        document.getElementById('totalCarrito').textContent = simboloMoneda + '0.00';
-        return;
-      }
-
-      let html = '';
-      let totalUsd = 0;
-      carrito.forEach((item, index) => {
-        totalUsd += item.precioUsd;
-        html += `
-          <div class="flex items-center justify-between pb-3 border-b border-mrBorder text-xs">
-            <div>
-              <span class="font-bold text-white block">${item.nombre}</span>
-              <span class="text-gray-400">${simboloMoneda}${(item.precioUsd * tasaMoneda).toFixed(2)}</span>
-            </div>
-            <button onclick="eliminarItem(${index})" class="text-red-400 hover:text-red-300 p-1.5"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        `;
-      });
-      contenedor.innerHTML = html;
-      document.getElementById('totalCarrito').textContent = simboloMoneda + (totalUsd * tasaMoneda).toFixed(2);
-    }
-
-    // Eliminar item
-    function eliminarItem(index) {
-      carrito.splice(index, 1);
-      document.getElementById('cartCount').textContent = carrito.length;
-      renderizarCarrito();
-    }
-
-    // Procesar pago simulado
-    function procesarPago() {
-      if(carrito.length === 0) {
-        mostrarNotificacion('Agrega productos antes de pagar.');
-        return;
-      }
-      mostrarNotificacion('¡Redirigiendo a pasarela de atención!');
-      setTimeout(() => {
-        alert('Orden registrada con éxito para MRSTORE. Contacta al soporte para verificar tu pago local o internacional.');
-        carrito = [];
-        document.getElementById('cartCount').textContent = '0';
-        cambiarMenu('tienda');
-      }, 1500);
-    }
-
-    // Notificaciones flotantes elegantes
-    function mostrarNotificacion(msg) {
-      const noti = document.createElement('div');
-      noti.className = "fixed bottom-6 right-6 glass-panel border border-mrPrimary text-white font-bold px-5 py-3 rounded-2xl shadow-2xl z-50 text-xs flex items-center gap-3 animate-bounce";
-      noti.innerHTML = `<i class="fa-solid fa-circle-check text-mrPrimary text-base"></i> ${msg}`;
-      document.body.appendChild(noti);
-      setTimeout(() => noti.remove(), 3000);
-    }
-  </script>
+  <!-- Script JavaScript Separado -->
+  <script src="script.js"></script>
 </body>
 </html>
