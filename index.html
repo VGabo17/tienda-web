@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- MENÚ LATERAL / DRAWER (Inicia oculto con la clase 'hidden' para corregir el bug visual) -->
+    <!-- MENÚ LATERAL / DRAWER -->
     <div id="synthDrawer" class="synth-drawer-overlay hidden" onclick="toggleSynthDrawer(event)">
         <div class="synth-drawer-content" onclick="event.stopPropagation()">
             <div class="drawer-header">
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <!-- NAVEGACIÓN SUPERIOR / HEADER -->
+    <!-- NAVEGACIÓN SUPERIOR -->
     <header class="main-header">
         <div class="brand-box">
             <span class="lightning">⚡</span>
@@ -144,8 +144,8 @@
                     <textarea id="projectSpecs" placeholder="Describe brevemente los requerimientos técnicos..." required></textarea>
                 </div>
 
-                <!-- CAPA DE SEGURIDAD ANTISPAM (HONEYPOT) -->
-                <div class="bot-trap-container">
+                <!-- CAPA DE SEGURIDAD ANTISPAM -->
+                <div class="bot-trap-container" style="display:none !important;">
                     <label>No llenar:</label>
                     <input type="text" id="website_url_verification" autocomplete="off">
                 </div>
