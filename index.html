@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRSTORE - Cuentas y Productos Digitales</title>
+    <title>MRSTORE - Nitro, Boosts y Cuentas Premium</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,14 +14,15 @@
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#050505',
-                        cardbg: '#111111',
+                        darkbg: '#030303',
+                        cardbg: 'rgba(17, 17, 17, 0.6)',
                         cyanNeon: '#00ffff',
                         lilaNeon: '#b57edd'
                     },
                     boxShadow: {
-                        'glow-cyan': '0 0 15px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2)',
-                        'glow-lila': '0 0 15px rgba(181, 126, 221, 0.4)',
+                        'glow-cyan': '0 0 20px rgba(0, 255, 255, 0.3)',
+                        'glow-lila': '0 0 20px rgba(181, 126, 221, 0.3)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
                     }
                 }
             }
@@ -34,151 +35,167 @@
     <!-- Tu archivo de estilos -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-darkbg text-white font-sans antialiased flex flex-col min-h-screen selection:bg-cyanNeon selection:text-black">
+<body class="bg-darkbg text-white font-sans antialiased flex flex-col min-h-screen selection:bg-lilaNeon selection:text-white relative overflow-x-hidden">
+
+    <!-- Elementos de fondo abstractos -->
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-lilaNeon/20 blur-[150px] rounded-full pointer-events-none z-0"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyanNeon/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
 
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 bg-darkbg/80 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center">
+    <nav class="sticky top-0 z-50 bg-darkbg/60 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-lilaNeon to-cyanNeon flex items-center justify-center shadow-glow-cyan">
-                <i data-feather="zap" class="text-black"></i>
+            <div class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-lilaNeon to-cyanNeon">
+                MRSTORE
             </div>
-            <span class="text-xl font-black tracking-widest text-white">FLASHY STORE</span>
         </div>
 
-        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-            <a href="#" class="hover:text-cyanNeon transition-colors">Inicio</a>
-            <a href="#" class="hover:text-cyanNeon transition-colors">Catálogo</a>
-            <a href="#" class="hover:text-cyanNeon transition-colors">Soporte</a>
+        <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-400">
+            <a href="#" class="hover:text-cyanNeon transition-all hover:scale-105">Servicios</a>
+            <a href="#" class="hover:text-lilaNeon transition-all hover:scale-105">Suscripciones</a>
+            <a href="#" class="hover:text-cyanNeon transition-all hover:scale-105">Términos</a>
         </div>
 
         <div class="flex items-center gap-4">
-            <select class="bg-transparent border border-gray-700 text-sm rounded-lg px-2 py-1 outline-none focus:border-cyanNeon cursor-pointer">
-                <option value="USD" class="bg-darkbg">USD</option>
-                <option value="EUR" class="bg-darkbg">EUR</option>
-            </select>
-            <button class="flex items-center gap-2 border-2 border-lilaNeon text-lilaNeon hover:bg-lilaNeon hover:text-black hover:shadow-glow-lila transition-all px-4 py-2 rounded-xl text-sm font-bold">
-                <i data-feather="shopping-cart" class="w-4 h-4"></i>
-                Carrito
+            <button class="relative group bg-cardbg border border-white/10 hover:border-cyanNeon px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all backdrop-blur-md">
+                <i data-feather="shopping-bag" class="w-4 h-4 text-cyanNeon group-hover:animate-bounce"></i>
+                <span class="hidden sm:inline">Carrito</span>
             </button>
         </div>
     </nav>
 
     <!-- HERO SECTION -->
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-24 relative overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-lilaNeon/10 blur-[120px] rounded-full pointer-events-none"></div>
-
-        <div class="bg-lilaNeon/20 border border-lilaNeon/40 text-lilaNeon px-5 py-1.5 rounded-full text-sm font-semibold mb-8 flex items-center gap-2 shadow-[0_0_10px_rgba(181,126,221,0.2)]">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lilaNeon opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-lilaNeon"></span>
-            </span>
-            12 cuentas de Minecraft disponibles ahora
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-20 md:py-32 relative z-10">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-xs font-bold text-gray-300 mb-8 uppercase tracking-widest">
+            <span class="w-2 h-2 rounded-full bg-cyanNeon animate-pulse"></span>
+            Stock de Nitro Actualizado
         </div>
 
-        <h1 class="text-5xl md:text-7xl font-extrabold max-w-4xl leading-tight mb-6 tracking-tight">
-            <span class="bg-gradient-to-r from-lilaNeon to-cyanNeon bg-clip-text text-transparent">Cuentas de Minecraft y productos digitales.</span><br>
-            <span class="text-white">Lo pides hoy, lo tienes hoy.</span>
+        <h1 class="text-5xl md:text-8xl font-black max-w-5xl leading-[1.1] mb-6 tracking-tighter">
+            Potencia tu entorno <br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyanNeon via-lilaNeon to-cyanNeon animate-gradient-x">
+                digital al máximo.
+            </span>
         </h1>
 
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10">
-            Compra de forma directa en nuestra web o a través de Discord de manera 100% segura, rápida y con soporte garantizado.
+        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light">
+            Discord Nitro, Boosts para tu servidor, Spotify Premium y cuentas MFA. Entrega automática y soporte especializado.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-5">
-            <button class="bg-cyanNeon text-black font-extrabold px-8 py-4 rounded-xl shadow-glow-cyan hover:scale-105 transition-transform flex items-center justify-center gap-2">
-                Ver productos <i data-feather="arrow-right" class="w-5 h-5"></i>
+        <div class="flex flex-col sm:flex-row gap-6 w-full max-w-md mx-auto sm:max-w-none sm:w-auto">
+            <button class="bg-gradient-to-r from-cyanNeon to-blue-400 text-black font-extrabold px-8 py-4 rounded-xl shadow-glow-cyan hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                <i data-feather="zap" class="w-5 h-5"></i> Explorar Servicios
             </button>
-            <button class="bg-transparent border-2 border-lilaNeon text-white font-bold px-8 py-4 rounded-xl hover:bg-lilaNeon/10 shadow-glow-lila transition-all flex items-center justify-center gap-2">
-                <i data-feather="message-circle" class="w-5 h-5 text-lilaNeon"></i> Unirse al Discord
+            <button class="bg-cardbg backdrop-blur-md border border-lilaNeon/50 text-white font-bold px-8 py-4 rounded-xl hover:bg-lilaNeon/20 hover:border-lilaNeon shadow-glow-lila transition-all duration-300 flex items-center justify-center gap-3">
+                <i data-feather="message-square" class="w-5 h-5 text-lilaNeon"></i> Soporte Discord
             </button>
         </div>
     </main>
 
-    <!-- INDICADORES DE CONFIANZA -->
-    <section class="border-y border-white/10 bg-cardbg py-6">
-        <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-12 md:gap-24 text-sm md:text-base font-bold text-gray-300">
-            <div class="flex items-center gap-3">
-                <i data-feather="users" class="text-cyanNeon w-5 h-5"></i> +500 referencias reales
+    <!-- CATÁLOGO UNICO (GLASSMORPHISM CARDS) -->
+    <section class="max-w-7xl mx-auto w-full px-4 py-16 z-10 relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Producto: Discord Nitro -->
+            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-lilaNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
+                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-lilaNeon/20 blur-[50px] group-hover:bg-lilaNeon/40 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-lilaNeon/10 border border-lilaNeon/30 flex items-center justify-center mb-6 z-10 text-lilaNeon">
+                        <i data-feather="award" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 z-10">Discord Nitro</h3>
+                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">Boosts incluidos. Disfruta de avatares animados, banners y emojis globales.</p>
+                    <div class="flex items-center justify-between z-10">
+                        <span class="text-2xl font-black text-white">$4.99 <span class="text-xs text-gray-500 font-normal">/mes</span></span>
+                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-lilaNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
+                            <i data-feather="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center gap-3">
-                <i data-feather="truck" class="text-cyanNeon w-5 h-5"></i> Entrega el mismo día
+
+            <!-- Producto: Server Boosts -->
+            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-cyanNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
+                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyanNeon/20 blur-[50px] group-hover:bg-cyanNeon/40 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-cyanNeon/10 border border-cyanNeon/30 flex items-center justify-center mb-6 z-10 text-cyanNeon">
+                        <i data-feather="server" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 z-10">Bosteo Nivel 3</h3>
+                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">14 Boosts para tu servidor de Discord. Calidad de audio máxima y URL personalizada.</p>
+                    <div class="flex items-center justify-between z-10">
+                        <span class="text-2xl font-black text-white">$12.50 <span class="text-xs text-gray-500 font-normal">/mes</span></span>
+                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-cyanNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
+                            <i data-feather="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center gap-3">
-                <i data-feather="shield-check" class="text-cyanNeon w-5 h-5"></i> Pago verificado
+
+            <!-- Producto: Spotify Premium -->
+            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-lilaNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
+                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-lilaNeon/20 blur-[50px] group-hover:bg-lilaNeon/40 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-lilaNeon/10 border border-lilaNeon/30 flex items-center justify-center mb-6 z-10 text-lilaNeon">
+                        <i data-feather="music" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 z-10">Spotify Premium</h3>
+                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">Actualización a tu cuenta personal (MFA/FA). Sin anuncios, skips ilimitados.</p>
+                    <div class="flex items-center justify-between z-10">
+                        <span class="text-2xl font-black text-white">$3.00 <span class="text-xs text-gray-500 font-normal">/mes</span></span>
+                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-lilaNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
+                            <i data-feather="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
+
+            <!-- Producto: Cuentas MFA -->
+            <div class="bg-cardbg backdrop-blur-xl rounded-3xl border border-white/10 p-1 group hover:border-cyanNeon/50 hover:-translate-y-2 transition-all duration-500 shadow-glass">
+                <div class="bg-[#0a0a0a] rounded-[22px] p-6 h-full flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyanNeon/20 blur-[50px] group-hover:bg-cyanNeon/40 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-cyanNeon/10 border border-cyanNeon/30 flex items-center justify-center mb-6 z-10 text-cyanNeon">
+                        <i data-feather="shield" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 z-10">Cuentas MFA / FA</h3>
+                    <p class="text-sm text-gray-500 mb-6 z-10 flex-grow">Cuentas Full Access con todos los datos modificables. Entrega segura y privada.</p>
+                    <div class="flex items-center justify-between z-10">
+                        <span class="text-2xl font-black text-white">$8.00 <span class="text-xs text-gray-500 font-normal">/pago único</span></span>
+                        <button class="w-10 h-10 rounded-full bg-white/5 hover:bg-cyanNeon hover:text-black flex items-center justify-center transition-colors border border-white/10">
+                            <i data-feather="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- CATÁLOGO -->
-    <section class="max-w-6xl mx-auto w-full px-4 py-20">
-        <h2 class="text-3xl font-bold mb-12 text-center text-white">Nuestros Productos Destacados</h2>
+    <!-- FOOTER Y METODOS DE PAGO -->
+    <footer class="mt-auto border-t border-white/5 bg-black/50 backdrop-blur-lg pt-12 pb-8 z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <h4 class="text-xl font-black text-white tracking-tighter mb-2">MRSTORE</h4>
+                <p class="text-sm text-gray-500">Servicios digitales de élite. Entrega inmediata.</p>
+            </div>
+            
+            <div class="flex flex-col items-center md:items-end gap-3">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Métodos de Pago Aceptados</span>
+                <div class="flex gap-4 opacity-70">
+                    <!-- Textos representativos para los métodos de pago -->
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Zinli</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Airtm</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Pago Móvil</span>
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-semibold text-white">Cripto / USDT</span>
+                </div>
+            </div>
+        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Producto 1 -->
-            <div class="bg-cardbg rounded-2xl border border-white/5 overflow-hidden group hover:border-cyanNeon/50 hover:shadow-glow-cyan transition-all duration-300 relative">
-                <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-cardbg to-transparent z-10"></div>
-                    <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Minecraft" class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="p-6 relative z-20">
-                    <h3 class="text-xl font-bold text-white mb-2">Cuenta Minecraft Premium</h3>
-                    <div class="flex items-end gap-3 mt-4">
-                        <span class="text-gray-500 line-through text-sm">$30.00</span>
-                        <span class="text-2xl font-black text-cyanNeon drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">$19.99</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="bg-cardbg rounded-2xl border border-white/5 overflow-hidden group hover:border-cyanNeon/50 hover:shadow-glow-cyan transition-all duration-300 relative">
-                <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-cardbg to-transparent z-10"></div>
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Free Fire" class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="p-6 relative z-20">
-                    <h3 class="text-xl font-bold text-white mb-2">Recarga Diamantes FF</h3>
-                    <div class="flex items-end gap-3 mt-4">
-                        <span class="text-gray-500 line-through text-sm">$15.00</span>
-                        <span class="text-2xl font-black text-cyanNeon drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">$9.99</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="bg-cardbg rounded-2xl border border-white/5 overflow-hidden group hover:border-cyanNeon/50 hover:shadow-glow-cyan transition-all duration-300 relative">
-                <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-cardbg to-transparent z-10"></div>
-                    <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="GTA V" class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="p-6 relative z-20">
-                    <h3 class="text-xl font-bold text-white mb-2">Grand Theft Auto V</h3>
-                    <div class="flex items-end gap-3 mt-4">
-                        <span class="text-gray-500 line-through text-sm">$25.00</span>
-                        <span class="text-2xl font-black text-cyanNeon drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">$12.50</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BENEFICIOS / FOOTER -->
-    <footer class="bg-cardbg border-t border-white/10 pt-12 pb-6 mt-auto">
-        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <div class="flex flex-col gap-3">
-                <div class="w-12 h-12 rounded-lg bg-lilaNeon/10 flex items-center justify-center text-lilaNeon border border-lilaNeon/20">
-                    <i data-feather="lock"></i>
-                </div>
-                <h4 class="font-bold text-white">Conexión segura</h4>
-                <p class="text-gray-400 text-sm">Transacciones encriptadas de extremo a extremo.</p>
-            </div>
-            <!-- (El resto de los beneficios) -->
-        </div>
-        <div class="text-center border-t border-white/5 pt-6 text-xs text-gray-600">
+        <div class="mt-12 text-center text-xs font-medium text-gray-600">
             &copy; 2026 MRSTORE by Aledevv. Todos los derechos reservados.
         </div>
     </footer>
 
-    <!-- Tu archivo JavaScript -->
+    <!-- Script de Inicialización -->
     <script src="script.js"></script>
 </body>
 </html>
