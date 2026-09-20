@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Staff - Tickets NixerMC</title>
+    <!-- Script de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
+        h1 { color: #00bcd4; text-align: center; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        button { background: #00bcd4; color: #121212; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; margin-bottom: 20px; }
+        button:hover { background: #008ba3; color: white; }
+        table { width: 100%; border-collapse: collapse; background: #1e1e1e; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 14px; border-bottom: 1px solid #333; text-align: left; }
+        th { background: #252525; color: #00bcd4; }
+        .btn-completar { background: #4CAF50; color: white; padding: 6px 12px; font-size: 14px; margin: 0; }
+        .btn-completar:hover { background: #45a049; }
+        pre { white-space: pre-wrap; font-family: inherit; margin: 0; color: #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Panel de Administración - Pedidos</h1>
+        <button onclick="cargarTickets()">🔄 Actualizar Tickets</button>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Productos</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-tickets">
+                <tr><td colspan="6" style="text-align:center;">Cargando tickets...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function cargarTickets() {
+            const tbody = document.getElementById('tabla-tickets');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Cargando...</td></tr>';
+
+            const { data, error } = await _supabase
+                .from('tickets')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: red;">Error al cargar: ${error.message}</td></tr>`;
+                return;
+            }
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No hay tickets registrados todavía.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            data.forEach(ticket => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><b>${ticket.codigo}</b></td>
+                        <td>${ticket.cliente}</td>
+                        <td><pre>${ticket.detalles}</pre></td>
+                        <td>$${ticket.total}</td>
+                        <td><span style="color: ${ticket.estado === 'Pendiente' ? '#ff9800' : '#4CAF50'}">${ticket.estado}</span></td>
+                        <td>
+                            ${ticket.estado === 'Pendiente' ? `<button class="btn-completar" onclick="completarTicket(${ticket.id})">Completar</button>` : 'Finalizado'}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function completarTicket(id) {
+            const { error } = await _supabase
+                .from('tickets')
+                .update({ estado: 'Completado' })
+                .eq('id', id);
+
+            if (error) {
+                alert('Hubo un error al actualizar el estado.');
+            } else {
+                cargarTickets();
+            }
+        }
+
+        // Cargar automáticamente al entrar al panel
+        cargarTickets();
+    </script>
+</body>
+</html>
