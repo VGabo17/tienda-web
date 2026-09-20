@@ -44,13 +44,13 @@ function setMoneda(flag, codigo, tasa, simbolo) {
 
 // Filtrar Productos por categoría
 function filtrarProductos(cat) {
-  ['todos', 'discord', 'streaming', 'minecraft'].forEach(c => {
+  ['todos', 'discord', 'streaming', 'minecraft', 'social'].forEach(c => {
     const btn = document.getElementById('btn-cat-' + c);
     if(btn) {
       if(c === cat) {
-        btn.className = "px-4 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs shrink-0 transition cursor-pointer shadow-lg shadow-purple-600/20";
+        btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold text-[11px] shrink-0 shadow-md";
       } else {
-        btn.className = "px-4 py-2.5 rounded-xl bg-[#0d121f] border border-gray-800 text-gray-300 font-bold text-xs shrink-0 hover:border-purple-500 transition cursor-pointer";
+        btn.className = "px-3.5 py-2 rounded-xl bg-[#0a0f1d] border border-purple-500/20 text-gray-300 font-bold text-[11px] shrink-0 hover:border-cyan-400 transition";
       }
     }
   });
@@ -68,14 +68,14 @@ function filtrarProductos(cat) {
 function agregarAlCarrito(nombre, precioUsd) {
   carrito.push({ nombre, precioUsd });
   document.getElementById('cartCount').textContent = carrito.length;
-  mostrarNotificacion(`¡${nombre} agregado al carrito!`);
+  mostrarNotificacion(`¡${nombre} agregado!`);
 }
 
 // Renderizar Carrito
 function renderizarCarrito() {
   const contenedor = document.getElementById('listaCarrito');
   if(carrito.length === 0) {
-    contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-8">Tu carrito está vacío.</p>`;
+    contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">Tu carrito está vacío.</p>`;
     document.getElementById('totalCarrito').textContent = simboloMoneda + '0.00';
     return;
   }
@@ -85,12 +85,12 @@ function renderizarCarrito() {
   carrito.forEach((item, index) => {
     totalUsd += item.precioUsd;
     html += `
-      <div class="flex items-center justify-between pb-3 border-b border-gray-800 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-purple-500/10 text-xs">
         <div>
           <span class="font-bold text-white block mb-0.5">${item.nombre}</span>
-          <span class="text-gray-400">${simboloMoneda}${(item.precioUsd * tasaMoneda).toFixed(2)}</span>
+          <span class="text-cyan-400 font-medium">${simboloMoneda}${(item.precioUsd * tasaMoneda).toFixed(2)}</span>
         </div>
-        <button onclick="eliminarItem(${index})" class="text-red-400 hover:text-red-300 p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+        <button onclick="eliminarItem(${index})" class="text-red-400 hover:text-red-300 p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition cursor-pointer"><i class="fa-solid fa-trash text-[11px]"></i></button>
       </div>
     `;
   });
@@ -105,7 +105,7 @@ function eliminarItem(index) {
   renderizarCarrito();
 }
 
-// Procesar pedido y enviar al Discord configurado
+// Procesar pedido y enviar al Discord
 function procesarPagoDiscord() {
   if(carrito.length === 0) {
     mostrarNotificacion('Agrega productos antes de realizar el pedido.');
@@ -121,21 +121,21 @@ function procesarPagoDiscord() {
   resumen += `Total: $${totalUsd.toFixed(2)}`;
 
   navigator.clipboard.writeText(resumen).then(() => {
-    mostrarNotificacion('¡Pedido copiado! Abriendo servidor de Discord...');
+    mostrarNotificacion('¡Pedido copiado! Abriendo Discord...');
     setTimeout(() => {
       window.open('https://discord.gg/QN2Yew346d', '_blank');
     }, 1200);
   }).catch(() => {
-    alert('Copia tu pedido y ábrelo en un ticket de Discord: https://discord.gg/QN2Yew346d');
+    alert('Copia tu pedido y ábrelo en un ticket de Discord.');
     window.open('https://discord.gg/QN2Yew346d', '_blank');
   });
 }
 
-// Notificaciones flotantes
+// Notificaciones flotantes estilo Flashy
 function mostrarNotificacion(msg) {
   const noti = document.createElement('div');
-  noti.className = "fixed bottom-6 right-6 bg-[#0d121f] border border-purple-500 text-white font-bold px-5 py-3 rounded-2xl shadow-2xl z-50 text-xs flex items-center gap-3 animate-bounce";
-  noti.innerHTML = `<i class="fa-solid fa-circle-check text-purple-400 text-base"></i> ${msg}`;
+  noti.className = "fixed bottom-5 left-1/2 -translate-x-1/2 bg-[#0a0f1d] border border-cyan-400 text-white font-bold px-4 py-2.5 rounded-xl shadow-2xl z-50 text-[11px] flex items-center gap-2.5";
+  noti.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400"></i> ${msg}`;
   document.body.appendChild(noti);
-  setTimeout(() => noti.remove(), 3000);
+  setTimeout(() => noti.remove(), 2500);
 }
