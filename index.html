@@ -3,31 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>MRSTORE | Tienda Digital</title>
 
   <link rel="stylesheet" href="styles.css">
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-
   <div class="rgb-background"></div>
   <div id="drawerOverlay" class="drawer-overlay"></div>
 
-  <!-- MENÚ LATERAL DERECHO -->
+  <!-- MENÚ DERECHO -->
   <aside id="drawer" class="drawer">
     <div class="drawer-header">
       <div class="drawer-logo">MR<span>STORE</span></div>
-
-      <button id="closeDrawer" class="close-drawer">
-        ×
-      </button>
+      <button id="closeDrawer" class="close-button">×</button>
     </div>
 
-    <div class="drawer-user">
-      <div class="user-icon">◉</div>
+    <div class="drawer-profile">
+      <div class="profile-icon">◉</div>
       <div>
         <strong>MRSTORE</strong>
         <small>Tienda digital</small>
@@ -35,59 +29,45 @@
     </div>
 
     <nav class="drawer-nav">
-      <a id="inicioLink" href="#inicio">
-        <span>⌂</span>
-        Inicio
-      </a>
-
-      <a id="catalogoLink" href="#catalogo">
-        <span>▦</span>
-        Catálogo
-      </a>
+      <a id="inicioLink" href="#inicio">⌂ <span>Inicio</span></a>
+      <a id="catalogoLink" href="#catalogo">▦ <span>Catálogo</span></a>
 
       <button onclick="abrirCarrito(); cerrarMenu();">
-        <span>🛒</span>
-        Carrito
+        🛒 <span>Carrito</span>
       </button>
 
-      <button onclick="abrirTickets();">
-        <span>▤</span>
-        Mis tickets
+      <button onclick="abrirTickets()">
+        ▤ <span>Mis tickets</span>
       </button>
 
       <a id="adminLink" href="admin.html" style="display:none;">
-        <span>⚙</span>
-        Administración
+        ⚙ <span>Administración</span>
       </a>
 
       <button id="logoutMenuButton" onclick="cerrarSesion()" style="display:none;">
-        <span>↪</span>
-        Cerrar sesión
+        ↪ <span>Cerrar sesión</span>
       </button>
     </nav>
 
-    <div class="drawer-footer">
-      <span class="status-dot"></span>
-      Sistema operativo
+    <div class="drawer-status">
+      <i></i> Sistema operativo
     </div>
   </aside>
 
-  <!-- BARRA SUPERIOR -->
+  <!-- CABECERA -->
   <header class="topbar">
     <a href="#inicio" class="brand">
-      <span class="brand-symbol">◆</span>
+      <b>◆</b>
       <span>MR<span>STORE</span></span>
     </a>
 
     <div class="top-actions">
-      <button class="header-button tickets-button" onclick="abrirTickets()">
-        <span>▤</span>
-        <span class="hide-mobile">Mis tickets</span>
+      <button class="header-button" onclick="abrirTickets()">
+        ▤ <span class="mobile-hide">Mis tickets</span>
       </button>
 
       <button class="header-button cart-button" onclick="abrirCarrito()">
-        <span>🛒</span>
-        <span class="hide-mobile">Carrito</span>
+        🛒 <span class="mobile-hide">Carrito</span>
         <b id="cartCount" class="cart-count">0</b>
       </button>
 
@@ -97,14 +77,13 @@
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL -->
   <main id="inicio" class="main-container">
 
-    <section class="hero-section">
+    <!-- HERO -->
+    <section class="hero">
       <div class="hero-content">
         <div class="hero-badge">
-          <span class="pulse-dot"></span>
-          PLATAFORMA DIGITAL ACTIVA
+          <i></i> PLATAFORMA DIGITAL ACTIVA
         </div>
 
         <h1>
@@ -118,169 +97,149 @@
         </p>
 
         <div class="hero-buttons">
-          <a href="#catalogo" class="hero-button primary-button">
-            Ver catálogo
-            <span>→</span>
+          <a href="#catalogo" class="main-button">
+            Ver catálogo <b>→</b>
           </a>
 
-          <button class="hero-button glass-button" onclick="abrirTickets()">
+          <button class="outline-button" onclick="abrirTickets()">
             Mis pedidos
           </button>
         </div>
       </div>
 
-      <div class="hero-orb orb-one"></div>
-      <div class="hero-orb orb-two"></div>
       <div class="hero-grid"></div>
+      <div class="hero-light light-blue"></div>
+      <div class="hero-light light-purple"></div>
     </section>
 
-    <!-- AUTENTICACIÓN -->
+    <!-- LOGIN -->
     <section id="authBox" class="auth-section">
       Cargando sistema...
     </section>
 
     <!-- CATEGORÍAS -->
-    <section class="category-section">
-      <div class="section-heading">
+    <section class="section">
+      <div class="section-title">
         <div>
-          <span class="section-label">EXPLORA</span>
+          <small>EXPLORA</small>
           <h2>Categorías populares</h2>
         </div>
       </div>
 
       <div class="category-grid">
-        <a href="#catalogo" class="category-card discord-card">
-          <div class="category-icon">◈</div>
+        <a href="#catalogo" class="category-card blue-card">
+          <b>◈</b>
           <div>
             <h3>Discord</h3>
             <p>Nitro y servicios premium</p>
           </div>
-          <span class="category-arrow">→</span>
+          <span>→</span>
         </a>
 
-        <a href="#catalogo" class="category-card streaming-card">
-          <div class="category-icon">▶</div>
+        <a href="#catalogo" class="category-card purple-card">
+          <b>▶</b>
           <div>
             <h3>Streaming</h3>
             <p>Entretenimiento sin límites</p>
           </div>
-          <span class="category-arrow">→</span>
+          <span>→</span>
         </a>
 
-        <a href="#catalogo" class="category-card minecraft-card">
-          <div class="category-icon">◆</div>
+        <a href="#catalogo" class="category-card cyan-card">
+          <b>◆</b>
           <div>
             <h3>Minecraft</h3>
             <p>Cuentas y acceso premium</p>
           </div>
-          <span class="category-arrow">→</span>
+          <span>→</span>
         </a>
       </div>
     </section>
 
     <!-- CATÁLOGO -->
-    <section id="catalogo" class="catalog-section">
-      <div class="section-heading catalog-heading">
+    <section id="catalogo" class="section">
+      <div class="section-title catalog-title">
         <div>
-          <span class="section-label">PRODUCTOS DESTACADOS</span>
+          <small>PRODUCTOS DESTACADOS</small>
           <h2>Catálogo digital</h2>
         </div>
 
-        <span class="catalog-count">
-          Productos disponibles
-        </span>
+        <span class="available">● Productos disponibles</span>
       </div>
 
       <div id="productList" class="product-grid"></div>
     </section>
 
     <!-- BENEFICIOS -->
-    <section class="benefits-section">
-      <div class="benefit-card">
-        <div class="benefit-icon">⚡</div>
-        <div>
-          <h3>Entrega rápida</h3>
-          <p>Procesamos tus pedidos lo antes posible.</p>
-        </div>
+    <section class="benefits">
+      <div>
+        <b>⚡</b>
+        <h3>Entrega rápida</h3>
+        <p>Procesamos tus pedidos rápidamente.</p>
       </div>
 
-      <div class="benefit-card">
-        <div class="benefit-icon">🛡</div>
-        <div>
-          <h3>Compra segura</h3>
-          <p>Tus tickets y datos están protegidos.</p>
-        </div>
+      <div>
+        <b>🛡</b>
+        <h3>Compra segura</h3>
+        <p>Tus datos y tickets están protegidos.</p>
       </div>
 
-      <div class="benefit-card">
-        <div class="benefit-icon">💬</div>
-        <div>
-          <h3>Soporte directo</h3>
-          <p>Habla con nuestro equipo desde tu ticket.</p>
-        </div>
+      <div>
+        <b>💬</b>
+        <h3>Soporte directo</h3>
+        <p>Habla con nuestro equipo.</p>
       </div>
     </section>
-
   </main>
 
-  <!-- MODAL DEL CARRITO -->
+  <!-- CARRITO -->
   <div id="cartModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-box">
       <div class="modal-header">
         <div>
-          <span class="section-label">TU COMPRA</span>
+          <small>TIENDA</small>
           <h2>Carrito</h2>
         </div>
-
-        <button class="modal-close" onclick="cerrarCarrito()">
-          ×
-        </button>
+        <button class="modal-close" onclick="cerrarCarrito()">×</button>
       </div>
 
-      <div id="cartList" class="cart-list"></div>
+      <div id="cartList"></div>
 
-      <div class="modal-total">
+      <div class="total-row">
         <span>Total</span>
         <strong id="cartTotal">$0.00</strong>
       </div>
 
-      <button class="full-button primary-button" onclick="crearTicket()">
-        Crear ticket
-        <span>→</span>
+      <button class="full-button" onclick="crearTicket()">
+        Crear ticket →
       </button>
     </div>
   </div>
 
-  <!-- MODAL DE TICKETS -->
+  <!-- TICKETS -->
   <div id="ticketsModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-box">
       <div class="modal-header">
         <div>
-          <span class="section-label">SEGUIMIENTO</span>
+          <small>SOPORTE</small>
           <h2>Mis tickets</h2>
         </div>
-
-        <button class="modal-close" onclick="cerrarTickets()">
-          ×
-        </button>
+        <button class="modal-close" onclick="cerrarTickets()">×</button>
       </div>
 
-      <div id="ticketList" class="ticket-list"></div>
+      <div id="ticketList"></div>
     </div>
   </div>
 
-  <!-- MODAL DEL CHAT -->
+  <!-- CHAT -->
   <div id="chatModal" class="modal">
-    <div class="modal-content chat-modal-content">
+    <div class="modal-box chat-box">
       <div class="modal-header">
         <div>
-          <span class="section-label">SOPORTE</span>
+          <small>CONVERSACIÓN</small>
           <h2 id="chatTitle">Chat del ticket</h2>
         </div>
-
-        <button class="modal-close" onclick="cerrarChat()">
-          ×
-        </button>
+        <button class="modal-close" onclick="cerrarChat()">×</button>
       </div>
 
       <div id="messageList" class="message-list"></div>
@@ -289,7 +248,7 @@
         <input
           id="messageInput"
           type="text"
-          placeholder="Escribe tu mensaje..."
+          placeholder="Escribe un mensaje..."
         >
 
         <input
@@ -306,9 +265,9 @@
   </div>
 
   <footer class="footer">
-    <div class="footer-logo">MR<span>STORE</span></div>
+    <strong>MR<span>STORE</span></strong>
     <p>Servicios digitales para todos.</p>
-    <small>© 2026 MRSTORE. Todos los derechos reservados.</small>
+    <small>© 2026 MRSTORE</small>
   </footer>
 
   <script src="script.js"></script>
