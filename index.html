@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MRSTORE | Tienda Digital</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MRSTORE | Tienda Premium</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-  <div class="ambient-bg"></div>
+  <div class="ambient"></div>
 
   <div id="drawerOverlay" class="drawer-overlay"></div>
 
   <aside id="drawer" class="drawer">
     <div class="drawer-header">
       <div class="drawer-brand">MR<span>STORE</span></div>
-      <button id="closeDrawer" class="close-btn">×</button>
+      <button id="closeDrawer" class="drawer-close">×</button>
     </div>
 
     <div class="drawer-user">
-      <div class="user-pill">◉</div>
+      <div class="user-avatar">◉</div>
       <div>
         <strong>MRSTORE</strong>
         <small>Tienda digital</small>
@@ -28,16 +27,16 @@
     </div>
 
     <nav class="drawer-nav">
-      <a id="inicioLink" href="#inicio">⌂ <span>Inicio</span></a>
-      <a id="catalogoLink" href="#catalogo">▦ <span>Catálogo</span></a>
+      <a href="#inicio" id="inicioLink">⌂ <span>Inicio</span></a>
+      <a href="#catalogo" id="catalogoLink">▦ <span>Catálogo</span></a>
       <button onclick="abrirCarrito(); cerrarMenu();">🛒 <span>Carrito</span></button>
       <button onclick="abrirTickets()">▤ <span>Mis tickets</span></button>
-      <a id="adminLink" href="admin.html" style="display:none;">⚙ <span>Administración</span></a>
+      <a href="admin.html" id="adminLink" style="display:none;">⚙ <span>Administración</span></a>
       <button id="logoutMenuButton" onclick="cerrarSesion()" style="display:none;">↪ <span>Cerrar sesión</span></button>
     </nav>
 
     <div class="drawer-status">
-      <i></i>
+      <span class="status-dot"></span>
       sistema operativo
     </div>
   </aside>
@@ -65,7 +64,7 @@
   <main id="inicio" class="main-container">
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-badge"><i></i> PLATAFORMA DIGITAL ACTIVA</div>
+        <div class="hero-badge"><span class="pulse"></span> PLATAFORMA DIGITAL ACTIVA</div>
 
         <h1>
           Todo lo que necesitas,
@@ -73,8 +72,8 @@
         </h1>
 
         <p>
-          Descubre servicios digitales, cuenta premium y productos exclusivos
-          para gamers, streamers y usuarios modernos.
+          Servicios digitales premium, cuentas, streaming y acceso exclusivo
+          para gamers, creadores y usuarios modernos.
         </p>
 
         <div class="hero-actions">
@@ -101,8 +100,8 @@
       </div>
 
       <div class="category-grid">
-        <a href="#catalogo" class="cat-card blue-card">
-          <span class="icon">◈</span>
+        <a href="#catalogo" class="category-card blue-card">
+          <span class="category-icon">◈</span>
           <div>
             <h3>Discord</h3>
             <p>Nitro y servicios premium</p>
@@ -110,8 +109,8 @@
           <b>→</b>
         </a>
 
-        <a href="#catalogo" class="cat-card purple-card">
-          <span class="icon">▶</span>
+        <a href="#catalogo" class="category-card purple-card">
+          <span class="category-icon">▶</span>
           <div>
             <h3>Streaming</h3>
             <p>Entretenimiento sin límites</p>
@@ -119,8 +118,8 @@
           <b>→</b>
         </a>
 
-        <a href="#catalogo" class="cat-card cyan-card">
-          <span class="icon">◆</span>
+        <a href="#catalogo" class="category-card cyan-card">
+          <span class="category-icon">◆</span>
           <div>
             <h3>Minecraft</h3>
             <p>Cuentas premium y acceso</p>
@@ -133,10 +132,9 @@
     <section id="catalogo" class="section">
       <div class="section-head catalog-head">
         <div>
-          <small>PRODUCTOS DESTACADOS</small>
-          <h2>Catálogo digital</h2>
+          <small>CATÁLOGO</small>
+          <h2>Productos destacados</h2>
         </div>
-
         <span class="catalog-note">● Productos disponibles</span>
       </div>
 
@@ -159,7 +157,7 @@
       <div class="benefit-item">
         <b>💬</b>
         <h3>Soporte directo</h3>
-        <p>Habla con el equipo desde tu ticket.</p>
+        <p>Habla con nuestro equipo desde tu ticket.</p>
       </div>
     </section>
   </main>
@@ -214,8 +212,8 @@
       <div id="messageList" class="message-list"></div>
 
       <div class="message-form">
-        <input id="messageInput" type="text" placeholder="Escribe un mensaje...">
-        <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp">
+        <input id="messageInput" type="text" placeholder="Escribe un mensaje..." />
+        <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" />
         <button class="send-btn" onclick="enviarMensaje()">Enviar</button>
       </div>
     </div>
