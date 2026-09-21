@@ -1,450 +1,902 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRSTORE - Digital Vault</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: #050509; color: #fff; display: flex; justify-content: center; padding-bottom: 50px; }
-        .container { width: 100%; max-width: 500px; padding: 20px; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-        .logo i { color: #38bdf8; }
-        .nav-actions { display: flex; gap: 10px; }
-        .btn-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
-        .btn-icon:hover { background: rgba(255,255,255,0.1); }
-        .cart-btn { background: #8b5cf6; border: none; position: relative; }
-        .cart-badge { background: #ef4444; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 10px; position: absolute; top: -5px; right: -5px; }
-        .hero { background: linear-gradient(145deg, rgba(20,15,40,1) 0%, rgba(10,12,25,1) 100%); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 20px; padding: 30px 20px; text-align: center; margin-bottom: 25px; position: relative; overflow: hidden; }
-        .hero-badge { display: inline-block; background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-size: 10px; padding: 5px 10px; border-radius: 20px; margin-bottom: 15px; font-weight: 600; }
-        .hero h2 { font-size: 22px; margin-bottom: 10px; line-height: 1.3; }
-        .hero p { color: #94a3b8; font-size: 12px; margin-bottom: 20px; line-height: 1.5; }
-        .btn-hero-primary { background: linear-gradient(90deg, #38bdf8, #8b5cf6); border: none; width: 100%; padding: 12px; border-radius: 12px; color: white; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
-        .section-title { text-align: center; font-size: 12px; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 800; }
-        .section-subtitle { text-align: center; font-size: 11px; color: #64748b; margin-bottom: 20px; }
-        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .cat-card { background: #0f111a; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .cat-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 14px; }
-        .cat-title { font-weight: 600; font-size: 13px; }
-        .cat-desc { font-size: 10px; color: #64748b; line-height: 1.3; }
-        .products-list { display: flex; flex-direction: column; gap: 15px; }
-        .prod-card { background: #0f111a; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-        .prod-header { display: flex; justify-content: space-between; align-items: center; }
-        .prod-tag { font-size: 9px; font-weight: 800; letter-spacing: 1px; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 6px; }
-        .prod-stock { font-size: 10px; color: #10b981; display: flex; align-items: center; gap: 4px; font-weight: 600; }
-        .prod-title { font-size: 15px; font-weight: bold; }
-        .prod-desc { font-size: 12px; color: #64748b; line-height: 1.4; }
-        .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
-        .prod-price { font-size: 18px; font-weight: 800; }
-        .btn-comprar { background: linear-gradient(90deg, #8b5cf6, #c084fc); border: none; color: white; padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-box { background: #0f111a; width: 100%; max-width: 450px; border-radius: 20px; padding: 25px; border: 1px solid rgba(139, 92, 246, 0.3); max-height: 85vh; display: flex; flex-direction: column; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .modal-title { font-size: 18px; font-weight: bold; }
-        .btn-close { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .modal-body { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; }
-        .cart-item { display: flex; justify-content: space-between; font-size: 13px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .total-box { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-top: 10px; color: #38bdf8; }
-        .btn-checkout { background: linear-gradient(90deg, #38bdf8, #8b5cf6); border: none; width: 100%; padding: 15px; border-radius: 12px; color: white; font-weight: bold; font-size: 15px; cursor: pointer; opacity: 0.5; pointer-events: none; }
-        .btn-checkout.active { opacity: 1; pointer-events: auto; }
-        .ticket-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
-        .chat-messages { display: flex; flex-direction: column; gap: 10px; min-height: 250px; max-height: 350px; overflow-y: auto; margin-bottom: 15px; }
-        .msg { padding: 10px 14px; border-radius: 12px; font-size: 13px; max-width: 85%; line-height: 1.4; }
-        .msg-mio { background: #8b5cf6; align-self: flex-end; color: white; border-bottom-right-radius: 2px; }
-        .msg-otro { background: #1e293b; align-self: flex-start; color: white; border-bottom-left-radius: 2px; }
-        .chat-input-area { display: flex; gap: 10px; }
-        .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; outline: none; font-size: 13px; }
-        .btn-send { background: #38bdf8; color: #000; border: none; padding: 0 15px; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        .auth-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MRSTORE</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: white;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      background: #0f172a;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #8b5cf6;
+      font-size: 22px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-button {
+      background: #8b5cf6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .cart-button {
+      background: #1f2937;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .cart-badge {
+      position: absolute;
+      right: -8px;
+      top: -8px;
+      background: red;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .auth-box {
+      background: #111827;
+      border-radius: 16px;
+      padding: 18px;
+      margin: 20px 0;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .auth-box input {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #0b1220;
+      color: white;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: #8b5cf6;
+      color: white;
+    }
+
+    .btn.secondary {
+      background: #1f2937;
+      color: white;
+    }
+
+    .btn.danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .product-card {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .product-tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(139,92,246,0.15);
+      color: #c4b5fd;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .product-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .product-card p {
+      color: #cbd5e1;
+      min-height: 72px;
+      line-height: 1.4;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal-box {
+      background: #0f172a;
+      border-radius: 18px;
+      width: min(560px, 92vw);
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-body {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .cart-item, .ticket-item {
+      background: #111827;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .ticket-header, .ticket-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(59,130,246,0.2);
+      color: #93c5fd;
+      font-weight: 700;
+    }
+
+    .empty {
+      color: #94a3b8;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .chat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 220px;
+      max-height: 360px;
+      overflow-y: auto;
+      background: #0b1220;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+
+    .message.mine {
+      align-self: flex-end;
+      background: #8b5cf6;
+    }
+
+    .message.other {
+      align-self: flex-start;
+      background: #1f2937;
+    }
+
+    .message small {
+      display: block;
+      margin-bottom: 6px;
+      opacity: 0.8;
+    }
+
+    .message img {
+      max-width: 220px;
+      border-radius: 10px;
+      display: block;
+      margin-top: 8px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input-area input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #0b1220;
+      color: white;
+    }
+
+    .chat-input-area input[type="file"] {
+      max-width: 140px;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: #0f172a;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1001;
+      padding: 20px;
+    }
+
+    .side-menu.open {
+      transform: translateX(0);
+    }
+
+    .side-menu nav {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .side-menu a, .side-menu button {
+      color: white;
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      text-align: left;
+      padding: 12px 10px;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .side-menu a:hover, .side-menu button:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .close-menu {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 28px;
+      color: white;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+    }
+
+    .overlay.visible {
+      display: block;
+    }
+  </style>
 </head>
 <body>
+  <div id="menuOverlay" class="overlay"></div>
 
-<div class="container">
-    <nav class="navbar">
-        <div class="logo"><i class="fa-solid fa-bolt"></i> MRSTORE</div>
-        <div class="nav-actions">
-            <button class="btn-icon" onclick="abrirModal('tickets-modal')"><i class="fa-solid fa-box-open"></i> Mis Tickets</button>
-            <button class="btn-icon cart-btn" onclick="abrirModal('cart-modal')">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span class="cart-badge" id="cart-count">0</span>
-            </button>
-        </div>
+  <aside id="sideMenu" class="side-menu">
+    <button class="close-menu" id="closeMenu">×</button>
+    <h2 style="margin-top: 18px; color: #8b5cf6; font-size: 26px;">MRSTORE</h2>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#catalogo">Catálogo</a>
+      <button onclick="openTickets()">Mis tickets</button>
+      <a href="admin.html" id="adminLink" style="display:none;">Administración</a>
+      <button onclick="cerrarSesion()">Cerrar sesión</button>
     </nav>
-    
-    <!-- Barra de Autenticación con Correo o Discord -->
-    <div class="auth-bar" id="auth-container">
-        <span style="font-size:12px; color:#94a3b8; text-align:center;">Cargando sistema...</span>
+  </aside>
+
+  <header class="topbar">
+    <button id="menuButton" class="menu-button" aria-label="Abrir menú">☰</button>
+    <div class="brand">MRSTORE</div>
+    <div class="header-actions">
+      <button class="btn secondary" onclick="openTickets()">Mis tickets</button>
+      <button class="btn primary cart-button" onclick="openCart()">
+        🛒
+        <span id="cartBadge" class="cart-badge">0</span>
+      </button>
     </div>
+  </header>
 
-    <div class="hero">
-        <div class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Stock Verificado & Garantizado</div>
-        <h2>Cuentas, Streaming y Servicios Digitales</h2>
-        <p>Lo pides hoy, lo tienes hoy. Compra directa en la web o atención personalizada por ticket.</p>
-        <button class="btn-hero-primary">Ver Catálogo Completo ↓</button>
-    </div>
+  <main id="inicio" class="container">
+    <div id="authBox"></div>
 
-    <div class="section-title">EXPLORA LA TIENDA</div>
-    <div class="section-subtitle">Todo lo que ofrecemos en un solo lugar</div>
-    
-    <div class="category-grid">
-        <div class="cat-card">
-            <div class="cat-icon" style="background: rgba(88, 101, 242, 0.2); color: #5865F2;"><i class="fa-brands fa-discord"></i></div>
-            <div class="cat-title">Discord & Nitro</div>
-            <div class="cat-desc">Boosts, Nitro Monthly & Basic.</div>
-        </div>
-        <div class="cat-card">
-            <div class="cat-icon" style="background: rgba(30, 215, 96, 0.2); color: #1ed760;"><i class="fa-brands fa-spotify"></i></div>
-            <div class="cat-title">Streaming</div>
-            <div class="cat-desc">Spotify Premium cuentas personales.</div>
-        </div>
-        <div class="cat-card">
-            <div class="cat-icon" style="background: rgba(16, 185, 129, 0.2); color: #10b981;"><i class="fa-solid fa-cube"></i></div>
-            <div class="cat-title">Minecraft</div>
-            <div class="cat-desc">Cuentas MFA Full Access & Capas.</div>
-        </div>
-        <div class="cat-card">
-            <div class="cat-icon" style="background: rgba(244, 63, 94, 0.2); color: #f43f5e;"><i class="fa-solid fa-fire"></i></div>
-            <div class="cat-title">Social Boost</div>
-            <div class="cat-desc">Impulsa tus redes reales.</div>
-        </div>
-    </div>
+    <section>
+      <h2>Catálogo</h2>
+      <div id="catalogo" class="catalogo"></div>
+    </section>
+  </main>
 
-    <div class="products-list" id="catalogo-productos"></div>
-</div>
-
-<!-- Modal para Login / Registro con Correo -->
-<div class="modal-overlay" id="email-auth-modal">
-    <div class="modal-box" style="max-width: 350px;">
-        <div class="modal-header">
-            <div class="modal-title" id="auth-modal-title">Acceso con Correo</div>
-            <button class="btn-close" onclick="cerrarModal('email-auth-modal')">X</button>
-        </div>
-        <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 0;">
-            <input type="email" id="auth-email" placeholder="Correo electrónico" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: #07090e; color: white; outline: none;">
-            <input type="password" id="auth-password" placeholder="Contraseña" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: #07090e; color: white; outline: none;">
-            <button id="btn-auth-action" onclick="ejecutarAuthEmail()" style="background: #8b5cf6; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px;">Continuar</button>
-            <div style="text-align: center; margin-top: 10px;">
-                <span id="auth-toggle-text" style="font-size: 11px; color: #94a3b8; cursor: pointer; text-decoration: underline;" onclick="cambiarModoAuth()">¿No tienes cuenta? Regístrate aquí</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modales de Carrito y Tickets -->
-<div class="modal-overlay" id="cart-modal">
+  <div id="cartModal" class="modal">
     <div class="modal-box">
-        <div class="modal-header">
-            <div class="modal-title">🛒 Tu Carrito</div>
-            <button class="btn-close" onclick="cerrarModal('cart-modal')">Cerrar</button>
-        </div>
-        <div class="modal-body" id="cart-content">
-            <div style="text-align:center; color:#64748b; font-size:13px;">Tu carrito está vacío</div>
-        </div>
-        <div>
-            <div class="total-box"><span>Total:</span> <span id="cart-total">$0.00</span></div>
-            <button class="btn-checkout" id="btn-comprar" onclick="generarTicket()" style="margin-top:15px;">🚀 Generar Ticket de Compra</button>
-        </div>
+      <div class="modal-header">
+        <h3>Carrito</h3>
+        <button class="btn secondary" onclick="closeCart()">Cerrar</button>
+      </div>
+      <div id="cartContent" class="modal-body"></div>
+      <div class="ticket-footer" style="margin-top: 12px;">
+        <strong id="cartTotal">$0.00</strong>
+        <button class="btn primary" onclick="generarTicket()">Generar ticket</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<div class="modal-overlay" id="tickets-modal">
+  <div id="ticketsModal" class="modal">
     <div class="modal-box">
-        <div class="modal-header">
-            <div class="modal-title">📦 Tus Tickets Activos</div>
-            <button class="btn-close" onclick="cerrarModal('tickets-modal')">Cerrar</button>
-        </div>
-        <div class="modal-body" id="tickets-list-container"></div>
+      <div class="modal-header">
+        <h3>Mis Tickets</h3>
+        <button class="btn secondary" onclick="closeTickets()">Cerrar</button>
+      </div>
+      <div id="ticketsList" class="modal-body"></div>
     </div>
-</div>
+  </div>
 
-<div class="modal-overlay" id="chat-modal">
-    <div class="modal-box" style="height: 90vh;">
-        <div class="modal-header">
-            <div>
-                <div class="modal-title" id="chat-title">Chat del Ticket</div>
-                <div style="font-size: 11px; color: #38bdf8;">Soporte MRSTORE En línea</div>
-            </div>
-            <button class="btn-close" onclick="cerrarModal('chat-modal')">Cerrar</button>
-        </div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
-            <button class="btn-send" onclick="enviarMensaje()"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
+  <div id="chatModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="chatTitle">Chat</h3>
+        <button class="btn secondary" onclick="closeChat()">Cerrar</button>
+      </div>
+      <div id="chatMessages" class="chat-box"></div>
+
+      <div class="chat-input-area">
+        <input id="chatInput" type="text" placeholder="Escribe tu mensaje..." />
+        <input id="chatFile" type="file" accept="image/*" />
+        <button class="btn primary" onclick="enviarMensaje()">Enviar</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
+  <script>
     const SUPABASE_URL = 'https://oekzjffzxhluhhpptngy.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_Oyy8-ryDioF-OEV8LA4Gyg_XJmhl4EH';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let sessionActual = null;
-    let usuarioActual = null;
-    let carrito = [];
-    let esModoRegistro = false;
-    
-    const productosDB = [
-        { id: 1, categoria: 'DISCORD', nombre: 'Nitro Boost (1 Mes)', descripcion: 'Suscripción de 1 mes con 2 mejoras para servidor incluidas y ventajas completas.', precio: 5.00 },
-        { id: 2, categoria: 'DISCORD', nombre: 'Nitro Basic (1 Mes)', descripcion: 'Insignia exclusiva en tu perfil, emojis globales y mayor límite de subida.', precio: 1.80 },
-        { id: 3, categoria: 'STREAMING', nombre: 'Spotify Premium (3 Meses)', descripcion: 'Música sin anuncios, saltos ilimitados y alta calidad en tu propia cuenta personal.', precio: 2.50 },
-        { id: 4, categoria: 'MINECRAFT', nombre: 'Minecraft MFA Premium', descripcion: 'Full Access con cambio de correo, contraseña y skin propio. Listo para servidores premium.', precio: 4.00 }
+    const productos = [
+      { id: 1, categoria: 'DISCORD', nombre: 'Nitro Boost (1 Mes)', descripcion: 'Boost para servidor y acceso premium.', precio: 5.0 },
+      { id: 2, categoria: 'DISCORD', nombre: 'Nitro Basic (1 Mes)', descripcion: 'Emoji global y ventajas básicas.', precio: 1.8 },
+      { id: 3, categoria: 'STREAMING', nombre: 'Spotify Premium (3 Meses)', descripcion: 'Cuenta personal premium sin anuncios.', precio: 2.5 },
+      { id: 4, categoria: 'MINECRAFT', nombre: 'Minecraft MFA Premium', descripcion: 'Cuenta con acceso y control.', precio: 4.0 },
+      { id: 5, categoria: 'MINECRAFT', nombre: 'Cuenta Minecraft Full Access', descripcion: 'Cuenta lista para uso personal.', precio: 6.5 },
+      { id: 6, categoria: 'SOCIAL', nombre: 'Boost Social Media', descripcion: 'Servicio de impulso para redes.', precio: 3.0 }
     ];
 
-    window.addEventListener('DOMContentLoaded', async () => {
-        cargarCatalogo();
-        await initAuth();
+    let carrito = [];
+    let sessionActual = null;
+    let ticketActivo = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      renderCatalogo();
+      await initAuth();
+      updateCartUI();
+      initMenu();
     });
 
-    // --- AUTENTICACIÓN SEGURA ---
+    function initMenu() {
+      const menuButton = document.getElementById('menuButton');
+      const closeMenuButton = document.getElementById('closeMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
+      const sideMenu = document.getElementById('sideMenu');
+
+      menuButton.addEventListener('click', () => {
+        sideMenu.classList.add('open');
+        menuOverlay.classList.add('visible');
+      });
+
+      closeMenuButton.addEventListener('click', () => {
+        sideMenu.classList.remove('open');
+        menuOverlay.classList.remove('visible');
+      });
+
+      menuOverlay.addEventListener('click', () => {
+        sideMenu.classList.remove('open');
+        menuOverlay.classList.remove('visible');
+      });
+    }
+
     async function initAuth() {
-        if (window.location.hash.includes("access_token") || window.location.hash.includes("error")) {
-            window.history.replaceState(null, null, window.location.pathname);
-        }
+      const { data: { session } } = await supabase.auth.getSession();
+      sessionActual = session;
+      const authBox = document.getElementById('authBox');
+      const adminLink = document.getElementById('adminLink');
 
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        const authContainer = document.getElementById('auth-container');
-        
-        if (session) {
-            sessionActual = session;
-            const meta = session.user.user_metadata;
-            usuarioActual = meta.full_name || meta.name || session.user.email.split('@')[0];
-            
-            authContainer.innerHTML = `
-                <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-                    <span style="font-size:13px; color:#94a3b8;">Hola, <b style="color:#38bdf8;">@${usuarioActual}</b></span>
-                    <button onclick="cerrarSesion()" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:12px;">Cerrar Sesión</button>
-                </div>
-            `;
-            cargarMisTickets();
+      if (session) {
+        authBox.innerHTML = `
+          <div class="auth-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+              <span>Hola, <strong>${session.user.email}</strong></span>
+              <button class="btn danger" onclick="cerrarSesion()">Cerrar sesión</button>
+            </div>
+          </div>
+        `;
+
+        const { data: perfil } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+
+        if (perfil && perfil.role === 'admin') {
+          adminLink.style.display = 'block';
         } else {
-            sessionActual = null;
-            usuarioActual = null;
-            authContainer.innerHTML = `
-                <div style="font-size:11px; color:#94a3b8; text-align:center; margin-bottom:5px;">Inicia sesión para comprar y ver tus tickets:</div>
-                <div style="display:flex; gap:8px; width:100%; justify-content:center; flex-wrap:wrap;">
-                    <button onclick="iniciarSesionDiscord()" style="background:#5865F2; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:12px;"><i class="fa-brands fa-discord"></i> Discord</button>
-                    <button onclick="abrirModalAuthEmail(false)" style="background:#38bdf8; color:#000; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:12px;"><i class="fa-solid fa-envelope"></i> Ingresar con Correo</button>
-                    <button onclick="abrirModalAuthEmail(true)" style="background:#8b5cf6; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:12px;"><i class="fa-solid fa-user-plus"></i> Registrarse</button>
-                </div>
-            `;
-        }
-    }
-
-    async function iniciarSesionDiscord() {
-        await supabaseClient.auth.signInWithOAuth({ provider: 'discord' });
-    }
-
-    function abrirModalAuthEmail(registro) {
-        esModoRegistro = registro;
-        document.getElementById('auth-modal-title').innerText = registro ? 'Crear Nueva Cuenta' : 'Iniciar Sesión con Correo';
-        document.getElementById('btn-auth-action').innerText = registro ? 'Registrarse' : 'Entrar';
-        document.getElementById('auth-toggle-text').innerText = registro ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate aquí';
-        abrirModal('email-auth-modal');
-    }
-
-    function cambiarModoAuth() {
-        esModoRegistro = !esModoRegistro;
-        abrirModalAuthEmail(esModoRegistro);
-    }
-
-    async function ejecutarAuthEmail() {
-        const email = document.getElementById('auth-email').value.trim();
-        const password = document.getElementById('auth-password').value.trim();
-
-        if (!email || !password) {
-            alert('Por favor, completa todos los campos.');
-            return;
+          adminLink.style.display = 'none';
         }
 
-        if (esModoRegistro) {
-            const { error } = await supabaseClient.auth.signUp({ email, password });
-            if (error) {
-                alert('Error al registrarse: ' + error.message);
-            } else {
-                alert('¡Registro exitoso! Ya puedes iniciar sesión.');
-                abrirModalAuthEmail(false);
-            }
-        } else {
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) {
-                alert('Error al iniciar sesión: Verifique su correo y contraseña.');
-            } else {
-                cerrarModal('email-auth-modal');
-                window.location.reload();
-            }
-        }
+        await cargarMisTickets();
+        return;
+      }
+
+      authBox.innerHTML = `
+        <div class="auth-box">
+          <input id="emailInput" type="email" placeholder="Correo electrónico" />
+          <input id="passwordInput" type="password" placeholder="Contraseña" />
+          <div class="button-row">
+            <button class="btn primary" onclick="loginEmail()">Iniciar sesión</button>
+            <button class="btn secondary" onclick="registrarEmail()">Registrarse</button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loginEmail() {
+      const email = document.getElementById('emailInput')?.value.trim();
+      const password = document.getElementById('passwordInput')?.value.trim();
+
+      if (!email || !password) {
+        alert('Rellena el correo y la contraseña.');
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        console.error(error);
+        alert('Correo o contraseña incorrectos.');
+        return;
+      }
+
+      sessionActual = data.session;
+      await initAuth();
+    }
+
+    async function registrarEmail() {
+      const email = document.getElementById('emailInput')?.value.trim();
+      const password = document.getElementById('passwordInput')?.value.trim();
+
+      if (!email || !password) {
+        alert('Rellena el correo y la contraseña.');
+        return;
+      }
+
+      if (password.length < 6) {
+        alert('La contraseña debe tener al menos 6 caracteres.');
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+
+      if (error) {
+        alert('Error al registrarse: ' + error.message);
+        return;
+      }
+
+      if (data.user && !data.session) {
+        alert('Registro correcto. Revisa tu correo para confirmar la cuenta.');
+      } else {
+        alert('Registro correcto. Ya puedes iniciar sesión.');
+      }
+
+      await initAuth();
     }
 
     async function cerrarSesion() {
-        await supabaseClient.auth.signOut();
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.reload();
+      await supabase.auth.signOut();
+      sessionActual = null;
+      carrito = [];
+      updateCartUI();
+      await initAuth();
+      document.getElementById('sideMenu').classList.remove('open');
+      document.getElementById('menuOverlay').classList.remove('visible');
     }
 
-    // --- TIENDA Y CARRITO ---
-    function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function cerrarModal(id) { document.getElementById(id).style.display = 'none'; if(id === 'chat-modal') ticketActivoChat = null; }
+    function renderCatalogo() {
+      const contenedor = document.getElementById('catalogo');
+      contenedor.innerHTML = '';
 
-    function cargarCatalogo() {
-        const contenedor = document.getElementById('catalogo-productos');
-        productosDB.forEach(prod => {
-            contenedor.innerHTML += `
-                <div class="prod-card">
-                    <div class="prod-header">
-                        <span class="prod-tag">${prod.categoria}</span>
-                        <span class="prod-stock"><i class="fa-solid fa-check"></i> Stock Activo</span>
-                    </div>
-                    <div>
-                        <div class="prod-title">${prod.nombre}</div>
-                        <div class="prod-desc">${prod.descripcion}</div>
-                    </div>
-                    <div class="prod-footer">
-                        <div class="prod-price">$${prod.precio.toFixed(2)}</div>
-                        <button class="btn-comprar" onclick="agregarAlCarrito(${prod.id})"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
-                    </div>
-                </div>
-            `;
-        });
+      productos.forEach((producto) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        card.innerHTML = `
+          <div class="product-tag">${producto.categoria}</div>
+          <h3>${producto.nombre}</h3>
+          <p>${producto.descripcion}</p>
+          <div class="product-footer">
+            <strong>$${producto.precio.toFixed(2)}</strong>
+            <button class="btn primary" onclick="agregarAlCarrito(${producto.id})">Comprar</button>
+          </div>
+        `;
+        contenedor.appendChild(card);
+      });
     }
 
-    function agregarAlCarrito(idProducto) {
-        const producto = productosDB.find(p => p.id === idProducto);
-        const itemExistente = carrito.find(p => p.id === idProducto);
-        if (itemExistente) itemExistente.cantidad++;
-        else carrito.push({ ...producto, cantidad: 1 });
-        
-        actualizarCarritoUI();
+    function agregarAlCarrito(id) {
+      const producto = productos.find((p) => p.id === id);
+      if (!producto) return;
+
+      const existe = carrito.find((item) => item.id === id);
+      if (existe) {
+        existe.cantidad += 1;
+      } else {
+        carrito.push({ ...producto, cantidad: 1 });
+      }
+
+      updateCartUI();
     }
 
-    function actualizarCarritoUI() {
-        const cartContent = document.getElementById('cart-content');
-        const btnComprar = document.getElementById('btn-comprar');
-        const cartBadge = document.getElementById('cart-count');
-        let total = 0; let totalItems = 0;
+    function updateCartUI() {
+      const cartContent = document.getElementById('cartContent');
+      const cartTotal = document.getElementById('cartTotal');
+      const badge = document.getElementById('cartBadge');
 
-        if (carrito.length === 0) {
-            cartContent.innerHTML = '<div style="text-align:center; color:#64748b; font-size:13px;">Tu carrito está vacío</div>';
-            document.getElementById('cart-total').innerText = '$0.00';
-            cartBadge.innerText = '0';
-            btnComprar.classList.remove('active');
-            return;
-        }
+      if (!cartContent || !cartTotal || !badge) return;
 
-        cartContent.innerHTML = '';
-        carrito.forEach(item => {
-            const subtotal = item.precio * item.cantidad;
-            total += subtotal; totalItems += item.cantidad;
-            cartContent.innerHTML += `
-                <div class="cart-item">
-                    <span><b style="color:#8b5cf6">${item.cantidad}x</b> ${item.nombre}</span>
-                    <span style="color: #fff; font-weight:bold;">$${subtotal.toFixed(2)}</span>
-                </div>
-            `;
-        });
+      if (!carrito.length) {
+        cartContent.innerHTML = '<p class="empty">Tu carrito está vacío.</p>';
+        cartTotal.textContent = '$0.00';
+        badge.textContent = '0';
+        return;
+      }
 
-        document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
-        cartBadge.innerText = totalItems;
-        btnComprar.classList.add('active');
+      let total = 0;
+      let totalItems = 0;
+
+      cartContent.innerHTML = carrito.map((item) => {
+        total += item.precio * item.cantidad;
+        totalItems += item.cantidad;
+        return `
+          <div class="cart-item">
+            <span>${item.cantidad}x ${item.nombre}</span>
+            <strong>$${(item.precio * item.cantidad).toFixed(2)}</strong>
+          </div>
+        `;
+      }).join('');
+
+      cartTotal.textContent = `$${total.toFixed(2)}`;
+      badge.textContent = String(totalItems);
     }
 
-    // --- TICKETS Y CHAT ---
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+      if (id === 'chatModal') ticketActivo = null;
+    }
+
+    function openCart() {
+      openModal('cartModal');
+    }
+
+    function closeCart() {
+      closeModal('cartModal');
+    }
+
+    function openTickets() {
+      if (!sessionActual) {
+        alert('Debes iniciar sesión para ver tus tickets.');
+        return;
+      }
+      openModal('ticketsModal');
+      cargarMisTickets();
+    }
+
+    function closeTickets() {
+      closeModal('ticketsModal');
+    }
+
+    function closeChat() {
+      closeModal('chatModal');
+    }
+
     async function generarTicket() {
-        if (!sessionActual) return alert("Debes iniciar sesión para comprar.");
-        if (carrito.length === 0) return;
-        
-        const codigoTicket = 'MR-' + Math.floor(100000 + Math.random() * 900000);
-        const detallesCompra = carrito.map(item => `${item.cantidad}x ${item.nombre}`).join(' | ');
-        const totalCompra = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+      if (!sessionActual) {
+        alert('Debes iniciar sesión antes de comprar.');
+        return;
+      }
 
-        const { error } = await supabaseClient.from('tickets').insert([{ 
-            codigo: codigoTicket, 
-            cliente: '@' + usuarioActual, 
-            detalles: detallesCompra, 
-            total: totalCompra, 
-            estado: 'Pendiente',
-            user_id: sessionActual.user.id 
-        }]);
+      if (!carrito.length) {
+        alert('Tu carrito está vacío.');
+        return;
+      }
 
-        if (error) {
-            alert('Error al generar el ticket: ' + error.message);
-        } else {
-            alert('¡Ticket generado exitosamente!');
-            carrito = []; actualizarCarritoUI();
-            cerrarModal('cart-modal');
-            cargarMisTickets();
-            abrirModal('tickets-modal');
-        }
+      const codigo = 'MR-' + Math.floor(100000 + Math.random() * 900000);
+      const detalles = carrito.map((item) => `${item.cantidad}x ${item.nombre}`).join(' | ');
+      const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+
+      const { error } = await supabase
+        .from('tickets')
+        .insert([
+          {
+            user_id: sessionActual.user.id,
+            codigo,
+            cliente: sessionActual.user.email,
+            detalles,
+            total,
+            estado: 'Pendiente'
+          }
+        ]);
+
+      if (error) {
+        console.error(error);
+        alert('Error al crear el ticket: ' + error.message);
+        return;
+      }
+
+      carrito = [];
+      updateCartUI();
+      closeModal('cartModal');
+      await cargarMisTickets();
+      openModal('ticketsModal');
+      alert('Ticket creado correctamente.');
     }
 
     async function cargarMisTickets() {
-        if (!sessionActual) return;
-        const { data, error } = await supabaseClient.from('tickets').select('*').order('id', { ascending: false });
-        const container = document.getElementById('tickets-list-container');
-        
-        if (error || !data || data.length === 0) {
-            container.innerHTML = '<div style="text-align:center; color:#64748b; font-size:13px;">No tienes tickets activos.</div>';
-            return;
-        }
+      if (!sessionActual) return;
 
-        container.innerHTML = '';
-        data.forEach(ticket => {
-            const colorStatus = ticket.estado === 'Completado' ? '#10b981' : '#f59e0b';
-            container.innerHTML += `
-                <div class="ticket-item">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <b style="color:#38bdf8;">${ticket.codigo}</b>
-                        <span style="font-size:10px; font-weight:bold; background:rgba(255,255,255,0.1); padding:3px 8px; border-radius:10px; color:${colorStatus}">${ticket.estado}</span>
-                    </div>
-                    <div style="font-size:12px; color:#94a3b8; margin-bottom:12px;">${ticket.detalles}</div>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <b style="font-size:15px;">$${ticket.total}</b>
-                        <button onclick="abrirChat('${ticket.codigo}')" style="background:#8b5cf6; border:none; color:white; padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:bold;"><i class="fa-solid fa-comments"></i> Chat</button>
-                    </div>
-                </div>`;
-        });
+      const { data, error } = await supabase
+        .from('tickets')
+        .select('*')
+        .eq('user_id', sessionActual.user.id)
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('ticketsList');
+
+      if (error) {
+        container.innerHTML = '<p class="empty">No se pudieron cargar los tickets.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p class="empty">No tienes tickets activos.</p>';
+        return;
+      }
+
+      container.innerHTML = data.map((ticket) => `
+        <div class="ticket-item">
+          <div class="ticket-header">
+            <strong>${ticket.codigo}</strong>
+            <span class="status">${ticket.estado}</span>
+          </div>
+          <p>${ticket.detalles}</p>
+          <div class="ticket-footer">
+            <strong>$${Number(ticket.total).toFixed(2)}</strong>
+            <button class="btn secondary" onclick="abrirChat('${ticket.codigo}')">Chat</button>
+          </div>
+        </div>
+      `).join('');
     }
 
-    let ticketActivoChat = null;
+    async function obtenerTicketId(codigo) {
+      const { data, error } = await supabase
+        .from('tickets')
+        .select('id')
+        .eq('codigo', codigo)
+        .eq('user_id', sessionActual.user.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+        return null;
+      }
+
+      return data?.id ?? null;
+    }
 
     async function abrirChat(codigo) {
-        cerrarModal('tickets-modal'); 
-        ticketActivoChat = codigo;
-        document.getElementById('chat-title').innerText = 'Ticket ' + codigo;
-        abrirModal('chat-modal');
-        cargarMensajes();
+      closeModal('ticketsModal');
+      ticketActivo = codigo;
+      document.getElementById('chatTitle').textContent = 'Ticket ' + codigo;
+      openModal('chatModal');
+      await cargarMensajes();
     }
 
     async function cargarMensajes() {
-        if (!ticketActivoChat) return;
-        const { data } = await supabaseClient.from('mensajes').select('*').eq('ticket_codigo', ticketActivoChat).order('created_at', { ascending: true });
-        const box = document.getElementById('chat-messages');
-        box.innerHTML = '';
-        if (!data || data.length === 0) { box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:12px; margin-top:20px;">Envía el primer mensaje...</div>'; return; }
+      if (!ticketActivo || !sessionActual) return;
 
-        data.forEach(msg => {
-            const isMe = msg.autor === '@' + usuarioActual;
-            box.innerHTML += `<div class="msg ${isMe ? 'msg-mio' : 'msg-otro'}"><b style="font-size:10px; display:block; margin-bottom:4px; opacity:0.8;">${msg.autor}</b>${msg.contenido}</div>`;
-        });
-        box.scrollTop = box.scrollHeight;
+      const ticketId = await obtenerTicketId(ticketActivo);
+      if (!ticketId) {
+        document.getElementById('chatMessages').innerHTML = '<p class="empty">No se pudo abrir el chat.</p>';
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('mensajes')
+        .select('*')
+        .eq('ticket_id', ticketId)
+        .order('created_at', { ascending: true });
+
+      const box = document.getElementById('chatMessages');
+
+      if (error) {
+        console.error(error);
+        box.innerHTML = '<p class="empty">No se pudieron cargar los mensajes.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        box.innerHTML = '<p class="empty">Envía el primer mensaje.</p>';
+        return;
+      }
+
+      box.innerHTML = data.map((msg) => {
+        const me = msg.user_id === sessionActual.user.id;
+        const contenido = msg.archivo_url
+          ? `<img src="${supabase.storage.from('ticket-attachments').getPublicUrl(msg.archivo_url).data.publicUrl}" alt="Archivo adjunto" />`
+          : '';
+
+        return `
+          <div class="message ${me ? 'mine' : 'other'}">
+            <small>${me ? 'Tú' : 'Soporte'}</small>
+            <div>${msg.contenido || ''}</div>
+            ${contenido}
+          </div>
+        `;
+      }).join('');
+
+      box.scrollTop = box.scrollHeight;
     }
 
     async function enviarMensaje() {
-        if (!sessionActual) return;
-        const input = document.getElementById('chat-input');
-        const texto = input.value.trim();
-        if (!texto || !ticketActivoChat) return;
-        input.disabled = true;
-        await supabaseClient.from('mensajes').insert([{ ticket_codigo: ticketActivoChat, autor: '@' + usuarioActual, contenido: texto }]);
-        input.value = ''; input.disabled = false; input.focus();
-        cargarMensajes();
+      if (!ticketActivo || !sessionActual) return;
+
+      const input = document.getElementById('chatInput');
+      const fileInput = document.getElementById('chatFile');
+      const texto = input.value.trim();
+      const archivo = fileInput.files[0];
+
+      if (!texto && !archivo) return;
+
+      const ticketId = await obtenerTicketId(ticketActivo);
+      if (!ticketId) {
+        alert('No se pudo localizar el ticket.');
+        return;
+      }
+
+      let archivoUrl = null;
+
+      if (archivo) {
+        const extension = archivo.name.split('.').pop();
+        const ruta = `${sessionActual.user.id}/${ticketId}/${crypto.randomUUID()}.${extension}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('ticket-attachments')
+          .upload(ruta, archivo, {
+            contentType: archivo.type,
+            upsert: false
+          });
+
+        if (uploadError) {
+          alert('No se pudo subir la imagen: ' + uploadError.message);
+          return;
+        }
+
+        archivoUrl = ruta;
+      }
+
+      const { error } = await supabase.from('mensajes').insert([
+        {
+          ticket_id: ticketId,
+          user_id: sessionActual.user.id,
+          contenido: texto,
+          archivo_url: archivoUrl
+        }
+      ]);
+
+      if (error) {
+        alert('Error al enviar el mensaje: ' + error.message);
+        return;
+      }
+
+      input.value = '';
+      fileInput.value = '';
+
+      await cargarMensajes();
     }
-</script>
+
+    window.addEventListener('click', (event) => {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
