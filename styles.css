@@ -2,16 +2,16 @@
 
 :root {
   --bg: #050713;
-  --bg-strong: #0a1020;
+  --bg-2: #091223;
   --card: rgba(12, 18, 35, 0.82);
-  --card-strong: #0d132a;
+  --panel: rgba(15, 23, 42, 0.92);
   --line: rgba(148, 163, 184, 0.16);
   --text: #f8fafc;
   --muted: #94a3b8;
   --blue: #38bdf8;
-  --blue-strong: #2563eb;
+  --blue-2: #2563eb;
   --purple: #a855f7;
-  --purple-light: #c084fc;
+  --purple-2: #c084fc;
   --cyan: #22d3ee;
   --green: #22c55e;
   --danger: #ef4444;
@@ -26,24 +26,23 @@ html {
 }
 
 body {
-  min-height: 100vh;
   margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(37,99,235,0.18), transparent 25%),
+    radial-gradient(circle at 90% 18%, rgba(168,85,247,0.20), transparent 28%),
+    #050713;
   color: var(--text);
   font-family: 'Outfit', Arial, sans-serif;
-  background:
-    radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.18), transparent 25%),
-    radial-gradient(circle at 90% 20%, rgba(168, 85, 247, 0.18), transparent 25%),
-    var(--bg);
-  overflow-x: hidden;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+  color: inherit;
 }
 
-button,
-input {
+button, input {
   font: inherit;
 }
 
@@ -51,42 +50,43 @@ button {
   cursor: pointer;
 }
 
-.ambient-bg {
+.ambient {
   position: fixed;
-  z-index: -5;
   inset: 0;
+  z-index: -5;
   pointer-events: none;
   background:
     linear-gradient(
       120deg,
-      transparent,
-      rgba(37, 99, 235, 0.05),
-      rgba(168, 85, 247, 0.07),
-      transparent
+      transparent 0%,
+      rgba(37,99,235,0.05) 25%,
+      rgba(168,85,247,0.06) 50%,
+      rgba(34,211,238,0.04) 75%,
+      transparent 100%
     );
 }
 
-.ambient-bg::before,
-.ambient-bg::after {
+.ambient::before,
+.ambient::after {
+  content: '';
   position: fixed;
   width: 420px;
   height: 420px;
-  content: '';
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.22;
+  opacity: 0.20;
   pointer-events: none;
 }
 
-.ambient-bg::before {
-  top: 10%;
+.ambient::before {
+  top: 12%;
   left: -180px;
   background: #2563eb;
 }
 
-.ambient-bg::after {
-  right: -170px;
-  bottom: 4%;
+.ambient::after {
+  right: -180px;
+  bottom: 8%;
   background: #a855f7;
 }
 
@@ -99,25 +99,18 @@ button {
   justify-content: space-between;
   min-height: 72px;
   padding: 14px clamp(16px, 5vw, 72px);
-  border-bottom: 1px solid rgba(148,163,184,.14);
-  background: rgba(5,7,19,.8);
-  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(148,163,184,0.14);
+  background: rgba(5,7,19,0.82);
+  backdrop-filter: blur(18px);
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
   font-size: 22px;
   font-weight: 900;
   letter-spacing: 1px;
-}
-
-.brand span span,
-.drawer-brand span,
-.footer strong span {
-  color: var(--purple-light);
 }
 
 .brand-mark {
@@ -125,10 +118,16 @@ button {
   place-items: center;
   width: 30px;
   height: 30px;
-  border-radius: 9px;
+  border-radius: 10px;
   background: linear-gradient(135deg, var(--blue), var(--purple));
-  box-shadow: 0 0 22px rgba(168,85,247,.55);
+  box-shadow: 0 0 20px rgba(168,85,247,0.6);
   font-size: 14px;
+}
+
+.brand span span,
+.drawer-brand span,
+.footer strong span {
+  color: var(--purple-2);
 }
 
 .top-actions {
@@ -146,8 +145,8 @@ button {
   min-height: 42px;
   padding: 9px 13px;
   border: 1px solid var(--line);
-  border-radius: 11px;
-  background: rgba(15, 23, 42, 0.8);
+  border-radius: 12px;
+  background: rgba(15,23,42,0.8);
   color: white;
   font-weight: 700;
   transition: 0.2s ease;
@@ -156,12 +155,12 @@ button {
 .header-btn:hover,
 .menu-btn:hover {
   border-color: var(--blue);
-  background: rgba(37, 99, 235, 0.18);
+  background: rgba(37,99,235,0.18);
 }
 
 .menu-btn {
   border: 0;
-  background: linear-gradient(135deg, var(--blue-strong), var(--purple));
+  background: linear-gradient(135deg, var(--blue-2), var(--purple));
   font-size: 21px;
 }
 
@@ -177,7 +176,7 @@ button {
   background: var(--danger);
   color: white;
   font-size: 11px;
-  box-shadow: 0 0 12px rgba(239,68,68,.6);
+  box-shadow: 0 0 12px rgba(239,68,68,0.7);
 }
 
 .drawer-overlay {
@@ -185,7 +184,7 @@ button {
   inset: 0;
   z-index: 45;
   display: none;
-  background: rgba(0,0,0,.68);
+  background: rgba(0,0,0,0.68);
   backdrop-filter: blur(3px);
 }
 
@@ -201,11 +200,11 @@ button {
   width: min(330px, 88vw);
   height: 100vh;
   padding: 24px;
-  border-left: 1px solid rgba(56,189,248,.35);
-  background: linear-gradient(180deg, rgba(15,23,42,.98), rgba(8,10,26,.98));
-  box-shadow: -20px 0 60px rgba(37,99,235,.2);
+  border-left: 1px solid rgba(56,189,248,0.35);
+  background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(8,10,26,0.98));
+  box-shadow: -20px 0 60px rgba(37,99,235,0.2);
   transform: translateX(100%);
-  transition: transform .25s ease;
+  transition: transform 0.25s ease;
 }
 
 .drawer.open {
@@ -227,7 +226,7 @@ button {
   letter-spacing: 1px;
 }
 
-.close-btn,
+.drawer-close,
 .close-modal {
   display: grid;
   place-items: center;
@@ -235,7 +234,7 @@ button {
   height: 36px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(239,68,68,.12);
+  background: rgba(239,68,68,0.18);
   color: #fca5a5;
   font-size: 23px;
 }
@@ -246,12 +245,12 @@ button {
   gap: 12px;
   margin: 22px 0;
   padding: 14px;
-  border: 1px solid rgba(168,85,247,.28);
+  border: 1px solid rgba(168,85,247,0.28);
   border-radius: 13px;
-  background: rgba(168,85,247,.08);
+  background: rgba(168,85,247,0.08);
 }
 
-.user-pill {
+.user-avatar {
   display: grid;
   place-items: center;
   width: 40px;
@@ -259,7 +258,6 @@ button {
   border-radius: 12px;
   background: linear-gradient(135deg, var(--blue), var(--purple));
   color: white;
-  font-size: 18px;
 }
 
 .drawer-user strong,
@@ -296,7 +294,8 @@ button {
 
 .drawer-nav a:hover,
 .drawer-nav button:hover {
-  background: linear-gradient(90deg, rgba(37,99,235,.25), rgba(168,85,247,.2));
+  background: linear-gradient(90deg, rgba(37,99,235,0.22), rgba(168,85,247,0.18));
+  color: white;
 }
 
 .drawer-nav span {
@@ -306,7 +305,7 @@ button {
 .drawer-status {
   position: absolute;
   right: 24px;
-  bottom: 26px;
+  bottom: 25px;
   left: 24px;
   padding-top: 18px;
   border-top: 1px solid var(--line);
@@ -314,8 +313,8 @@ button {
   font-size: 12px;
 }
 
-.drawer-status i,
-.hero-badge i {
+.status-dot,
+.pulse {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -339,12 +338,12 @@ button {
   min-height: 390px;
   margin-bottom: 34px;
   padding: clamp(24px, 5vw, 70px);
-  border: 1px solid rgba(56,189,248,.22);
+  border: 1px solid rgba(56,189,248,0.22);
   border-radius: 28px;
   background:
-    linear-gradient(120deg, rgba(15,23,42,.96), rgba(30,27,75,.76)),
-    radial-gradient(circle at 80% 50%, rgba(168,85,247,.32), transparent 35%);
-  box-shadow: 0 0 70px rgba(37,99,235,.14);
+    linear-gradient(120deg, rgba(15,23,42,0.96), rgba(30,27,75,0.76)),
+    radial-gradient(circle at 80% 50%, rgba(168,85,247,0.32), transparent 35%);
+  box-shadow: 0 0 70px rgba(37,99,235,0.14);
 }
 
 .hero-content {
@@ -358,12 +357,12 @@ button {
   align-items: center;
   margin-bottom: 18px;
   padding: 8px 12px;
-  border: 1px solid rgba(34,211,238,.28);
+  border: 1px solid rgba(34,211,238,0.28);
   border-radius: 50px;
   color: var(--cyan);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 1.6px;
+  letter-spacing: 1.5px;
 }
 
 .hero h1 {
@@ -376,7 +375,7 @@ button {
 .hero h1 span {
   display: block;
   color: transparent;
-  background: linear-gradient(90deg, var(--blue), var(--purple-light));
+  background: linear-gradient(90deg, var(--blue), var(--purple-2));
   background-clip: text;
   -webkit-background-clip: text;
 }
@@ -406,10 +405,10 @@ button {
   padding: 12px 18px;
   border: 0;
   border-radius: 11px;
-  background: linear-gradient(100deg, var(--blue-strong), var(--purple));
+  background: linear-gradient(100deg, var(--blue-2), var(--purple));
   color: white;
   font-weight: 800;
-  box-shadow: 0 0 25px rgba(99,102,241,.28);
+  box-shadow: 0 0 25px rgba(99,102,241,0.28);
 }
 
 .cta-secondary {
@@ -420,7 +419,7 @@ button {
   padding: 12px 18px;
   border: 1px solid var(--line);
   border-radius: 11px;
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,0.06);
   color: white;
   font-weight: 800;
 }
@@ -428,10 +427,10 @@ button {
 .hero-grid {
   position: absolute;
   inset: 0;
-  opacity: 0.16;
+  opacity: 0.18;
   background-image:
-    linear-gradient(rgba(56,189,248,.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(168,85,247,.2) 1px, transparent 1px);
+    linear-gradient(rgba(56,189,248,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,85,247,0.2) 1px, transparent 1px);
   background-size: 42px 42px;
 }
 
@@ -441,7 +440,7 @@ button {
   height: 150px;
   border-radius: 50%;
   filter: blur(3px);
-  opacity: .6;
+  opacity: 0.7;
 }
 
 .orb-blue {
@@ -463,7 +462,7 @@ button {
   padding: 18px 20px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: rgba(12,18,35,.82);
+  background: rgba(12,18,35,0.82);
 }
 
 .auth-box h2 {
@@ -503,11 +502,11 @@ button {
 }
 
 .btn-primary {
-  background: linear-gradient(100deg, var(--blue-strong), var(--purple));
+  background: linear-gradient(100deg, var(--blue-2), var(--purple));
 }
 
 .btn-secondary {
-  background: rgba(148,163,184,.12);
+  background: rgba(148,163,184,0.12);
 }
 
 .btn-danger {
@@ -551,60 +550,58 @@ button {
   gap: 16px;
 }
 
-.cat-card {
+.category-card {
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: rgba(12,18,35,.82);
-  transition: .25s ease;
+  background: rgba(12,18,35,0.82);
+  transition: 0.25s ease;
 }
 
-.cat-card:hover {
+.category-card:hover {
   transform: translateY(-4px);
   border-color: var(--purple);
 }
 
-.cat-card .icon {
+.category-icon {
   display: grid;
   place-items: center;
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: rgba(56,189,248,.14);
-  color: var(--blue);
   font-size: 21px;
 }
 
-.blue-card .icon {
-  background: rgba(56,189,248,.14);
+.blue-card .category-icon {
+  background: rgba(56,189,248,0.14);
   color: var(--blue);
 }
 
-.purple-card .icon {
-  background: rgba(168,85,247,.14);
-  color: var(--purple-light);
+.purple-card .category-icon {
+  background: rgba(168,85,247,0.14);
+  color: var(--purple-2);
 }
 
-.cyan-card .icon {
-  background: rgba(34,211,238,.12);
+.cyan-card .category-icon {
+  background: rgba(34,211,238,0.12);
   color: var(--cyan);
 }
 
-.cat-card h3,
-.cat-card p {
+.category-card h3,
+.category-card p {
   margin: 0;
 }
 
-.cat-card p {
+.category-card p {
   margin-top: 4px;
   color: var(--muted);
   font-size: 12px;
 }
 
-.cat-card b {
+.category-card b {
   margin-left: auto;
   color: var(--cyan);
   font-size: 20px;
@@ -624,15 +621,15 @@ button {
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: rgba(12,18,35,.82);
-  box-shadow: inset 0 0 30px rgba(37,99,235,.04);
-  transition: .25s ease;
+  background: rgba(12,18,35,0.82);
+  box-shadow: inset 0 0 30px rgba(37,99,235,0.04);
+  transition: 0.25s ease;
 }
 
 .product:hover {
   transform: translateY(-5px);
   border-color: var(--purple);
-  box-shadow: 0 0 30px rgba(168,85,247,.14);
+  box-shadow: 0 0 30px rgba(168,85,247,0.14);
 }
 
 .product-category {
@@ -641,8 +638,8 @@ button {
   margin-bottom: 12px;
   padding: 5px 9px;
   border-radius: 50px;
-  background: rgba(168,85,247,.14);
-  color: var(--purple-light);
+  background: rgba(168,85,247,0.14);
+  color: var(--purple-2);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -678,7 +675,7 @@ button {
   padding: 10px 14px;
   border: 0;
   border-radius: 10px;
-  background: linear-gradient(100deg, var(--blue-strong), var(--purple));
+  background: linear-gradient(100deg, var(--blue-2), var(--purple));
   color: white;
   font-weight: 800;
 }
@@ -694,7 +691,7 @@ button {
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: rgba(12,18,35,.72);
+  background: rgba(12,18,35,0.72);
 }
 
 .benefit-item b {
@@ -720,7 +717,7 @@ button {
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background: rgba(0,0,0,.72);
+  background: rgba(0,0,0,0.72);
   backdrop-filter: blur(4px);
 }
 
@@ -734,9 +731,9 @@ button {
   overflow: auto;
   padding: 20px;
   border-radius: 18px;
-  border: 1px solid rgba(56,189,248,.24);
+  border: 1px solid rgba(56,189,248,0.24);
   background: #0d132a;
-  box-shadow: 0 0 40px rgba(37,99,235,.18);
+  box-shadow: 0 0 40px rgba(37,99,235,0.18);
 }
 
 .modal-head {
@@ -763,7 +760,7 @@ button {
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: rgba(26,35,55,.82);
+  background: rgba(26,35,55,0.82);
 }
 
 .cart-item {
@@ -784,7 +781,7 @@ button {
 .status {
   padding: 5px 9px;
   border-radius: 30px;
-  background: rgba(34,211,238,.14);
+  background: rgba(34,211,238,0.14);
   color: var(--cyan);
   font-size: 11px;
   font-weight: 800;
@@ -830,7 +827,7 @@ button {
 
 .message.mine {
   align-self: flex-end;
-  background: linear-gradient(135deg, var(--blue-strong), var(--purple));
+  background: linear-gradient(135deg, var(--blue-2), var(--purple));
 }
 
 .message.other {
@@ -875,7 +872,7 @@ button {
 .footer {
   padding: 32px 20px 50px;
   border-top: 1px solid var(--line);
-  background: rgba(5,7,19,.7);
+  background: rgba(5,7,19,0.7);
   color: var(--muted);
   text-align: center;
 }
