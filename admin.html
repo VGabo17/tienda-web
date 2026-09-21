@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - MRSTORE</title>
-    <!-- SDK de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #07090e; color: #fff; padding: 20px; }
-        .admin-container { max-width: 1100px; margin: 0 auto; }
+        .admin-container { max-width: 1100px; margin: 0 auto; display: none; } /* Oculto por defecto por seguridad */
         
         .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
         .admin-header h2 { font-size: 22px; color: #fff; }
         .admin-header p { font-size: 14px; color: #94a3b8; margin-top: 5px; }
         
-        /* Botones de Acción */
         .btn-action { color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; transition: opacity 0.2s; }
         .btn-action:hover { opacity: 0.8; }
         .btn-primary { background: #8b5cf6; padding: 10px 20px; font-size: 14px; }
@@ -23,19 +21,17 @@
         .btn-status { background: #10b981; }
         .btn-status.pendiente { background: #f59e0b; color: #000; }
         .btn-danger { background: #ef4444; }
+        .btn-logout { background: #ef4444; padding: 10px 20px; font-size: 14px; margin-left: 10px; }
 
-        /* Tabla */
         .table-responsive { width: 100%; overflow-x: auto; background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
         th, td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
         th { background: rgba(255,255,255,0.02); color: #38bdf8; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
         tr:hover { background: rgba(255,255,255,0.02); }
-
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #000; }
         
-        /* Modal de Chat Admin */
         #chat-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .chat-box { background: #121826; width: 100%; max-width: 500px; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 550px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .chat-box { background: #121826; width: 100%; max-width: 500px; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 550px; }
         .chat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
         .chat-messages { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; padding-right: 5px; }
         .msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.4; }
@@ -48,7 +44,11 @@
 </head>
 <body>
 
-<div class="admin-container">
+<div id="loading-screen" style="text-align:center; padding: 50px; font-size: 18px; color: #38bdf8;">
+    Verificando seguridad de administrador...
+</div>
+
+<div class="admin-container" id="admin-panel">
     <div class="admin-header">
         <div>
             <h2>Panel de Administración Integral</h2>
@@ -56,6 +56,7 @@
         </div>
         <div>
             <button class="btn-action btn-primary" onclick="cargarTicketsAdmin()">🔄 Actualizar Panel</button>
+            <button class="btn-action btn-logout" onclick="cerrarSesionAdmin()">Cerrar Sesión</button>
         </div>
     </div>
 
@@ -78,7 +79,6 @@
     </div>
 </div>
 
-<!-- Modal de Chat de Soporte -->
 <div id="chat-modal">
     <div class="chat-box">
         <div class="chat-header">
@@ -100,43 +100,66 @@
 </div>
 
 <script>
-    // Configuración de Supabase
     const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
-    const adminUser = "Soporte MRSTORE"; // Nombre que verá el cliente cuando le respondas
+    const adminUser = "Soporte MRSTORE";
     let ticketActivoChat = null;
 
-    window.addEventListener('DOMContentLoaded', cargarTicketsAdmin);
+    // --- BLINDAJE DE SEGURIDAD ---
+    window.addEventListener('DOMContentLoaded', verificarAdmin);
 
-    // 1. Gestión Principal de Tickets
+    async function verificarAdmin() {
+        // Limpiamos la URL por si entró desde un enlace con token
+        if (window.location.hash.includes("access_token")) {
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        
+        // Verificación estricta: Si no está logueado, o su correo NO es mrstore@gmail.com, lo expulsamos
+        if (!session || session.user.email !== 'mrstore@gmail.com') {
+            alert('🚨 Acceso denegado: Solo el administrador "mrstore@gmail.com" puede entrar aquí.');
+            window.location.href = 'index.html'; // Expulsado a la tienda
+            return;
+        }
+
+        // Si pasó la prueba, mostramos el panel y cargamos los tickets
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        cargarTicketsAdmin();
+    }
+
+    async function cerrarSesionAdmin() {
+        await supabaseClient.auth.signOut();
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = 'index.html';
+    }
+
+    // --- FUNCIONES DE TICKETS (ADMIN) ---
     async function cargarTicketsAdmin() {
-        const { data, error } = await supabaseClient
-            .from('tickets')
-            .select('*')
-            .order('id', { ascending: false });
-
+        const { data, error } = await supabaseClient.from('tickets').select('*').order('id', { ascending: false });
         const tbody = document.getElementById('admin-table-body');
         tbody.innerHTML = '';
 
         if (error) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444;">Error al cargar la base de datos: ${error.message}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444;">Error de BD: ${error.message}</td></tr>`;
             return;
         }
-
         if (!data || data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">No hay tickets registrados en el sistema.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">No hay tickets registrados.</td></tr>`;
             return;
         }
 
         data.forEach(ticket => {
-            const tr = document.createElement('tr');
             const estadoActual = ticket.estado || 'Pendiente';
             const colorEstado = estadoActual === 'Completado' ? '#10b981' : '#f59e0b';
             const btnEstadoClass = estadoActual === 'Completado' ? 'btn-status pendiente' : 'btn-status';
             const btnEstadoText = estadoActual === 'Completado' ? 'Marcar Pendiente' : 'Marcar Completado';
 
+            const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="color: #38bdf8; font-weight: bold;">${ticket.codigo}</td>
                 <td style="font-weight: 500;">${ticket.cliente}</td>
@@ -161,13 +184,13 @@
     }
 
     async function eliminarTicket(idTicket) {
-        if (!confirm('¿Atención! ¿Estás totalmente seguro de eliminar este ticket? Esta acción no se puede deshacer.')) return;
+        if (!confirm('¿Estás seguro de eliminar este ticket permanentemente?')) return;
         const { error } = await supabaseClient.from('tickets').delete().eq('id', idTicket);
         if (error) alert('Error al eliminar: ' + error.message);
         else cargarTicketsAdmin();
     }
 
-    // 2. Funciones de Chat para el Administrador
+    // --- FUNCIONES DE CHAT (ADMIN) ---
     async function abrirChat(codigo, cliente) {
         ticketActivoChat = codigo;
         document.getElementById('chat-title').innerText = 'Ticket: ' + codigo;
@@ -183,12 +206,7 @@
 
     async function cargarMensajes() {
         if (!ticketActivoChat) return;
-        const { data } = await supabaseClient
-            .from('mensajes')
-            .select('*')
-            .eq('ticket_codigo', ticketActivoChat)
-            .order('created_at', { ascending: true });
-        
+        const { data } = await supabaseClient.from('mensajes').select('*').eq('ticket_codigo', ticketActivoChat).order('created_at', { ascending: true });
         const box = document.getElementById('chat-messages');
         box.innerHTML = '';
 
@@ -212,16 +230,13 @@
         const input = document.getElementById('chat-input');
         const texto = input.value.trim();
         if (!texto || !ticketActivoChat) return;
-
         input.disabled = true;
         await supabaseClient.from('mensajes').insert([{ ticket_codigo: ticketActivoChat, autor: adminUser, contenido: texto }]);
-        
         input.value = '';
         input.disabled = false;
         input.focus();
         cargarMensajes();
     }
 </script>
-
 </body>
 </html>
