@@ -1,902 +1,542 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MRSTORE</title>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css">
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
+      background: #080b14;
+      color: #ffffff;
       font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: white;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 20px;
-      background: #0f172a;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 40;
+      gap: 15px;
+      padding: 16px 20px;
+      background: #111827;
+      border-bottom: 1px solid #293247;
     }
 
-    .brand {
-      font-weight: 800;
+    .logo {
+      color: #a78bfa;
+      font-size: 23px;
+      font-weight: 900;
       letter-spacing: 1px;
-      color: #8b5cf6;
-      font-size: 22px;
     }
 
-    .header-actions {
+    .top-actions {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .menu-button {
-      background: #8b5cf6;
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 15px;
       color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    .cart-button {
-      background: #1f2937;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .cart-badge {
-      position: absolute;
-      right: -8px;
-      top: -8px;
-      background: red;
-      color: white;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
       font-weight: bold;
     }
 
+    .btn-primary {
+      background: #7c3aed;
+    }
+
+    .btn-primary:hover {
+      background: #6d28d9;
+    }
+
+    .btn-secondary {
+      background: #263244;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+    }
+
+    .menu-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 9px 13px;
+      background: #7c3aed;
+      color: white;
+      font-size: 23px;
+    }
+
+    .cart-button {
+      position: relative;
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 15px;
+      background: #263244;
+      color: white;
+      font-weight: bold;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: #ef4444;
+      font-size: 11px;
+    }
+
     .container {
-      max-width: 1100px;
+      width: min(1100px, 100%);
       margin: 0 auto;
-      padding: 20px;
+      padding: 25px 18px 60px;
+    }
+
+    .hero {
+      margin-bottom: 25px;
+      padding: 28px;
+      border: 1px solid #293247;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #141b31, #101827);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      color: #c4b5fd;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #cbd5e1;
     }
 
     .auth-box {
-      background: #111827;
-      border-radius: 16px;
+      margin-bottom: 28px;
       padding: 18px;
-      margin: 20px 0;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid #293247;
+      border-radius: 15px;
+      background: #111827;
     }
 
-    .auth-box input {
+    .auth-box h2 {
+      margin-top: 0;
+    }
+
+    .auth-input {
       width: 100%;
       margin-bottom: 12px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: #0b1220;
+      padding: 12px;
+      border: 1px solid #3b475e;
+      border-radius: 9px;
+      outline: none;
+      background: #080b14;
       color: white;
+    }
+
+    .auth-input:focus {
+      border-color: #8b5cf6;
     }
 
     .button-row {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .btn {
-      border: none;
-      padding: 11px 16px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
+    .catalog-title {
+      margin-bottom: 14px;
     }
 
-    .btn.primary {
-      background: #8b5cf6;
-      color: white;
-    }
-
-    .btn.secondary {
-      background: #1f2937;
-      color: white;
-    }
-
-    .btn.danger {
-      background: #ef4444;
-      color: white;
-    }
-
-    .catalogo {
+    .catalog {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
       gap: 18px;
-      margin-top: 25px;
     }
 
-    .product-card {
-      background: #111827;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
+    .product {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 235px;
       padding: 18px;
+      border: 1px solid #293247;
+      border-radius: 15px;
+      background: #111827;
     }
 
-    .product-tag {
+    .product-category {
       display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(139,92,246,0.15);
+      width: fit-content;
+      margin-bottom: 12px;
+      padding: 5px 9px;
+      border-radius: 50px;
+      background: #292044;
       color: #c4b5fd;
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
+      font-weight: bold;
     }
 
-    .product-card h3 {
-      margin: 0 0 8px;
-      font-size: 22px;
+    .product h3 {
+      margin: 0 0 10px;
     }
 
-    .product-card p {
+    .product p {
+      min-height: 55px;
       color: #cbd5e1;
-      min-height: 72px;
       line-height: 1.4;
     }
 
-    .product-footer {
+    .product-bottom {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 14px;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .price {
+      color: #67e8f9;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      z-index: 50;
+      inset: 0;
+      background: rgb(0 0 0 / 65%);
+    }
+
+    .drawer-overlay.open {
+      display: block;
+    }
+
+    .drawer {
+      position: fixed;
+      z-index: 51;
+      top: 0;
+      left: 0;
+      width: min(300px, 85vw);
+      height: 100vh;
+      padding: 22px;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      background: #111827;
+      border-right: 1px solid #334155;
+    }
+
+    .drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 35px;
+    }
+
+    .drawer nav button,
+    .drawer nav a {
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: white;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .drawer nav button:hover,
+    .drawer nav a:hover {
+      background: #263244;
     }
 
     .modal {
       display: none;
       position: fixed;
+      z-index: 40;
       inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 18px;
+      background: rgb(0 0 0 / 70%);
     }
 
-    .modal-box {
-      background: #0f172a;
-      border-radius: 18px;
-      width: min(560px, 92vw);
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: min(600px, 100%);
+      max-height: 90vh;
+      overflow: auto;
       padding: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid #334155;
+      border-radius: 16px;
+      background: #111827;
     }
 
     .modal-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 18px;
     }
 
-    .modal-body {
-      max-height: 60vh;
-      overflow-y: auto;
+    .modal-header h2 {
+      margin: 0;
     }
 
-    .cart-item, .ticket-item {
-      background: #111827;
-      border-radius: 12px;
-      padding: 14px;
+    .cart-item,
+    .ticket {
       margin-bottom: 12px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #1a2333;
     }
 
-    .ticket-header, .ticket-footer {
+    .cart-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ticket-top,
+    .ticket-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .status {
-      padding: 5px 10px;
-      border-radius: 999px;
+      padding: 5px 9px;
+      border-radius: 30px;
+      background: #164e63;
+      color: #a5f3fc;
       font-size: 11px;
-      background: rgba(59,130,246,0.2);
-      color: #93c5fd;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .empty {
+      padding: 25px;
       color: #94a3b8;
       text-align: center;
-      padding: 18px;
     }
 
-    .chat-box {
+    .messages {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      min-height: 220px;
-      max-height: 360px;
+      gap: 10px;
+      min-height: 180px;
+      max-height: 350px;
       overflow-y: auto;
-      background: #0b1220;
-      border-radius: 12px;
-      padding: 12px;
       margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #080b14;
     }
 
     .message {
-      max-width: 80%;
+      max-width: 82%;
       padding: 10px 12px;
       border-radius: 12px;
+      line-height: 1.4;
     }
 
     .message.mine {
       align-self: flex-end;
-      background: #8b5cf6;
+      background: #7c3aed;
     }
 
     .message.other {
       align-self: flex-start;
-      background: #1f2937;
-    }
-
-    .message small {
-      display: block;
-      margin-bottom: 6px;
-      opacity: 0.8;
+      background: #263244;
     }
 
     .message img {
+      display: block;
       max-width: 220px;
-      border-radius: 10px;
-      display: block;
       margin-top: 8px;
+      border-radius: 8px;
     }
 
-    .chat-input-area {
+    .message-form {
       display: flex;
-      gap: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .chat-input-area input[type="text"] {
+    .message-form input[type="text"] {
       flex: 1;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: #0b1220;
+      min-width: 170px;
+      padding: 11px;
+      border: 1px solid #3b475e;
+      border-radius: 8px;
+      background: #080b14;
       color: white;
     }
 
-    .chat-input-area input[type="file"] {
-      max-width: 140px;
+    .message-form input[type="file"] {
+      max-width: 180px;
+      color: #cbd5e1;
     }
 
-    .side-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 280px;
-      height: 100vh;
-      background: #0f172a;
-      border-right: 1px solid rgba(255,255,255,0.08);
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 1001;
-      padding: 20px;
-    }
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 12px;
+      }
 
-    .side-menu.open {
-      transform: translateX(0);
-    }
+      .logo {
+        font-size: 18px;
+      }
 
-    .side-menu nav {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+      .top-actions .btn {
+        display: none;
+      }
 
-    .side-menu a, .side-menu button {
-      color: white;
-      text-decoration: none;
-      background: transparent;
-      border: none;
-      text-align: left;
-      padding: 12px 10px;
-      border-radius: 10px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .side-menu a:hover, .side-menu button:hover {
-      background: rgba(255,255,255,0.04);
-    }
-
-    .close-menu {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      font-size: 28px;
-      color: white;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 1000;
-    }
-
-    .overlay.visible {
-      display: block;
+      .hero {
+        padding: 20px;
+      }
     }
   </style>
 </head>
-<body>
-  <div id="menuOverlay" class="overlay"></div>
 
-  <aside id="sideMenu" class="side-menu">
-    <button class="close-menu" id="closeMenu">×</button>
-    <h2 style="margin-top: 18px; color: #8b5cf6; font-size: 26px;">MRSTORE</h2>
+<body>
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <aside id="drawer" class="drawer">
+    <div class="drawer-header">
+      <strong style="color:#a78bfa;font-size:22px;">MRSTORE</strong>
+      <button id="closeDrawer" class="btn btn-danger">×</button>
+    </div>
+
     <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#catalogo">Catálogo</a>
-      <button onclick="openTickets()">Mis tickets</button>
-      <a href="admin.html" id="adminLink" style="display:none;">Administración</a>
-      <button onclick="cerrarSesion()">Cerrar sesión</button>
+      <a href="#inicio" id="inicioLink">Inicio</a>
+      <a href="#catalogo" id="catalogoLink">Catálogo</a>
+      <button onclick="abrirTickets()">Mis tickets</button>
+      <a id="adminLink" href="admin.html" style="display:none;">Administración</a>
+      <button id="logoutMenuButton" onclick="cerrarSesion()" style="display:none;">
+        Cerrar sesión
+      </button>
     </nav>
   </aside>
 
   <header class="topbar">
-    <button id="menuButton" class="menu-button" aria-label="Abrir menú">☰</button>
-    <div class="brand">MRSTORE</div>
-    <div class="header-actions">
-      <button class="btn secondary" onclick="openTickets()">Mis tickets</button>
-      <button class="btn primary cart-button" onclick="openCart()">
-        🛒
-        <span id="cartBadge" class="cart-badge">0</span>
+    <button id="openDrawer" class="menu-button">☰</button>
+
+    <div class="logo">MRSTORE</div>
+
+    <div class="top-actions">
+      <button class="btn btn-secondary" onclick="abrirTickets()">Mis tickets</button>
+
+      <button class="cart-button" onclick="abrirCarrito()">
+        🛒 Carrito
+        <span id="cartCount" class="cart-count">0</span>
       </button>
     </div>
   </header>
 
   <main id="inicio" class="container">
-    <div id="authBox"></div>
+    <section class="hero">
+      <h1>Bienvenido a MRSTORE</h1>
+      <p>Servicios digitales, cuentas y productos premium.</p>
+    </section>
 
-    <section>
-      <h2>Catálogo</h2>
-      <div id="catalogo" class="catalogo"></div>
+    <section id="authBox" class="auth-box">
+      Cargando...
+    </section>
+
+    <section id="catalogo">
+      <h2 class="catalog-title">Catálogo</h2>
+      <div id="productList" class="catalog"></div>
     </section>
   </main>
 
   <div id="cartModal" class="modal">
-    <div class="modal-box">
+    <div class="modal-content">
       <div class="modal-header">
-        <h3>Carrito</h3>
-        <button class="btn secondary" onclick="closeCart()">Cerrar</button>
+        <h2>Carrito</h2>
+        <button class="btn btn-secondary" onclick="cerrarCarrito()">Cerrar</button>
       </div>
-      <div id="cartContent" class="modal-body"></div>
-      <div class="ticket-footer" style="margin-top: 12px;">
+
+      <div id="cartList"></div>
+
+      <div style="display:flex;justify-content:space-between;margin-top:18px;">
+        <strong>Total:</strong>
         <strong id="cartTotal">$0.00</strong>
-        <button class="btn primary" onclick="generarTicket()">Generar ticket</button>
       </div>
+
+      <button class="btn btn-primary" style="width:100%;margin-top:15px;" onclick="crearTicket()">
+        Crear ticket
+      </button>
     </div>
   </div>
 
   <div id="ticketsModal" class="modal">
-    <div class="modal-box">
+    <div class="modal-content">
       <div class="modal-header">
-        <h3>Mis Tickets</h3>
-        <button class="btn secondary" onclick="closeTickets()">Cerrar</button>
+        <h2>Mis tickets</h2>
+        <button class="btn btn-secondary" onclick="cerrarTickets()">Cerrar</button>
       </div>
-      <div id="ticketsList" class="modal-body"></div>
+
+      <div id="ticketList"></div>
     </div>
   </div>
 
   <div id="chatModal" class="modal">
-    <div class="modal-box">
+    <div class="modal-content">
       <div class="modal-header">
-        <h3 id="chatTitle">Chat</h3>
-        <button class="btn secondary" onclick="closeChat()">Cerrar</button>
+        <h2 id="chatTitle">Chat</h2>
+        <button class="btn btn-secondary" onclick="cerrarChat()">Cerrar</button>
       </div>
-      <div id="chatMessages" class="chat-box"></div>
 
-      <div class="chat-input-area">
-        <input id="chatInput" type="text" placeholder="Escribe tu mensaje..." />
-        <input id="chatFile" type="file" accept="image/*" />
-        <button class="btn primary" onclick="enviarMensaje()">Enviar</button>
+      <div id="messageList" class="messages"></div>
+
+      <div class="message-form">
+        <input id="messageInput" type="text" placeholder="Escribe un mensaje">
+        <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp">
+        <button class="btn btn-primary" onclick="enviarMensaje()">Enviar</button>
       </div>
     </div>
   </div>
 
-  <script>
-    const SUPABASE_URL = 'https://oekzjffzxhluhhpptngy.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_Oyy8-ryDioF-OEV8LA4Gyg_XJmhl4EH';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const productos = [
-      { id: 1, categoria: 'DISCORD', nombre: 'Nitro Boost (1 Mes)', descripcion: 'Boost para servidor y acceso premium.', precio: 5.0 },
-      { id: 2, categoria: 'DISCORD', nombre: 'Nitro Basic (1 Mes)', descripcion: 'Emoji global y ventajas básicas.', precio: 1.8 },
-      { id: 3, categoria: 'STREAMING', nombre: 'Spotify Premium (3 Meses)', descripcion: 'Cuenta personal premium sin anuncios.', precio: 2.5 },
-      { id: 4, categoria: 'MINECRAFT', nombre: 'Minecraft MFA Premium', descripcion: 'Cuenta con acceso y control.', precio: 4.0 },
-      { id: 5, categoria: 'MINECRAFT', nombre: 'Cuenta Minecraft Full Access', descripcion: 'Cuenta lista para uso personal.', precio: 6.5 },
-      { id: 6, categoria: 'SOCIAL', nombre: 'Boost Social Media', descripcion: 'Servicio de impulso para redes.', precio: 3.0 }
-    ];
-
-    let carrito = [];
-    let sessionActual = null;
-    let ticketActivo = null;
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      renderCatalogo();
-      await initAuth();
-      updateCartUI();
-      initMenu();
-    });
-
-    function initMenu() {
-      const menuButton = document.getElementById('menuButton');
-      const closeMenuButton = document.getElementById('closeMenu');
-      const menuOverlay = document.getElementById('menuOverlay');
-      const sideMenu = document.getElementById('sideMenu');
-
-      menuButton.addEventListener('click', () => {
-        sideMenu.classList.add('open');
-        menuOverlay.classList.add('visible');
-      });
-
-      closeMenuButton.addEventListener('click', () => {
-        sideMenu.classList.remove('open');
-        menuOverlay.classList.remove('visible');
-      });
-
-      menuOverlay.addEventListener('click', () => {
-        sideMenu.classList.remove('open');
-        menuOverlay.classList.remove('visible');
-      });
-    }
-
-    async function initAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      sessionActual = session;
-      const authBox = document.getElementById('authBox');
-      const adminLink = document.getElementById('adminLink');
-
-      if (session) {
-        authBox.innerHTML = `
-          <div class="auth-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span>Hola, <strong>${session.user.email}</strong></span>
-              <button class="btn danger" onclick="cerrarSesion()">Cerrar sesión</button>
-            </div>
-          </div>
-        `;
-
-        const { data: perfil } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .single();
-
-        if (perfil && perfil.role === 'admin') {
-          adminLink.style.display = 'block';
-        } else {
-          adminLink.style.display = 'none';
-        }
-
-        await cargarMisTickets();
-        return;
-      }
-
-      authBox.innerHTML = `
-        <div class="auth-box">
-          <input id="emailInput" type="email" placeholder="Correo electrónico" />
-          <input id="passwordInput" type="password" placeholder="Contraseña" />
-          <div class="button-row">
-            <button class="btn primary" onclick="loginEmail()">Iniciar sesión</button>
-            <button class="btn secondary" onclick="registrarEmail()">Registrarse</button>
-          </div>
-        </div>
-      `;
-    }
-
-    async function loginEmail() {
-      const email = document.getElementById('emailInput')?.value.trim();
-      const password = document.getElementById('passwordInput')?.value.trim();
-
-      if (!email || !password) {
-        alert('Rellena el correo y la contraseña.');
-        return;
-      }
-
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        console.error(error);
-        alert('Correo o contraseña incorrectos.');
-        return;
-      }
-
-      sessionActual = data.session;
-      await initAuth();
-    }
-
-    async function registrarEmail() {
-      const email = document.getElementById('emailInput')?.value.trim();
-      const password = document.getElementById('passwordInput')?.value.trim();
-
-      if (!email || !password) {
-        alert('Rellena el correo y la contraseña.');
-        return;
-      }
-
-      if (password.length < 6) {
-        alert('La contraseña debe tener al menos 6 caracteres.');
-        return;
-      }
-
-      const { data, error } = await supabase.auth.signUp({ email, password });
-
-      if (error) {
-        alert('Error al registrarse: ' + error.message);
-        return;
-      }
-
-      if (data.user && !data.session) {
-        alert('Registro correcto. Revisa tu correo para confirmar la cuenta.');
-      } else {
-        alert('Registro correcto. Ya puedes iniciar sesión.');
-      }
-
-      await initAuth();
-    }
-
-    async function cerrarSesion() {
-      await supabase.auth.signOut();
-      sessionActual = null;
-      carrito = [];
-      updateCartUI();
-      await initAuth();
-      document.getElementById('sideMenu').classList.remove('open');
-      document.getElementById('menuOverlay').classList.remove('visible');
-    }
-
-    function renderCatalogo() {
-      const contenedor = document.getElementById('catalogo');
-      contenedor.innerHTML = '';
-
-      productos.forEach((producto) => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-
-        card.innerHTML = `
-          <div class="product-tag">${producto.categoria}</div>
-          <h3>${producto.nombre}</h3>
-          <p>${producto.descripcion}</p>
-          <div class="product-footer">
-            <strong>$${producto.precio.toFixed(2)}</strong>
-            <button class="btn primary" onclick="agregarAlCarrito(${producto.id})">Comprar</button>
-          </div>
-        `;
-        contenedor.appendChild(card);
-      });
-    }
-
-    function agregarAlCarrito(id) {
-      const producto = productos.find((p) => p.id === id);
-      if (!producto) return;
-
-      const existe = carrito.find((item) => item.id === id);
-      if (existe) {
-        existe.cantidad += 1;
-      } else {
-        carrito.push({ ...producto, cantidad: 1 });
-      }
-
-      updateCartUI();
-    }
-
-    function updateCartUI() {
-      const cartContent = document.getElementById('cartContent');
-      const cartTotal = document.getElementById('cartTotal');
-      const badge = document.getElementById('cartBadge');
-
-      if (!cartContent || !cartTotal || !badge) return;
-
-      if (!carrito.length) {
-        cartContent.innerHTML = '<p class="empty">Tu carrito está vacío.</p>';
-        cartTotal.textContent = '$0.00';
-        badge.textContent = '0';
-        return;
-      }
-
-      let total = 0;
-      let totalItems = 0;
-
-      cartContent.innerHTML = carrito.map((item) => {
-        total += item.precio * item.cantidad;
-        totalItems += item.cantidad;
-        return `
-          <div class="cart-item">
-            <span>${item.cantidad}x ${item.nombre}</span>
-            <strong>$${(item.precio * item.cantidad).toFixed(2)}</strong>
-          </div>
-        `;
-      }).join('');
-
-      cartTotal.textContent = `$${total.toFixed(2)}`;
-      badge.textContent = String(totalItems);
-    }
-
-    function openModal(id) {
-      document.getElementById(id).style.display = 'flex';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-      if (id === 'chatModal') ticketActivo = null;
-    }
-
-    function openCart() {
-      openModal('cartModal');
-    }
-
-    function closeCart() {
-      closeModal('cartModal');
-    }
-
-    function openTickets() {
-      if (!sessionActual) {
-        alert('Debes iniciar sesión para ver tus tickets.');
-        return;
-      }
-      openModal('ticketsModal');
-      cargarMisTickets();
-    }
-
-    function closeTickets() {
-      closeModal('ticketsModal');
-    }
-
-    function closeChat() {
-      closeModal('chatModal');
-    }
-
-    async function generarTicket() {
-      if (!sessionActual) {
-        alert('Debes iniciar sesión antes de comprar.');
-        return;
-      }
-
-      if (!carrito.length) {
-        alert('Tu carrito está vacío.');
-        return;
-      }
-
-      const codigo = 'MR-' + Math.floor(100000 + Math.random() * 900000);
-      const detalles = carrito.map((item) => `${item.cantidad}x ${item.nombre}`).join(' | ');
-      const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-
-      const { error } = await supabase
-        .from('tickets')
-        .insert([
-          {
-            user_id: sessionActual.user.id,
-            codigo,
-            cliente: sessionActual.user.email,
-            detalles,
-            total,
-            estado: 'Pendiente'
-          }
-        ]);
-
-      if (error) {
-        console.error(error);
-        alert('Error al crear el ticket: ' + error.message);
-        return;
-      }
-
-      carrito = [];
-      updateCartUI();
-      closeModal('cartModal');
-      await cargarMisTickets();
-      openModal('ticketsModal');
-      alert('Ticket creado correctamente.');
-    }
-
-    async function cargarMisTickets() {
-      if (!sessionActual) return;
-
-      const { data, error } = await supabase
-        .from('tickets')
-        .select('*')
-        .eq('user_id', sessionActual.user.id)
-        .order('created_at', { ascending: false });
-
-      const container = document.getElementById('ticketsList');
-
-      if (error) {
-        container.innerHTML = '<p class="empty">No se pudieron cargar los tickets.</p>';
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        container.innerHTML = '<p class="empty">No tienes tickets activos.</p>';
-        return;
-      }
-
-      container.innerHTML = data.map((ticket) => `
-        <div class="ticket-item">
-          <div class="ticket-header">
-            <strong>${ticket.codigo}</strong>
-            <span class="status">${ticket.estado}</span>
-          </div>
-          <p>${ticket.detalles}</p>
-          <div class="ticket-footer">
-            <strong>$${Number(ticket.total).toFixed(2)}</strong>
-            <button class="btn secondary" onclick="abrirChat('${ticket.codigo}')">Chat</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    async function obtenerTicketId(codigo) {
-      const { data, error } = await supabase
-        .from('tickets')
-        .select('id')
-        .eq('codigo', codigo)
-        .eq('user_id', sessionActual.user.id)
-        .single();
-
-      if (error) {
-        console.error(error);
-        return null;
-      }
-
-      return data?.id ?? null;
-    }
-
-    async function abrirChat(codigo) {
-      closeModal('ticketsModal');
-      ticketActivo = codigo;
-      document.getElementById('chatTitle').textContent = 'Ticket ' + codigo;
-      openModal('chatModal');
-      await cargarMensajes();
-    }
-
-    async function cargarMensajes() {
-      if (!ticketActivo || !sessionActual) return;
-
-      const ticketId = await obtenerTicketId(ticketActivo);
-      if (!ticketId) {
-        document.getElementById('chatMessages').innerHTML = '<p class="empty">No se pudo abrir el chat.</p>';
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('mensajes')
-        .select('*')
-        .eq('ticket_id', ticketId)
-        .order('created_at', { ascending: true });
-
-      const box = document.getElementById('chatMessages');
-
-      if (error) {
-        console.error(error);
-        box.innerHTML = '<p class="empty">No se pudieron cargar los mensajes.</p>';
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        box.innerHTML = '<p class="empty">Envía el primer mensaje.</p>';
-        return;
-      }
-
-      box.innerHTML = data.map((msg) => {
-        const me = msg.user_id === sessionActual.user.id;
-        const contenido = msg.archivo_url
-          ? `<img src="${supabase.storage.from('ticket-attachments').getPublicUrl(msg.archivo_url).data.publicUrl}" alt="Archivo adjunto" />`
-          : '';
-
-        return `
-          <div class="message ${me ? 'mine' : 'other'}">
-            <small>${me ? 'Tú' : 'Soporte'}</small>
-            <div>${msg.contenido || ''}</div>
-            ${contenido}
-          </div>
-        `;
-      }).join('');
-
-      box.scrollTop = box.scrollHeight;
-    }
-
-    async function enviarMensaje() {
-      if (!ticketActivo || !sessionActual) return;
-
-      const input = document.getElementById('chatInput');
-      const fileInput = document.getElementById('chatFile');
-      const texto = input.value.trim();
-      const archivo = fileInput.files[0];
-
-      if (!texto && !archivo) return;
-
-      const ticketId = await obtenerTicketId(ticketActivo);
-      if (!ticketId) {
-        alert('No se pudo localizar el ticket.');
-        return;
-      }
-
-      let archivoUrl = null;
-
-      if (archivo) {
-        const extension = archivo.name.split('.').pop();
-        const ruta = `${sessionActual.user.id}/${ticketId}/${crypto.randomUUID()}.${extension}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('ticket-attachments')
-          .upload(ruta, archivo, {
-            contentType: archivo.type,
-            upsert: false
-          });
-
-        if (uploadError) {
-          alert('No se pudo subir la imagen: ' + uploadError.message);
-          return;
-        }
-
-        archivoUrl = ruta;
-      }
-
-      const { error } = await supabase.from('mensajes').insert([
-        {
-          ticket_id: ticketId,
-          user_id: sessionActual.user.id,
-          contenido: texto,
-          archivo_url: archivoUrl
-        }
-      ]);
-
-      if (error) {
-        alert('Error al enviar el mensaje: ' + error.message);
-        return;
-      }
-
-      input.value = '';
-      fileInput.value = '';
-
-      await cargarMensajes();
-    }
-
-    window.addEventListener('click', (event) => {
-      if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
