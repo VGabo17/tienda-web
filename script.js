@@ -26,7 +26,7 @@ function cambiarMenu(vista) {
         viewTienda.classList.add('hidden');
         viewCarrito.classList.remove('hidden');
         renderizarCarrito();
-        verificarSesionCliente(); // Comprobar estado de Discord al abrir el carrito
+        verificarSesionCliente();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -113,7 +113,6 @@ function setMoneda(flag, curr, tasa, simbolo) {
     document.getElementById('flagLbl').textContent = flag;
     document.getElementById('currLbl').textContent = curr;
 
-    // Actualizar precios visibles en el catálogo
     document.querySelectorAll('.prod-card').forEach(card => {
         const spanPrecio = card.querySelector('.precio');
         const spanSimbolo = card.querySelector('.simbolo');
@@ -131,7 +130,6 @@ function setMoneda(flag, curr, tasa, simbolo) {
 function filtrarProductos(cat) {
     const cards = document.querySelectorAll('.prod-card');
     
-    // Cambiar estilo de botones activos
     ['todos', 'discord', 'streaming', 'minecraft'].forEach(c => {
         const btn = document.getElementById(`btn-cat-${c}`);
         if (btn) {
@@ -152,7 +150,6 @@ function filtrarProductos(cat) {
     });
 }
 
-
 // ================= AUTH DISCORD & SUPABASE TICKETS =================
 
 // Verificar sesión del cliente al abrir el carrito
@@ -164,7 +161,7 @@ async function verificarSesionCliente() {
 
     if (session) {
         usuarioActual = session.user;
-        const discordName = usuarioActual.user_metadata.full_name || usuarioActual.user_metadata.name || 'Usuario Discord';
+        const discordName = usuarioActual.user_metadata?.full_name || usuarioActual.user_metadata?.name || usuarioActual.email?.split('@')[0] || 'Usuario Discord';
         
         if (authSection) authSection.style.display = 'none';
         if (checkoutSection) checkoutSection.style.display = 'block';
@@ -195,10 +192,10 @@ async function logoutStore() {
     window.location.reload();
 }
 
-// Generar el ticket en la base de datos con el usuario real de Discord
+// Generar el ticket en la base de datos con el usuario real autenticado
 async function procesarPagoSupabase() {
     if (!usuarioActual) {
-        alert('Debes iniciar sesión con Discord primero.');
+        alert('Debes iniciar sesión primero.');
         return;
     }
 
@@ -207,19 +204,19 @@ async function procesarPagoSupabase() {
         return;
     }
 
-    const discordName = usuarioActual.user_metadata.full_name || usuarioActual.user_metadata.name || 'Usuario Discord';
+    const discordName = usuarioActual.user_metadata?.full_name || usuarioActual.user_metadata?.name || usuarioActual.email?.split('@')[0] || 'Usuario Discord';
     const codigoTicket = 'MR-' + Math.floor(100000 + Math.random() * 900000);
     
-    // Consolidar detalles de los productos del carrito
     const detallesCompra = carrito.map(i => i.nombre).join(', ');
     const totalCompra = montoTotalUsd;
 
-    const { data, error } = await _supabase
+    const { error } = await _supabase
         .from('tickets')
         .insert([
             {
+                user_id: usuarioActual.id, // <-- IMPORTANTE
                 codigo: codigoTicket,
-                cliente: `@${discordName}`, // ¡Aquí se guarda el usuario verificado de Discord!
+                cliente: `@${discordName}`,
                 detalles: detallesCompra,
                 total: totalCompra,
                 estado: 'Pendiente'
@@ -230,7 +227,7 @@ async function procesarPagoSupabase() {
         console.error('Error al guardar ticket:', error);
         alert('Hubo un error al registrar el ticket en la base de datos.');
     } else {
-        alert(`¡Ticket ${codigoTicket} creado con éxito! Tu usuario de Discord (@${discordName}) ha quedado vinculado al pedido.`);
+        alert(`¡Ticket ${codigoTicket} creado con éxito!`);
         carrito = [];
         actualizarContadorCarrito();
         cambiarMenu('tienda');
