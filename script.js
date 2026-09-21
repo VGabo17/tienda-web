@@ -129,7 +129,6 @@ function setMoneda(flag, curr, tasa, simbolo) {
 // Filtrar productos por categoría
 function filtrarProductos(cat) {
     const cards = document.querySelectorAll('.prod-card');
-    
     ['todos', 'discord', 'streaming', 'minecraft'].forEach(c => {
         const btn = document.getElementById(`btn-cat-${c}`);
         if (btn) {
@@ -214,7 +213,7 @@ async function procesarPagoSupabase() {
         .from('tickets')
         .insert([
             {
-                user_id: usuarioActual.id, // <-- IMPORTANTE
+                user_id: usuarioActual.id,
                 codigo: codigoTicket,
                 cliente: `@${discordName}`,
                 detalles: detallesCompra,
