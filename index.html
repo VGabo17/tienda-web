@@ -3,539 +3,313 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MRSTORE</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>MRSTORE | Tienda Digital</title>
+
   <link rel="stylesheet" href="styles.css">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #080b14;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 16px 20px;
-      background: #111827;
-      border-bottom: 1px solid #293247;
-    }
-
-    .logo {
-      color: #a78bfa;
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 10px 15px;
-      color: white;
-      font-weight: bold;
-    }
-
-    .btn-primary {
-      background: #7c3aed;
-    }
-
-    .btn-primary:hover {
-      background: #6d28d9;
-    }
-
-    .btn-secondary {
-      background: #263244;
-    }
-
-    .btn-danger {
-      background: #dc2626;
-    }
-
-    .menu-button {
-      border: 0;
-      border-radius: 9px;
-      padding: 9px 13px;
-      background: #7c3aed;
-      color: white;
-      font-size: 23px;
-    }
-
-    .cart-button {
-      position: relative;
-      border: 0;
-      border-radius: 9px;
-      padding: 11px 15px;
-      background: #263244;
-      color: white;
-      font-weight: bold;
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 21px;
-      height: 21px;
-      border-radius: 50%;
-      background: #ef4444;
-      font-size: 11px;
-    }
-
-    .container {
-      width: min(1100px, 100%);
-      margin: 0 auto;
-      padding: 25px 18px 60px;
-    }
-
-    .hero {
-      margin-bottom: 25px;
-      padding: 28px;
-      border: 1px solid #293247;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #141b31, #101827);
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      color: #c4b5fd;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #cbd5e1;
-    }
-
-    .auth-box {
-      margin-bottom: 28px;
-      padding: 18px;
-      border: 1px solid #293247;
-      border-radius: 15px;
-      background: #111827;
-    }
-
-    .auth-box h2 {
-      margin-top: 0;
-    }
-
-    .auth-input {
-      width: 100%;
-      margin-bottom: 12px;
-      padding: 12px;
-      border: 1px solid #3b475e;
-      border-radius: 9px;
-      outline: none;
-      background: #080b14;
-      color: white;
-    }
-
-    .auth-input:focus {
-      border-color: #8b5cf6;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .catalog-title {
-      margin-bottom: 14px;
-    }
-
-    .catalog {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
-      gap: 18px;
-    }
-
-    .product {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 235px;
-      padding: 18px;
-      border: 1px solid #293247;
-      border-radius: 15px;
-      background: #111827;
-    }
-
-    .product-category {
-      display: inline-block;
-      width: fit-content;
-      margin-bottom: 12px;
-      padding: 5px 9px;
-      border-radius: 50px;
-      background: #292044;
-      color: #c4b5fd;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    .product h3 {
-      margin: 0 0 10px;
-    }
-
-    .product p {
-      min-height: 55px;
-      color: #cbd5e1;
-      line-height: 1.4;
-    }
-
-    .product-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .price {
-      color: #67e8f9;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .drawer-overlay {
-      display: none;
-      position: fixed;
-      z-index: 50;
-      inset: 0;
-      background: rgb(0 0 0 / 65%);
-    }
-
-    .drawer-overlay.open {
-      display: block;
-    }
-
-    .drawer {
-      position: fixed;
-      z-index: 51;
-      top: 0;
-      left: 0;
-      width: min(300px, 85vw);
-      height: 100vh;
-      padding: 22px;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      background: #111827;
-      border-right: 1px solid #334155;
-    }
-
-    .drawer.open {
-      transform: translateX(0);
-    }
-
-    .drawer-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .drawer nav {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 35px;
-    }
-
-    .drawer nav button,
-    .drawer nav a {
-      padding: 13px;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: white;
-      text-align: left;
-      text-decoration: none;
-    }
-
-    .drawer nav button:hover,
-    .drawer nav a:hover {
-      background: #263244;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 40;
-      inset: 0;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgb(0 0 0 / 70%);
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-content {
-      width: min(600px, 100%);
-      max-height: 90vh;
-      overflow: auto;
-      padding: 20px;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      background: #111827;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .modal-header h2 {
-      margin: 0;
-    }
-
-    .cart-item,
-    .ticket {
-      margin-bottom: 12px;
-      padding: 14px;
-      border-radius: 10px;
-      background: #1a2333;
-    }
-
-    .cart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .ticket-top,
-    .ticket-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .status {
-      padding: 5px 9px;
-      border-radius: 30px;
-      background: #164e63;
-      color: #a5f3fc;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    .empty {
-      padding: 25px;
-      color: #94a3b8;
-      text-align: center;
-    }
-
-    .messages {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 180px;
-      max-height: 350px;
-      overflow-y: auto;
-      margin-bottom: 12px;
-      padding: 12px;
-      border-radius: 10px;
-      background: #080b14;
-    }
-
-    .message {
-      max-width: 82%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      line-height: 1.4;
-    }
-
-    .message.mine {
-      align-self: flex-end;
-      background: #7c3aed;
-    }
-
-    .message.other {
-      align-self: flex-start;
-      background: #263244;
-    }
-
-    .message img {
-      display: block;
-      max-width: 220px;
-      margin-top: 8px;
-      border-radius: 8px;
-    }
-
-    .message-form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .message-form input[type="text"] {
-      flex: 1;
-      min-width: 170px;
-      padding: 11px;
-      border: 1px solid #3b475e;
-      border-radius: 8px;
-      background: #080b14;
-      color: white;
-    }
-
-    .message-form input[type="file"] {
-      max-width: 180px;
-      color: #cbd5e1;
-    }
-
-    @media (max-width: 600px) {
-      .topbar {
-        padding: 12px;
-      }
-
-      .logo {
-        font-size: 18px;
-      }
-
-      .top-actions .btn {
-        display: none;
-      }
-
-      .hero {
-        padding: 20px;
-      }
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
+
+  <div class="rgb-background"></div>
   <div id="drawerOverlay" class="drawer-overlay"></div>
 
+  <!-- MENÚ LATERAL DERECHO -->
   <aside id="drawer" class="drawer">
     <div class="drawer-header">
-      <strong style="color:#a78bfa;font-size:22px;">MRSTORE</strong>
-      <button id="closeDrawer" class="btn btn-danger">×</button>
+      <div class="drawer-logo">MR<span>STORE</span></div>
+
+      <button id="closeDrawer" class="close-drawer">
+        ×
+      </button>
     </div>
 
-    <nav>
-      <a href="#inicio" id="inicioLink">Inicio</a>
-      <a href="#catalogo" id="catalogoLink">Catálogo</a>
-      <button onclick="abrirTickets()">Mis tickets</button>
-      <a id="adminLink" href="admin.html" style="display:none;">Administración</a>
+    <div class="drawer-user">
+      <div class="user-icon">◉</div>
+      <div>
+        <strong>MRSTORE</strong>
+        <small>Tienda digital</small>
+      </div>
+    </div>
+
+    <nav class="drawer-nav">
+      <a id="inicioLink" href="#inicio">
+        <span>⌂</span>
+        Inicio
+      </a>
+
+      <a id="catalogoLink" href="#catalogo">
+        <span>▦</span>
+        Catálogo
+      </a>
+
+      <button onclick="abrirCarrito(); cerrarMenu();">
+        <span>🛒</span>
+        Carrito
+      </button>
+
+      <button onclick="abrirTickets();">
+        <span>▤</span>
+        Mis tickets
+      </button>
+
+      <a id="adminLink" href="admin.html" style="display:none;">
+        <span>⚙</span>
+        Administración
+      </a>
+
       <button id="logoutMenuButton" onclick="cerrarSesion()" style="display:none;">
+        <span>↪</span>
         Cerrar sesión
       </button>
     </nav>
+
+    <div class="drawer-footer">
+      <span class="status-dot"></span>
+      Sistema operativo
+    </div>
   </aside>
 
+  <!-- BARRA SUPERIOR -->
   <header class="topbar">
-    <button id="openDrawer" class="menu-button">☰</button>
-
-    <div class="logo">MRSTORE</div>
+    <a href="#inicio" class="brand">
+      <span class="brand-symbol">◆</span>
+      <span>MR<span>STORE</span></span>
+    </a>
 
     <div class="top-actions">
-      <button class="btn btn-secondary" onclick="abrirTickets()">Mis tickets</button>
+      <button class="header-button tickets-button" onclick="abrirTickets()">
+        <span>▤</span>
+        <span class="hide-mobile">Mis tickets</span>
+      </button>
 
-      <button class="cart-button" onclick="abrirCarrito()">
-        🛒 Carrito
-        <span id="cartCount" class="cart-count">0</span>
+      <button class="header-button cart-button" onclick="abrirCarrito()">
+        <span>🛒</span>
+        <span class="hide-mobile">Carrito</span>
+        <b id="cartCount" class="cart-count">0</b>
+      </button>
+
+      <button id="openDrawer" class="menu-button" aria-label="Abrir menú">
+        ☰
       </button>
     </div>
   </header>
 
-  <main id="inicio" class="container">
-    <section class="hero">
-      <h1>Bienvenido a MRSTORE</h1>
-      <p>Servicios digitales, cuentas y productos premium.</p>
+  <!-- CONTENIDO PRINCIPAL -->
+  <main id="inicio" class="main-container">
+
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          PLATAFORMA DIGITAL ACTIVA
+        </div>
+
+        <h1>
+          Todo lo que necesitas,
+          <span>en un solo lugar.</span>
+        </h1>
+
+        <p>
+          Encuentra servicios digitales, cuentas premium y productos
+          exclusivos de MRSTORE.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#catalogo" class="hero-button primary-button">
+            Ver catálogo
+            <span>→</span>
+          </a>
+
+          <button class="hero-button glass-button" onclick="abrirTickets()">
+            Mis pedidos
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-orb orb-one"></div>
+      <div class="hero-orb orb-two"></div>
+      <div class="hero-grid"></div>
     </section>
 
-    <section id="authBox" class="auth-box">
-      Cargando...
+    <!-- AUTENTICACIÓN -->
+    <section id="authBox" class="auth-section">
+      Cargando sistema...
     </section>
 
-    <section id="catalogo">
-      <h2 class="catalog-title">Catálogo</h2>
-      <div id="productList" class="catalog"></div>
+    <!-- CATEGORÍAS -->
+    <section class="category-section">
+      <div class="section-heading">
+        <div>
+          <span class="section-label">EXPLORA</span>
+          <h2>Categorías populares</h2>
+        </div>
+      </div>
+
+      <div class="category-grid">
+        <a href="#catalogo" class="category-card discord-card">
+          <div class="category-icon">◈</div>
+          <div>
+            <h3>Discord</h3>
+            <p>Nitro y servicios premium</p>
+          </div>
+          <span class="category-arrow">→</span>
+        </a>
+
+        <a href="#catalogo" class="category-card streaming-card">
+          <div class="category-icon">▶</div>
+          <div>
+            <h3>Streaming</h3>
+            <p>Entretenimiento sin límites</p>
+          </div>
+          <span class="category-arrow">→</span>
+        </a>
+
+        <a href="#catalogo" class="category-card minecraft-card">
+          <div class="category-icon">◆</div>
+          <div>
+            <h3>Minecraft</h3>
+            <p>Cuentas y acceso premium</p>
+          </div>
+          <span class="category-arrow">→</span>
+        </a>
+      </div>
     </section>
+
+    <!-- CATÁLOGO -->
+    <section id="catalogo" class="catalog-section">
+      <div class="section-heading catalog-heading">
+        <div>
+          <span class="section-label">PRODUCTOS DESTACADOS</span>
+          <h2>Catálogo digital</h2>
+        </div>
+
+        <span class="catalog-count">
+          Productos disponibles
+        </span>
+      </div>
+
+      <div id="productList" class="product-grid"></div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="benefits-section">
+      <div class="benefit-card">
+        <div class="benefit-icon">⚡</div>
+        <div>
+          <h3>Entrega rápida</h3>
+          <p>Procesamos tus pedidos lo antes posible.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">🛡</div>
+        <div>
+          <h3>Compra segura</h3>
+          <p>Tus tickets y datos están protegidos.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">💬</div>
+        <div>
+          <h3>Soporte directo</h3>
+          <p>Habla con nuestro equipo desde tu ticket.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
+  <!-- MODAL DEL CARRITO -->
   <div id="cartModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Carrito</h2>
-        <button class="btn btn-secondary" onclick="cerrarCarrito()">Cerrar</button>
+        <div>
+          <span class="section-label">TU COMPRA</span>
+          <h2>Carrito</h2>
+        </div>
+
+        <button class="modal-close" onclick="cerrarCarrito()">
+          ×
+        </button>
       </div>
 
-      <div id="cartList"></div>
+      <div id="cartList" class="cart-list"></div>
 
-      <div style="display:flex;justify-content:space-between;margin-top:18px;">
-        <strong>Total:</strong>
+      <div class="modal-total">
+        <span>Total</span>
         <strong id="cartTotal">$0.00</strong>
       </div>
 
-      <button class="btn btn-primary" style="width:100%;margin-top:15px;" onclick="crearTicket()">
+      <button class="full-button primary-button" onclick="crearTicket()">
         Crear ticket
+        <span>→</span>
       </button>
     </div>
   </div>
 
+  <!-- MODAL DE TICKETS -->
   <div id="ticketsModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Mis tickets</h2>
-        <button class="btn btn-secondary" onclick="cerrarTickets()">Cerrar</button>
+        <div>
+          <span class="section-label">SEGUIMIENTO</span>
+          <h2>Mis tickets</h2>
+        </div>
+
+        <button class="modal-close" onclick="cerrarTickets()">
+          ×
+        </button>
       </div>
 
-      <div id="ticketList"></div>
+      <div id="ticketList" class="ticket-list"></div>
     </div>
   </div>
 
+  <!-- MODAL DEL CHAT -->
   <div id="chatModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content chat-modal-content">
       <div class="modal-header">
-        <h2 id="chatTitle">Chat</h2>
-        <button class="btn btn-secondary" onclick="cerrarChat()">Cerrar</button>
+        <div>
+          <span class="section-label">SOPORTE</span>
+          <h2 id="chatTitle">Chat del ticket</h2>
+        </div>
+
+        <button class="modal-close" onclick="cerrarChat()">
+          ×
+        </button>
       </div>
 
-      <div id="messageList" class="messages"></div>
+      <div id="messageList" class="message-list"></div>
 
       <div class="message-form">
-        <input id="messageInput" type="text" placeholder="Escribe un mensaje">
-        <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp">
-        <button class="btn btn-primary" onclick="enviarMensaje()">Enviar</button>
+        <input
+          id="messageInput"
+          type="text"
+          placeholder="Escribe tu mensaje..."
+        >
+
+        <input
+          id="imageInput"
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+        >
+
+        <button class="send-button" onclick="enviarMensaje()">
+          Enviar
+        </button>
       </div>
     </div>
   </div>
+
+  <footer class="footer">
+    <div class="footer-logo">MR<span>STORE</span></div>
+    <p>Servicios digitales para todos.</p>
+    <small>© 2026 MRSTORE. Todos los derechos reservados.</small>
+  </footer>
 
   <script src="script.js"></script>
 </body>
