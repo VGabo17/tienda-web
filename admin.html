@@ -8,7 +8,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #07090e; color: #fff; padding: 20px; }
-        .admin-container { max-width: 1100px; margin: 0 auto; display: none; } /* Oculto por defecto por seguridad */
+        .admin-container { max-width: 1100px; margin: 0 auto; display: none; }
         
         .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
         .admin-header h2 { font-size: 22px; color: #fff; }
@@ -107,25 +107,22 @@
     const adminUser = "Soporte MRSTORE";
     let ticketActivoChat = null;
 
-    // --- BLINDAJE DE SEGURIDAD ---
     window.addEventListener('DOMContentLoaded', verificarAdmin);
 
     async function verificarAdmin() {
-        // Limpiamos la URL por si entró desde un enlace con token
         if (window.location.hash.includes("access_token")) {
             window.history.replaceState(null, null, window.location.pathname);
         }
 
         const { data: { session } } = await supabaseClient.auth.getSession();
         
-        // Verificación estricta: Si no está logueado, o su correo NO es mrstore@gmail.com, lo expulsamos
+        // Bloqueo estricto: Solo mrstore@gmail.com puede entrar
         if (!session || session.user.email !== 'mrstore@gmail.com') {
             alert('🚨 Acceso denegado: Solo el administrador "mrstore@gmail.com" puede entrar aquí.');
-            window.location.href = 'index.html'; // Expulsado a la tienda
+            window.location.href = 'index.html';
             return;
         }
 
-        // Si pasó la prueba, mostramos el panel y cargamos los tickets
         document.getElementById('loading-screen').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
         cargarTicketsAdmin();
@@ -138,7 +135,6 @@
         window.location.href = 'index.html';
     }
 
-    // --- FUNCIONES DE TICKETS (ADMIN) ---
     async function cargarTicketsAdmin() {
         const { data, error } = await supabaseClient.from('tickets').select('*').order('id', { ascending: false });
         const tbody = document.getElementById('admin-table-body');
@@ -190,7 +186,6 @@
         else cargarTicketsAdmin();
     }
 
-    // --- FUNCIONES DE CHAT (ADMIN) ---
     async function abrirChat(codigo, cliente) {
         ticketActivoChat = codigo;
         document.getElementById('chat-title').innerText = 'Ticket: ' + codigo;
