@@ -1,6 +1,6 @@
 // ================= CONFIGURACIÓN SUPABASE =================
-const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+const SUPABASE_URL = 'https://oekzjffzxhluhhpptngy.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Oyy8-ryDioF-OEV8LA4Gyg_XJmhl4EH';
 
 const { createClient } = supabase;
 const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
