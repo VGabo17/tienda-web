@@ -22,8 +22,8 @@
         .btn-status.pendiente { background: #f59e0b; color: #000; }
         .btn-danger { background: #ef4444; }
         .btn-logout { background: #ef4444; padding: 10px 20px; font-size: 14px; margin-left: 10px; }
-
-        .table-responsive { width: 100%; overflow-x: auto; background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+ 
+        .table-responsive { width: 100%; overflow-x: auto; background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
         th, td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
         th { background: rgba(255,255,255,0.02); color: #38bdf8; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
@@ -31,7 +31,7 @@
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #000; }
         
         #chat-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .chat-box { background: #121826; width: 100%; max-width: 500px; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 550px; }
+        .chat-box { background: #121826; width: 100%; max-width: 500px; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 620px; }
         .chat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
         .chat-messages { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; padding-right: 5px; }
         .msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.4; }
@@ -100,32 +100,42 @@
 </div>
 
 <script>
-    const SUPABASE_URL = 'https://luupinikdeakeisitget.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_PLfWM4kKES8hWFVIY5yatA_MT9Tm7Kq';
+    const SUPABASE_URL = 'https://oekzjffzxhluhhpptngy.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_Oyy8-ryDioF-OEV8LA4Gyg_XJmhl4EH';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-    const adminUser = "Soporte MRSTORE";
+
     let ticketActivoChat = null;
 
     window.addEventListener('DOMContentLoaded', verificarAdmin);
 
     async function verificarAdmin() {
-        if (window.location.hash.includes("access_token")) {
+        if (window.location.hash.includes("access_token") || window.location.hash.includes("error")) {
             window.history.replaceState(null, null, window.location.pathname);
         }
 
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        
-        // Bloqueo estricto: Solo mrstore@gmail.com puede entrar
-        if (!session || session.user.email !== 'mrstore@gmail.com') {
-            alert('🚨 Acceso denegado: Solo el administrador "mrstore@gmail.com" puede entrar aquí.');
+        const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+
+        if (sessionError || !session) {
+            alert('Debes iniciar sesión para acceder al panel.');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        const { data: perfil, error: perfilError } = await supabaseClient
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
+        if (perfilError || !perfil || perfil.role !== 'admin') {
+            alert('Acceso denegado: esta cuenta no es administradora.');
             window.location.href = 'index.html';
             return;
         }
 
         document.getElementById('loading-screen').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
-        cargarTicketsAdmin();
+        await cargarTicketsAdmin();
     }
 
     async function cerrarSesionAdmin() {
@@ -136,7 +146,11 @@
     }
 
     async function cargarTicketsAdmin() {
-        const { data, error } = await supabaseClient.from('tickets').select('*').order('id', { ascending: false });
+        const { data, error } = await supabaseClient
+            .from('tickets')
+            .select('*')
+            .order('created_at', { ascending: false });
+
         const tbody = document.getElementById('admin-table-body');
         tbody.innerHTML = '';
 
@@ -144,6 +158,7 @@
             tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444;">Error de BD: ${error.message}</td></tr>`;
             return;
         }
+
         if (!data || data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 30px;">No hay tickets registrados.</td></tr>`;
             return;
@@ -160,12 +175,12 @@
                 <td style="color: #38bdf8; font-weight: bold;">${ticket.codigo}</td>
                 <td style="font-weight: 500;">${ticket.cliente}</td>
                 <td style="font-size: 13px; color: #cbd5e1; max-width: 250px;">${ticket.detalles}</td>
-                <td style="font-weight: bold;">$${ticket.total}</td>
+                <td style="font-weight: bold;">$${Number(ticket.total).toFixed(2)}</td>
                 <td><span class="badge" style="background: ${colorEstado};">${estadoActual}</span></td>
                 <td style="text-align: right;">
                     <button class="btn-action btn-chat" onclick="abrirChat('${ticket.codigo}', '${ticket.cliente}')">💬 Chat</button>
-                    <button class="btn-action ${btnEstadoClass}" onclick="cambiarEstado(${ticket.id}, '${estadoActual}')">🔄 ${btnEstadoText}</button>
-                    <button class="btn-action btn-danger" onclick="eliminarTicket(${ticket.id})">🗑️</button>
+                    <button class="btn-action ${btnEstadoClass}" onclick="cambiarEstado('${ticket.id}', '${estadoActual}')">🔄 ${btnEstadoText}</button>
+                    <button class="btn-action btn-danger" onclick="eliminarTicket('${ticket.id}')">🗑️</button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -174,16 +189,32 @@
 
     async function cambiarEstado(idTicket, estadoActual) {
         const nuevoEstado = estadoActual === 'Completado' ? 'Pendiente' : 'Completado';
-        const { error } = await supabaseClient.from('tickets').update({ estado: nuevoEstado }).eq('id', idTicket);
-        if (error) alert('Error al actualizar: ' + error.message);
-        else cargarTicketsAdmin();
+
+        const { error } = await supabaseClient
+            .from('tickets')
+            .update({ estado: nuevoEstado })
+            .eq('id', idTicket);
+
+        if (error) {
+            alert('Error al actualizar: ' + error.message);
+        } else {
+            await cargarTicketsAdmin();
+        }
     }
 
     async function eliminarTicket(idTicket) {
         if (!confirm('¿Estás seguro de eliminar este ticket permanentemente?')) return;
-        const { error } = await supabaseClient.from('tickets').delete().eq('id', idTicket);
-        if (error) alert('Error al eliminar: ' + error.message);
-        else cargarTicketsAdmin();
+
+        const { error } = await supabaseClient
+            .from('tickets')
+            .delete()
+            .eq('id', idTicket);
+
+        if (error) {
+            alert('Error al eliminar: ' + error.message);
+        } else {
+            await cargarTicketsAdmin();
+        }
     }
 
     async function abrirChat(codigo, cliente) {
@@ -191,7 +222,7 @@
         document.getElementById('chat-title').innerText = 'Ticket: ' + codigo;
         document.getElementById('chat-cliente-name').innerText = 'Hablando con: ' + cliente;
         document.getElementById('chat-modal').style.display = 'flex';
-        cargarMensajes();
+        await cargarMensajes();
     }
 
     function cerrarChat() {
@@ -201,7 +232,24 @@
 
     async function cargarMensajes() {
         if (!ticketActivoChat) return;
-        const { data } = await supabaseClient.from('mensajes').select('*').eq('ticket_codigo', ticketActivoChat).order('created_at', { ascending: true });
+
+        const { data: ticketData, error: ticketError } = await supabaseClient
+            .from('tickets')
+            .select('id')
+            .eq('codigo', ticketActivoChat)
+            .single();
+
+        if (ticketError || !ticketData) {
+            console.error(ticketError);
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('mensajes')
+            .select('*')
+            .eq('ticket_id', ticketData.id)
+            .order('created_at', { ascending: true });
+
         const box = document.getElementById('chat-messages');
         box.innerHTML = '';
 
@@ -211,26 +259,53 @@
         }
 
         data.forEach(msg => {
-            const isAdmin = msg.autor === adminUser;
+            const isAdmin = msg.user_id === supabaseClient.auth.getUser()?.user?.id;
             box.innerHTML += `
                 <div class="msg ${isAdmin ? 'msg-admin' : 'msg-cliente'}">
-                    <b style="font-size:11px; opacity:0.8; display:block; margin-bottom:3px;">${msg.autor}</b>
+                    <b style="font-size:11px; opacity:0.8; display:block; margin-bottom:3px;">
+                        ${isAdmin ? 'Admin' : 'Cliente'}
+                    </b>
                     ${msg.contenido}
                 </div>`;
         });
+
         box.scrollTop = box.scrollHeight;
     }
 
     async function enviarMensaje() {
         const input = document.getElementById('chat-input');
         const texto = input.value.trim();
+
         if (!texto || !ticketActivoChat) return;
-        input.disabled = true;
-        await supabaseClient.from('mensajes').insert([{ ticket_codigo: ticketActivoChat, autor: adminUser, contenido: texto }]);
+
+        const { data: ticketData, error: ticketError } = await supabaseClient
+            .from('tickets')
+            .select('id')
+            .eq('codigo', ticketActivoChat)
+            .single();
+
+        if (ticketError || !ticketData) {
+            alert('No se pudo encontrar el ticket.');
+            return;
+        }
+
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+
+        const { error } = await supabaseClient.from('mensajes').insert([
+            {
+                ticket_id: ticketData.id,
+                user_id: sessionData.session.user.id,
+                contenido: texto
+            }
+        ]);
+
+        if (error) {
+            alert('Error al enviar el mensaje: ' + error.message);
+            return;
+        }
+
         input.value = '';
-        input.disabled = false;
-        input.focus();
-        cargarMensajes();
+        await cargarMensajes();
     }
 </script>
 </body>
